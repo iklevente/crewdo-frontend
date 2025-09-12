@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Rsbuild project
 
 ## Setup
@@ -34,3 +35,6 @@ To learn more about Rsbuild, check out the following resources:
 
 - [Rsbuild documentation](https://rsbuild.rs) - explore Rsbuild features and APIs.
 - [Rsbuild GitHub repository](https://github.com/web-infra-dev/rsbuild) - your feedback and contributions are welcome!
+=======
+# crewdo-frontend
+>>>>>>> d0e42a75ab8703026277dc1b60b7840f16dafcf5
