@@ -1,0 +1,9 @@
+# Whitelist: Ignore all files by default
+*
+
+!dist/**/*
+
+!package.json
+!CHANGELOG.md
+!CONTRIBUTING.md
+!README.md

@@ -1,0 +1,101 @@
+{
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "impliedStrict": true
+    }
+  },
+  "plugins": ["@tanstack/query"],
+  "extends": [
+    "plugin:@tanstack/eslint-plugin-query/recommended",
+    "@smartreporting/sr-linter-rules/recommended",
+    "@smartreporting/sr-linter-rules/jest-recommended",
+    "@smartreporting/sr-linter-rules/react-recommended"
+  ],
+  "root": true,
+  "env": {
+    "node": true,
+    "jest": true,
+    "browser": true
+  },
+  "rules": {
+    "@tanstack/query/exhaustive-deps": "error",
+    "@tanstack/query/prefer-query-object-syntax": "error",
+    "@typescript-eslint/prefer-optional-chain": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "enum",
+        "format": ["PascalCase"]
+      },
+      {
+        "selector": "enumMember",
+        "format": ["PascalCase"]
+      }
+    ],
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "react-router-dom",
+            "importNames": ["useHistory", "useLocation"],
+            "message": "Use wrappers from src/appHistory.ts instead"
+          }
+        ],
+        "patterns": ["@smartreporting/*/build/"]
+      }
+    ],
+    "@typescript-eslint/explicit-function-return-type": [
+      "error",
+      {
+        "allowExpressions": true
+      }
+    ],
+    "prefer-destructuring": [
+      "error",
+      {
+        "object": true,
+        "array": false
+      }
+    ],
+    "no-await-in-loop": "error",
+    "curly": "error",
+    "import/order": [
+      "error",
+      {
+        "groups": [["external", "builtin"], "internal", ["parent", "sibling", "index"]]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["src/**/*.test.{ts,tsx}"],
+      "excludedFiles": "src/testsUtils/commonUtils.ts",
+      "rules": {
+        "no-restricted-properties": [
+          2,
+          {
+            "object": "window",
+            "property": "postMessage",
+            "message": "Use 'sendPostMessageAndWait' helper for postMessage testing."
+          }
+        ]
+      }
+    }
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx", ".d.ts"]
+      }
+    }
+  }
+}

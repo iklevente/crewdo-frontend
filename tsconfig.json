@@ -1,25 +1,31 @@
 {
   "compilerOptions": {
-    "lib": ["DOM", "ES2020"],
-    "jsx": "react-jsx",
-    "target": "ES2020",
-    "noEmit": true,
+    "target": "es2020",
+    "lib": ["es2020", "dom", "dom.iterable", "esnext"],
+    "allowJs": true,
     "skipLibCheck": true,
-    "useDefineForClassFields": true,
-
-    /* modules */
-    "module": "ESNext",
-    "moduleDetection": "force",
-    "moduleResolution": "bundler",
-    "verbatimModuleSyntax": true,
-    "resolveJsonModule": true,
-    "allowImportingTsExtensions": true,
-    "noUncheckedSideEffectImports": true,
-
-    /* type checking */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noEmit": false,
+    "jsx": "react",
+    "rootDir": "src",
+    "baseUrl": "src",
+    "typeRoots": ["src/typeDefs", "./node_modules/@types"],
+    "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "isolatedModules": true
   },
-  "include": ["src"]
+  "include": ["src", "global.d.ts"],
+  "exclude": ["node_modules"],
+  "react/jsx-pascal-case": [
+    {
+      "allowAllCaps": true,
+      "ignore": []
+    }
+  ]
 }
