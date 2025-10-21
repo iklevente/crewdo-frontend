@@ -24,6 +24,7 @@ export default defineConfig([
     // TypeScript ESLint recommended (flat config style)
     {
         files: ['src/**/*.{ts,tsx}'],
+        ignores: ['src/api/**/*'],
         languageOptions: {
             parser: tsParser,
             parserOptions: {
@@ -53,6 +54,7 @@ export default defineConfig([
     // React recommended (flat config style)
     {
         files: ['src/**/*.{js,jsx,ts,tsx}'],
+        ignores: ['src/api/**/*'],
         plugins: {
             react: reactPlugin,
             'react-hooks': reactHooksPlugin,
@@ -72,6 +74,7 @@ export default defineConfig([
             ...reactPlugin.configs.recommended.rules,
             ...reactHooksPlugin.configs.recommended.rules,
             // custom rules below
+            'react/react-in-jsx-scope': 'off', // Not needed with new JSX transform
             '@typescript-eslint/prefer-optional-chain': 'error',
             'react-hooks/exhaustive-deps': 'warn',
             '@typescript-eslint/naming-convention': [
