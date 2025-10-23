@@ -1,37 +1,41 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Alert, Box, CircularProgress, Stack } from '@mui/material';
+import {
+    Alert,
+    Box,
+    Button,
+    CircularProgress,
+    IconButton,
+    InputAdornment,
+    Stack,
+    TextField
+} from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import type { MarkAsReadDto } from 'api/models/mark-as-read-dto';
-import type { CreateDirectMessageDto } from 'api/models/create-direct-message-dto';
-import type { ChannelResponseDto } from 'api/models/channel-response-dto';
 import { ChannelResponseDtoTypeEnum } from 'api/models/channel-response-dto';
+import type { MessageResponseDto } from 'api/models/message-response-dto';
 import { apiClients } from 'services/api-clients';
 import { useAppNavigate } from 'appHistory';
 import { useAuthStore } from 'store/auth-store';
 import type { Message } from 'features/messages/types/message';
-import {
-    WORKSPACE_DETAIL_QUERY_KEY,
-    useWorkspaceDetails
-} from 'features/workspaces/hooks/useWorkspaceDetails';
+import { WORKSPACE_DETAIL_QUERY_KEY } from 'features/workspaces/hooks/useWorkspaceDetails';
 import type { UserProfileSnapshot } from 'features/users/types/user-profile-snapshot';
 import { UserProfileDialog } from 'features/users/components/UserProfileDialog';
+import SearchIcon from '@mui/icons-material/Search';
 import { ChannelSidebar } from '../components/ChannelSidebar';
 import { ChannelHeader } from '../components/ChannelHeader';
 import { MessageList } from '../components/MessageList';
 import { MessageComposer } from '../components/MessageComposer';
+import { GroupConversationSettingsDialog } from '../components/GroupConversationSettingsDialog';
 import { useWorkspaceChannels } from '../hooks/useWorkspaceChannels';
 import { useChannelDetails } from '../hooks/useChannelDetails';
 import { useChannelMessages } from '../hooks/useChannelMessages';
 import { useSendMessage } from '../hooks/useSendMessage';
 import { useChannelSocket } from '../hooks/useChannelSocket';
-import { useDirectMessageChannels } from '../hooks/useDirectMessageChannels';
-import { GroupConversationDialog } from '../components/GroupConversationDialog';
-import { mapChannelResponse } from '../types/channel';
 
 export const ChannelPage: React.FC = () => {
-    const params = useParams<{ workspaceId: string; channelId: string }>();
+    const params = useParams<{ workspaceId?: string; channelId?: string }>();
     const navigate = useAppNavigate();
     const workspaceId = params.workspaceId ?? null;
     const channelId = params.channelId ?? null;
@@ -44,12 +48,6 @@ export const ChannelPage: React.FC = () => {
         isError: isChannelsError,
         invalidate: invalidateWorkspaceChannels
     } = useWorkspaceChannels(workspaceId);
-    const {
-        channels: directMessageChannels,
-        isLoading: isDirectMessagesLoading,
-        invalidate: invalidateDirectMessages
-    } = useDirectMessageChannels();
-    const { members, isMembersLoading } = useWorkspaceDetails(workspaceId);
     const {
         channel,
         isLoading: isChannelLoading,
@@ -66,7 +64,6 @@ export const ChannelPage: React.FC = () => {
     } = useChannelMessages(channelId);
     const { sendMessage, isSending } = useSendMessage({ channelId, workspaceId });
     const [isUploadingAttachments, setIsUploadingAttachments] = React.useState(false);
-    const [isCreatingConversation, setIsCreatingConversation] = React.useState(false);
     const [replyContext, setReplyContext] = React.useState<{
         messageId: string;
         authorName: string;
@@ -76,11 +73,40 @@ export const ChannelPage: React.FC = () => {
         userId: string;
         snapshot: UserProfileSnapshot;
     } | null>(null);
-    const [isGroupDialogOpen, setIsGroupDialogOpen] = React.useState(false);
+    const [isGroupSettingsOpen, setIsGroupSettingsOpen] = React.useState(false);
+    const [isUpdatingGroup, setIsUpdatingGroup] = React.useState(false);
+    const [isDeletingGroup, setIsDeletingGroup] = React.useState(false);
+    const [searchTerm, setSearchTerm] = React.useState('');
+    const [isSearchingMessages, setIsSearchingMessages] = React.useState(false);
+    const [highlightedMessageId, setHighlightedMessageId] = React.useState<string | null>(null);
 
     useChannelSocket(channelId, workspaceId);
 
     const lastMarkedMessageRef = React.useRef<string | null>(null);
+    const messagesRef = React.useRef<Message[]>(messages);
+    const hasNextPageRef = React.useRef<boolean>(hasNextPage);
+    const fetchNextPageRef = React.useRef(fetchNextPage);
+    const highlightTimeoutRef = React.useRef<number | null>(null);
+
+    React.useEffect(() => {
+        messagesRef.current = messages;
+    }, [messages]);
+
+    React.useEffect(() => {
+        hasNextPageRef.current = hasNextPage;
+    }, [hasNextPage]);
+
+    React.useEffect(() => {
+        fetchNextPageRef.current = fetchNextPage;
+    }, [fetchNextPage]);
+
+    React.useEffect(() => {
+        return () => {
+            if (highlightTimeoutRef.current) {
+                window.clearTimeout(highlightTimeoutRef.current);
+            }
+        };
+    }, []);
 
     const markChannelAsRead = React.useCallback(
         async (upToMessageId: string) => {
@@ -125,89 +151,117 @@ export const ChannelPage: React.FC = () => {
 
     const handleSelectChannel = React.useCallback(
         (nextChannelId: string) => {
-            if (!workspaceId) {
-                return;
+            if (workspaceId) {
+                navigate(`/app/workspaces/${workspaceId}/channels/${nextChannelId}`);
+            } else {
+                navigate(`/app/conversations/${nextChannelId}`);
             }
-            navigate(`/app/workspaces/${workspaceId}/channels/${nextChannelId}`);
         },
         [navigate, workspaceId]
     );
 
-    const textChannels = React.useMemo(
-        () => channels.filter(item => item.type === ChannelResponseDtoTypeEnum.Text),
-        [channels]
-    );
+    const invalidateDirectMessages = React.useCallback(async (): Promise<void> => {
+        await queryClient.invalidateQueries({ queryKey: ['direct-message-channels'] });
+    }, [queryClient]);
 
-    const oneToOneChannels = React.useMemo(
-        () => directMessageChannels.filter(item => item.type === ChannelResponseDtoTypeEnum.Dm),
-        [directMessageChannels]
-    );
+    const ensureMessageLoaded = React.useCallback(async (messageId: string): Promise<boolean> => {
+        const maxAttempts = 10;
+        let attempts = 0;
 
-    const groupConversationChannels = React.useMemo(
-        () =>
-            directMessageChannels.filter(item => item.type === ChannelResponseDtoTypeEnum.GroupDm),
-        [directMessageChannels]
-    );
+        // Quick check before attempting pagination
+        if (messagesRef.current.some(message => message.id === messageId)) {
+            return true;
+        }
 
-    const handleStartDirectMessage = React.useCallback(
-        async (userId: string) => {
-            if (!workspaceId || !userId) {
+        while (hasNextPageRef.current && attempts < maxAttempts) {
+            attempts += 1;
+            const fetchFn = fetchNextPageRef.current;
+            if (!fetchFn) {
+                break;
+            }
+            try {
+                // eslint-disable-next-line no-await-in-loop
+                await fetchFn();
+            } catch (error) {
+                console.error('Failed to fetch older messages:', error);
+                break;
+            }
+
+            // Allow React Query to update the cache before inspecting the list again
+            // eslint-disable-next-line no-await-in-loop
+            await new Promise(resolve => window.setTimeout(resolve, 0));
+
+            if (messagesRef.current.some(message => message.id === messageId)) {
+                return true;
+            }
+        }
+
+        return messagesRef.current.some(message => message.id === messageId);
+    }, []);
+
+    const triggerHighlight = React.useCallback((messageId: string) => {
+        if (highlightTimeoutRef.current) {
+            window.clearTimeout(highlightTimeoutRef.current);
+        }
+
+        // Reset first so highlighting the same message twice still flashes
+        setHighlightedMessageId(null);
+        window.requestAnimationFrame(() => {
+            setHighlightedMessageId(messageId);
+            highlightTimeoutRef.current = window.setTimeout(() => {
+                setHighlightedMessageId(null);
+                highlightTimeoutRef.current = null;
+            }, 3500);
+        });
+    }, []);
+
+    const handleSearchMessages = React.useCallback(async (): Promise<void> => {
+        if (!channelId) {
+            return;
+        }
+        if (isSearchingMessages) {
+            return;
+        }
+        const trimmed = searchTerm.trim();
+        if (!trimmed) {
+            toast.error('Enter a search term to find messages.');
+            return;
+        }
+
+        setIsSearchingMessages(true);
+        try {
+            const response = await apiClients.messages.messageControllerSearch(trimmed, channelId);
+            const results = response.data as unknown as MessageResponseDto[];
+
+            if (!Array.isArray(results) || results.length === 0) {
+                toast('No messages matched your search.');
                 return;
             }
 
-            setIsCreatingConversation(true);
-            const payload: CreateDirectMessageDto = {
-                userIds: [userId]
-            };
+            const targetMessageId = results[0]?.id;
+            if (!targetMessageId) {
+                toast.error('Search did not return a usable result.');
+                return;
+            }
 
-            try {
-                const response =
-                    await apiClients.channels.channelControllerCreateDirectMessage(payload);
-                const createdChannel = mapChannelResponse(
-                    response.data as unknown as ChannelResponseDto
-                );
-                await invalidateDirectMessages();
-                navigate(`/app/workspaces/${workspaceId}/channels/${createdChannel.id}`);
-            } catch (error) {
-                const message =
-                    error instanceof Error ? error.message : 'Failed to start direct message';
-                toast.error(message);
-            } finally {
-                setIsCreatingConversation(false);
+            const isLoaded = await ensureMessageLoaded(targetMessageId);
+            if (!isLoaded) {
+                toast.error('We could not locate that message. Try loading older messages.');
+                return;
             }
-        },
-        [invalidateDirectMessages, navigate, workspaceId]
-    );
 
-    const handleCreateGroupConversation = React.useCallback(
-        async ({ participantIds, name }: { participantIds: string[]; name?: string }) => {
-            if (!workspaceId) {
-                throw new Error('Workspace context missing');
-            }
-            setIsCreatingConversation(true);
-            const payload: CreateDirectMessageDto = {
-                userIds: participantIds,
-                name
-            };
-            try {
-                const response =
-                    await apiClients.channels.channelControllerCreateDirectMessage(payload);
-                const createdChannel = mapChannelResponse(
-                    response.data as unknown as ChannelResponseDto
-                );
-                await invalidateDirectMessages();
-                setIsGroupDialogOpen(false);
-                navigate(`/app/workspaces/${workspaceId}/channels/${createdChannel.id}`);
-            } catch (error) {
-                const message =
-                    error instanceof Error ? error.message : 'Failed to create group conversation';
-                toast.error(message);
-                throw error instanceof Error ? error : new Error(message);
-            } finally {
-                setIsCreatingConversation(false);
-            }
-        },
-        [invalidateDirectMessages, navigate, workspaceId]
+            triggerHighlight(targetMessageId);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Failed to search messages';
+            toast.error(message);
+        } finally {
+            setIsSearchingMessages(false);
+        }
+    }, [channelId, ensureMessageLoaded, isSearchingMessages, searchTerm, triggerHighlight]);
+
+    const textChannels = React.useMemo(
+        () => channels.filter(item => item.type === ChannelResponseDtoTypeEnum.Text),
+        [channels]
     );
 
     const handleUserClick = React.useCallback((userId: string, snapshot: UserProfileSnapshot) => {
@@ -344,11 +398,58 @@ export const ChannelPage: React.FC = () => {
         [invalidateMessages]
     );
 
-    if (!workspaceId) {
-        return (
-            <Alert severity="warning">Workspace not found. Navigate from the workspace list.</Alert>
-        );
-    }
+    const isGroupConversation = channel?.type === ChannelResponseDtoTypeEnum.GroupDm;
+    const isGroupOwner = channel?.creator?.id === currentUserId;
+    const isGroupMember = Boolean(channel?.members.some(member => member.id === currentUserId));
+
+    const handleOpenGroupSettings = React.useCallback(() => {
+        setIsGroupSettingsOpen(true);
+    }, []);
+
+    const handleUpdateGroupConversation = React.useCallback(
+        async (nextName: string) => {
+            if (!channelId) {
+                throw new Error('Channel ID is required');
+            }
+            setIsUpdatingGroup(true);
+            try {
+                await apiClients.channels.channelControllerUpdate(channelId, { name: nextName });
+                await invalidateChannelDetails();
+                await invalidateDirectMessages();
+                toast.success('Conversation updated');
+                setIsGroupSettingsOpen(false);
+            } catch (error) {
+                const message =
+                    error instanceof Error ? error.message : 'Failed to update conversation';
+                toast.error(message);
+                throw error instanceof Error ? error : new Error(message);
+            } finally {
+                setIsUpdatingGroup(false);
+            }
+        },
+        [channelId, invalidateChannelDetails, invalidateDirectMessages]
+    );
+
+    const handleDeleteGroupConversation = React.useCallback(async () => {
+        if (!channelId) {
+            throw new Error('Channel ID is required');
+        }
+        setIsDeletingGroup(true);
+        try {
+            await apiClients.channels.channelControllerRemove(channelId);
+            await invalidateDirectMessages();
+            toast.success('Conversation deleted');
+            setIsGroupSettingsOpen(false);
+            navigate('/app/conversations');
+        } catch (error) {
+            const message =
+                error instanceof Error ? error.message : 'Failed to delete conversation';
+            toast.error(message);
+            throw error instanceof Error ? error : new Error(message);
+        } finally {
+            setIsDeletingGroup(false);
+        }
+    }, [channelId, invalidateDirectMessages, navigate]);
 
     if (!channelId) {
         return <Alert severity="info">Select a channel to continue.</Alert>;
@@ -361,6 +462,9 @@ export const ChannelPage: React.FC = () => {
             </Alert>
         );
     }
+
+    const showWorkspaceSidebar = Boolean(workspaceId);
+    const showBackToConversations = !workspaceId;
 
     return (
         <>
@@ -375,23 +479,70 @@ export const ChannelPage: React.FC = () => {
                         bgcolor: 'background.paper'
                     }}
                 >
-                    <ChannelSidebar
-                        channels={textChannels}
-                        directMessages={oneToOneChannels}
-                        groupChannels={groupConversationChannels}
-                        members={members}
-                        currentUserId={currentUserId}
-                        activeChannelId={channelId}
-                        isLoading={isChannelsLoading}
-                        isDmLoading={isDirectMessagesLoading}
-                        isMembersLoading={isMembersLoading}
-                        isCreatingDm={isCreatingConversation}
-                        onSelectChannel={handleSelectChannel}
-                        onStartDirectMessage={handleStartDirectMessage}
-                        onOpenGroupDialog={() => setIsGroupDialogOpen(true)}
-                    />
+                    {showWorkspaceSidebar ? (
+                        <ChannelSidebar
+                            channels={textChannels}
+                            activeChannelId={channelId}
+                            isLoading={isChannelsLoading}
+                            onSelectChannel={handleSelectChannel}
+                            onOpenConversations={() => navigate('/app/conversations')}
+                        />
+                    ) : null}
                     <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-                        <ChannelHeader channel={channel} isLoading={isChannelLoading} />
+                        {showBackToConversations ? (
+                            <Box sx={{ px: 3, pt: 3 }}>
+                                <Button
+                                    variant="outlined"
+                                    size="small"
+                                    onClick={() => navigate('/app/conversations')}
+                                >
+                                    Back to conversations
+                                </Button>
+                            </Box>
+                        ) : null}
+                        <ChannelHeader
+                            channel={channel}
+                            isLoading={isChannelLoading}
+                            onOpenGroupSettings={
+                                isGroupConversation && isGroupMember
+                                    ? handleOpenGroupSettings
+                                    : undefined
+                            }
+                        />
+                        <Box sx={{ px: 3, pb: 2 }}>
+                            <TextField
+                                fullWidth
+                                size="small"
+                                placeholder="Search messages in this channel"
+                                value={searchTerm}
+                                onChange={event => setSearchTerm(event.target.value)}
+                                onKeyDown={event => {
+                                    if (event.key === 'Enter') {
+                                        event.preventDefault();
+                                        void handleSearchMessages();
+                                    }
+                                }}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            {isSearchingMessages ? (
+                                                <CircularProgress size={18} />
+                                            ) : (
+                                                <IconButton
+                                                    size="small"
+                                                    onClick={() => {
+                                                        void handleSearchMessages();
+                                                    }}
+                                                    disabled={isSearchingMessages}
+                                                >
+                                                    <SearchIcon fontSize="small" />
+                                                </IconButton>
+                                            )}
+                                        </InputAdornment>
+                                    )
+                                }}
+                            />
+                        </Box>
                         {isChannelLoading && !channel ? (
                             <Stack sx={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                                 <CircularProgress size={28} />
@@ -410,6 +561,7 @@ export const ChannelPage: React.FC = () => {
                                     onEdit={handleEditMessage}
                                     onDelete={handleDeleteMessage}
                                     onUserClick={handleUserClick}
+                                    highlightedMessageId={highlightedMessageId}
                                 />
                                 <Box
                                     sx={{
@@ -434,20 +586,28 @@ export const ChannelPage: React.FC = () => {
                 snapshot={profileDialogState?.snapshot}
                 onClose={handleCloseProfileDialog}
             />
-            <GroupConversationDialog
-                open={isGroupDialogOpen}
-                members={members}
-                currentUserId={currentUserId}
-                isSubmitting={isCreatingConversation}
+            <GroupConversationSettingsDialog
+                open={isGroupSettingsOpen}
+                initialName={channel?.name ?? ''}
+                canDelete={Boolean(isGroupConversation && isGroupOwner)}
+                isSaving={isUpdatingGroup}
+                isDeleting={isDeletingGroup}
                 onClose={() => {
-                    if (isCreatingConversation) {
+                    if (isUpdatingGroup || isDeletingGroup) {
                         return;
                     }
-                    setIsGroupDialogOpen(false);
+                    setIsGroupSettingsOpen(false);
                 }}
-                onCreate={async payload => {
-                    await handleCreateGroupConversation(payload);
+                onSave={async nextName => {
+                    await handleUpdateGroupConversation(nextName);
                 }}
+                onDelete={
+                    isGroupConversation && isGroupOwner
+                        ? async () => {
+                              await handleDeleteGroupConversation();
+                          }
+                        : undefined
+                }
             />
         </>
     );

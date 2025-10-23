@@ -42,6 +42,7 @@ interface MessageListProps {
     readonly onEdit: (messageId: string, content: string) => Promise<void>;
     readonly onDelete: (messageId: string) => Promise<void>;
     readonly onUserClick?: (userId: string, snapshot: UserProfileSnapshot) => void;
+    readonly highlightedMessageId?: string | null;
 }
 
 const formatAuthorName = (message: Message): string => {
@@ -252,10 +253,12 @@ export const MessageList: React.FC<MessageListProps> = ({
     onToggleReaction,
     onEdit,
     onDelete,
-    onUserClick
+    onUserClick,
+    highlightedMessageId
 }) => {
     const bottomRef = React.useRef<HTMLDivElement | null>(null);
     const previousCount = React.useRef<number>(0);
+    const messageRefs = React.useRef(new Map<string, HTMLDivElement>());
     const [actionMenu, setActionMenu] = React.useState<{
         messageId: string;
         anchorEl: HTMLElement | null;
@@ -355,8 +358,30 @@ export const MessageList: React.FC<MessageListProps> = ({
             console.error('Failed to toggle reaction:', error);
         } finally {
             setPendingReactionMessageId(null);
+            setReactionMenu(current => (current?.messageId === messageId ? null : current));
         }
     };
+
+    const getMessageRef = React.useCallback(
+        (messageId: string) => (node: HTMLDivElement | null) => {
+            if (node) {
+                messageRefs.current.set(messageId, node);
+            } else {
+                messageRefs.current.delete(messageId);
+            }
+        },
+        []
+    );
+
+    React.useEffect(() => {
+        if (!highlightedMessageId) {
+            return;
+        }
+        const node = messageRefs.current.get(highlightedMessageId);
+        if (node) {
+            node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }, [highlightedMessageId]);
 
     return (
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
@@ -397,6 +422,10 @@ export const MessageList: React.FC<MessageListProps> = ({
                         );
                         const isEditing = editingMessageId === message.id;
                         const isReactionPending = pendingReactionMessageId === message.id;
+                        const userHasReacted = message.reactions.some(
+                            reaction => reaction.userReacted
+                        );
+                        const isHighlighted = highlightedMessageId === message.id;
                         const authorSnapshot: UserProfileSnapshot = {
                             id: message.author.id,
                             firstName: message.author.firstName,
@@ -405,7 +434,25 @@ export const MessageList: React.FC<MessageListProps> = ({
                         };
 
                         return (
-                            <Paper key={message.id} variant="outlined" sx={{ p: 2 }}>
+                            <Paper
+                                key={message.id}
+                                variant="outlined"
+                                ref={getMessageRef(message.id)}
+                                sx={{
+                                    p: 2,
+                                    transition:
+                                        'background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
+                                    backgroundColor: theme =>
+                                        isHighlighted
+                                            ? 'rgba(255, 215, 0, 0.16)'
+                                            : theme.palette.background.paper,
+                                    borderColor: theme =>
+                                        isHighlighted ? '#FFC107' : theme.palette.divider,
+                                    boxShadow: isHighlighted
+                                        ? '0 0 0 2px rgba(255, 193, 7, 0.4)'
+                                        : 'none'
+                                }}
+                            >
                                 <Stack direction="row" spacing={2} alignItems="flex-start">
                                     <Avatar
                                         sx={{
@@ -565,27 +612,68 @@ export const MessageList: React.FC<MessageListProps> = ({
                                             alignItems="center"
                                             sx={{ mt: 1 }}
                                         >
-                                            {message.reactions.map(reaction => (
-                                                <Chip
-                                                    key={`${reaction.emoji}-${reaction.id}`}
-                                                    label={`${reaction.emoji} ${reaction.count}`}
-                                                    color={
-                                                        reaction.userReacted ? 'primary' : 'default'
+                                            {message.reactions.map(reaction => {
+                                                const uniqueNames = reaction.users.reduce<
+                                                    { id: string; label: string }[]
+                                                >((accumulator, user) => {
+                                                    const trimmedLabel = `${user.firstName ?? ''} ${
+                                                        user.lastName ?? ''
+                                                    }`
+                                                        .trim()
+                                                        .replace(/\s+/g, ' ');
+                                                    const label =
+                                                        trimmedLabel !== ''
+                                                            ? trimmedLabel
+                                                            : 'Someone';
+                                                    const alreadyIncluded = accumulator.some(
+                                                        entry => entry.id === user.id
+                                                    );
+                                                    if (!alreadyIncluded) {
+                                                        accumulator.push({ id: user.id, label });
                                                     }
-                                                    variant={
-                                                        reaction.userReacted ? 'filled' : 'outlined'
-                                                    }
-                                                    size="small"
-                                                    onClick={() =>
-                                                        void handleToggleReaction(
-                                                            message.id,
-                                                            reaction.emoji
-                                                        )
-                                                    }
-                                                    disabled={isReactionPending}
-                                                />
-                                            ))}
-                                            {!message.isDeleted ? (
+                                                    return accumulator;
+                                                }, []);
+
+                                                const tooltipTitle = uniqueNames.length
+                                                    ? `Reacted by: ${uniqueNames
+                                                          .map(entry => entry.label)
+                                                          .join(', ')}`
+                                                    : 'No reactions yet';
+
+                                                return (
+                                                    <Tooltip
+                                                        key={`${reaction.emoji}-${reaction.id}`}
+                                                        title={tooltipTitle}
+                                                        placement="top"
+                                                        arrow
+                                                    >
+                                                        <span>
+                                                            <Chip
+                                                                label={`${reaction.emoji} ${reaction.count}`}
+                                                                color={
+                                                                    reaction.userReacted
+                                                                        ? 'primary'
+                                                                        : 'default'
+                                                                }
+                                                                variant={
+                                                                    reaction.userReacted
+                                                                        ? 'filled'
+                                                                        : 'outlined'
+                                                                }
+                                                                size="small"
+                                                                onClick={() =>
+                                                                    void handleToggleReaction(
+                                                                        message.id,
+                                                                        reaction.emoji
+                                                                    )
+                                                                }
+                                                                disabled={isReactionPending}
+                                                            />
+                                                        </span>
+                                                    </Tooltip>
+                                                );
+                                            })}
+                                            {!message.isDeleted && !userHasReacted ? (
                                                 <Tooltip title="Add reaction">
                                                     <span>
                                                         <IconButton
@@ -655,11 +743,12 @@ export const MessageList: React.FC<MessageListProps> = ({
                 <Box sx={{ p: 1 }}>
                     <EmojiPicker
                         onSelect={emoji => {
-                            if (!reactionMenu) {
+                            const targetMessageId = reactionMenu?.messageId;
+                            handleCloseReactionMenu();
+                            if (!targetMessageId) {
                                 return;
                             }
-                            void handleToggleReaction(reactionMenu.messageId, emoji);
-                            handleCloseReactionMenu();
+                            void handleToggleReaction(targetMessageId, emoji);
                         }}
                     />
                 </Box>

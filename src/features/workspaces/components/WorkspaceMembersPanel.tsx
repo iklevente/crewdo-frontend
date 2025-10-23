@@ -80,6 +80,7 @@ const WorkspaceMemberRow: React.FC<MemberRowProps> = ({
                 </Tooltip>
             </ListItemAvatar>
             <ListItemText
+                disableTypography
                 primary={
                     <Stack spacing={0.5}>
                         <Typography variant="subtitle2" fontWeight={600}>
@@ -91,10 +92,12 @@ const WorkspaceMemberRow: React.FC<MemberRowProps> = ({
                     </Stack>
                 }
                 secondary={
-                    <PresenceBadge
-                        status={presence?.status}
-                        customStatus={presence?.customStatus}
-                    />
+                    <Box sx={{ mt: 0.5 }}>
+                        <PresenceBadge
+                            status={presence?.status}
+                            customStatus={presence?.customStatus}
+                        />
+                    </Box>
                 }
             />
         </ListItem>

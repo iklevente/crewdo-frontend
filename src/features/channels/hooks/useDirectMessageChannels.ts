@@ -4,7 +4,7 @@ import type { ChannelResponseDto } from 'api/models/channel-response-dto';
 import { apiClients } from 'services/api-clients';
 import { mapChannelResponse, type Channel } from '../types/channel';
 
-const DIRECT_MESSAGE_CHANNELS_QUERY_KEY = ['direct-message-channels'] as const;
+const DIRECT_MESSAGE_CHANNELS_QUERY_KEY = ['direct-message-channels'];
 
 interface UseDirectMessageChannelsResult {
     readonly channels: Channel[];
@@ -16,7 +16,6 @@ interface UseDirectMessageChannelsResult {
 
 export const useDirectMessageChannels = (): UseDirectMessageChannelsResult => {
     const queryClient = useQueryClient();
-
     const {
         data: channels = [],
         isLoading,

@@ -84,6 +84,18 @@ export interface ProjectResponseDto {
      * @type {string}
      * @memberof ProjectResponseDto
      */
+    workspaceId?: string;
+    /**
+     *
+     * @type {object}
+     * @memberof ProjectResponseDto
+     */
+    workspace?: object;
+    /**
+     *
+     * @type {string}
+     * @memberof ProjectResponseDto
+     */
     createdAt: string;
     /**
      *

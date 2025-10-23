@@ -13,6 +13,7 @@ import {
 import toast from 'react-hot-toast';
 import { useAppNavigate } from 'appHistory';
 import { useAuthStore } from 'store/auth-store';
+import { useWorkspaceSelectionStore } from 'store/workspace-selection-store';
 import {
     ChannelFormDialog,
     type ChannelFormValues
@@ -48,7 +49,12 @@ export const WorkspacesPage: React.FC = () => {
         removeWorkspaceMember
     } = useWorkspaces();
 
-    const [selectedWorkspaceId, setSelectedWorkspaceId] = React.useState<string | null>(null);
+    const selectedWorkspaceId = useWorkspaceSelectionStore(state => state.selectedWorkspaceId);
+    const setSelectedWorkspaceId = useWorkspaceSelectionStore(
+        state => state.setSelectedWorkspaceId
+    );
+    const clearWorkspaceSelection = useWorkspaceSelectionStore(state => state.clearSelection);
+    const isWorkspaceSelectionHydrated = useWorkspaceSelectionStore(state => state.isHydrated);
     const [isCreateDialogOpen, setCreateDialogOpen] = React.useState(false);
     const [isEditDialogOpen, setEditDialogOpen] = React.useState(false);
     const [workspaceToDeleteId, setWorkspaceToDeleteId] = React.useState<string | null>(null);
@@ -57,9 +63,13 @@ export const WorkspacesPage: React.FC = () => {
     const [isSubmittingWorkspace, setSubmittingWorkspace] = React.useState(false);
 
     React.useEffect(() => {
+        if (!isWorkspaceSelectionHydrated) {
+            return;
+        }
+
         if (workspaces.length === 0) {
             if (selectedWorkspaceId !== null) {
-                setSelectedWorkspaceId(null);
+                clearWorkspaceSelection();
             }
             return;
         }
@@ -71,7 +81,13 @@ export const WorkspacesPage: React.FC = () => {
         if (!selectedWorkspaceId || !exists) {
             setSelectedWorkspaceId(workspaces[0].id);
         }
-    }, [workspaces, selectedWorkspaceId]);
+    }, [
+        clearWorkspaceSelection,
+        isWorkspaceSelectionHydrated,
+        selectedWorkspaceId,
+        setSelectedWorkspaceId,
+        workspaces
+    ]);
 
     const selectedWorkspace = React.useMemo(() => {
         if (!selectedWorkspaceId) {
@@ -177,7 +193,7 @@ export const WorkspacesPage: React.FC = () => {
         try {
             await deleteWorkspace(workspaceToDeleteId);
             if (selectedWorkspaceId === workspaceToDeleteId) {
-                setSelectedWorkspaceId(null);
+                clearWorkspaceSelection();
             }
             setWorkspaceToDeleteId(null);
         } catch (error) {

@@ -25,6 +25,7 @@ import CallIcon from '@mui/icons-material/Call';
 import GroupIcon from '@mui/icons-material/GroupOutlined';
 import SettingsIcon from '@mui/icons-material/SettingsOutlined';
 import LogoutIcon from '@mui/icons-material/LogoutOutlined';
+import ForumIcon from '@mui/icons-material/ForumOutlined';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { useAuthStore } from 'store/auth-store';
@@ -49,6 +50,11 @@ const navigationItems: NavigationItem[] = [
         label: 'Workspaces',
         icon: <WorkspacesIcon fontSize="small" />,
         path: '/app/workspaces'
+    },
+    {
+        label: 'Conversations',
+        icon: <ForumIcon fontSize="small" />,
+        path: '/app/conversations'
     },
     {
         label: 'Projects',

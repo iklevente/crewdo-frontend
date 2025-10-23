@@ -11,6 +11,7 @@ export const WORKSPACES_QUERY_KEY = ['workspaces'];
 interface UseWorkspacesResult {
     readonly workspaces: Workspace[];
     readonly isLoading: boolean;
+    readonly isFetched: boolean;
     readonly isError: boolean;
     readonly refetch: () => Promise<unknown>;
     readonly createWorkspace: (payload: CreateWorkspaceDto) => Promise<void>;
@@ -26,6 +27,7 @@ export const useWorkspaces = (): UseWorkspacesResult => {
     const {
         data: workspaces = [],
         isLoading,
+        isFetched,
         isError,
         refetch
     } = useQuery<Workspace[]>({
@@ -110,6 +112,7 @@ export const useWorkspaces = (): UseWorkspacesResult => {
     return {
         workspaces,
         isLoading,
+        isFetched,
         isError,
         refetch,
         createWorkspace: React.useCallback(

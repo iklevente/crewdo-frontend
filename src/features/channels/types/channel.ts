@@ -68,6 +68,33 @@ export const mapChannelResponse = (payload: ChannelResponseDto): Channel => {
         ? (payload.members as unknown as ChannelMember[])
         : [];
 
+    let workspace: ChannelWorkspaceInfo | undefined;
+    const rawWorkspace = payload.workspace as
+        | ChannelWorkspaceInfo
+        | { id?: string; name?: string }
+        | undefined;
+
+    if (rawWorkspace && typeof rawWorkspace === 'object' && 'id' in rawWorkspace) {
+        const { id } = rawWorkspace;
+        if (typeof id === 'string' && id.length > 0) {
+            workspace = {
+                id,
+                name:
+                    (rawWorkspace as { name?: string }).name ??
+                    (payload as { workspaceName?: string }).workspaceName ??
+                    id
+            };
+        }
+    } else {
+        const { workspaceId } = payload as { workspaceId?: string };
+        if (typeof workspaceId === 'string' && workspaceId.length > 0) {
+            workspace = {
+                id: workspaceId,
+                name: (payload as { workspaceName?: string }).workspaceName ?? workspaceId
+            };
+        }
+    }
+
     return {
         id: payload.id,
         name: payload.name,
@@ -80,7 +107,7 @@ export const mapChannelResponse = (payload: ChannelResponseDto): Channel => {
         updatedAt: payload.updatedAt,
         creator: payload.creator as ChannelMember | undefined,
         members,
-        workspace: payload.workspace as ChannelWorkspaceInfo | undefined,
+        workspace,
         project: payload.project as ChannelProjectInfo | undefined,
         messageCount: payload.messageCount,
         unreadCount: payload.unreadCount,

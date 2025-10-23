@@ -73,6 +73,12 @@ export interface UpdateProjectDto {
      * @memberof UpdateProjectDto
      */
     color?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof UpdateProjectDto
+     */
+    workspaceId?: string;
 }
 
 export const UpdateProjectDtoStatusEnum = {

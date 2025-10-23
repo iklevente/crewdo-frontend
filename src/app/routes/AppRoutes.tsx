@@ -6,6 +6,8 @@ import { OverviewPage } from 'features/dashboard/pages/OverviewPage';
 import { DashboardPlaceholder } from 'features/dashboard/pages/DashboardPlaceholder';
 import { WorkspacesPage } from 'features/workspaces/pages/WorkspacesPage';
 import { ChannelPage } from 'features/channels/pages/ChannelPage';
+import { ConversationsPage } from 'features/conversations/pages/ConversationsPage';
+import { ProjectsPage } from 'features/projects/pages/ProjectsPage';
 import { MainLayout } from '../layout/MainLayout';
 import { AppProviders } from '../providers/AppProviders';
 import { AuthBootstrap } from '../providers/AuthBootstrap';
@@ -28,19 +30,13 @@ export const AppRoutes: React.FC = () => {
                             <Route path="/app" element={<MainLayout />}>
                                 <Route index element={<OverviewPage />} />
                                 <Route path="workspaces" element={<WorkspacesPage />} />
+                                <Route path="conversations" element={<ConversationsPage />} />
+                                <Route path="conversations/:channelId" element={<ChannelPage />} />
                                 <Route
                                     path="workspaces/:workspaceId/channels/:channelId"
                                     element={<ChannelPage />}
                                 />
-                                <Route
-                                    path="projects"
-                                    element={
-                                        <DashboardPlaceholder
-                                            title="Projects"
-                                            description="Track project progress, milestones, and upcoming deliverables."
-                                        />
-                                    }
-                                />
+                                <Route path="projects" element={<ProjectsPage />} />
                                 <Route
                                     path="calls"
                                     element={

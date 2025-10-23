@@ -159,10 +159,12 @@ export const ProjectsApiAxiosParamCreator = function (configuration?: Configurat
         /**
          *
          * @summary Get all projects accessible to the current user
+         * @param {string} [workspaceId] Workspace identifier to filter projects
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         projectsControllerFindAll: async (
+            workspaceId?: string,
             options: RawAxiosRequestConfig = {}
         ): Promise<RequestArgs> => {
             const localVarPath = `/projects`;
@@ -176,6 +178,10 @@ export const ProjectsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (workspaceId !== undefined) {
+                localVarQueryParameter['workspaceId'] = workspaceId;
+            }
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions =
@@ -445,16 +451,20 @@ export const ProjectsApiFp = function (configuration?: Configuration) {
         /**
          *
          * @summary Get all projects accessible to the current user
+         * @param {string} [workspaceId] Workspace identifier to filter projects
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         async projectsControllerFindAll(
+            workspaceId?: string,
             options?: RawAxiosRequestConfig
         ): Promise<
             (axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ProjectResponseDto>>
         > {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.projectsControllerFindAll(options);
+            const localVarAxiosArgs = await localVarAxiosParamCreator.projectsControllerFindAll(
+                workspaceId,
+                options
+            );
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath =
                 operationServerMap['ProjectsApi.projectsControllerFindAll']?.[
@@ -636,14 +646,16 @@ export const ProjectsApiFactory = function (
         /**
          *
          * @summary Get all projects accessible to the current user
+         * @param {string} [workspaceId] Workspace identifier to filter projects
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         projectsControllerFindAll(
+            workspaceId?: string,
             options?: RawAxiosRequestConfig
         ): AxiosPromise<Array<ProjectResponseDto>> {
             return localVarFp
-                .projectsControllerFindAll(options)
+                .projectsControllerFindAll(workspaceId, options)
                 .then(request => request(axios, basePath));
         },
         /**
@@ -756,13 +768,14 @@ export class ProjectsApi extends BaseAPI {
     /**
      *
      * @summary Get all projects accessible to the current user
+     * @param {string} [workspaceId] Workspace identifier to filter projects
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProjectsApi
      */
-    public projectsControllerFindAll(options?: RawAxiosRequestConfig) {
+    public projectsControllerFindAll(workspaceId?: string, options?: RawAxiosRequestConfig) {
         return ProjectsApiFp(this.configuration)
-            .projectsControllerFindAll(options)
+            .projectsControllerFindAll(workspaceId, options)
             .then(request => request(this.axios, this.basePath));
     }
 

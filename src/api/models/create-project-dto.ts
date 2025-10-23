@@ -30,6 +30,12 @@ export interface CreateProjectDto {
      * @type {string}
      * @memberof CreateProjectDto
      */
+    workspaceId: string;
+    /**
+     *
+     * @type {string}
+     * @memberof CreateProjectDto
+     */
     description?: string;
     /**
      *
