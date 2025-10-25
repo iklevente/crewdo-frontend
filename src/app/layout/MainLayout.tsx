@@ -73,11 +73,6 @@ const navigationItems: NavigationItem[] = [
         path: '/app/notifications'
     },
     {
-        label: 'Users',
-        icon: <GroupIcon fontSize="small" />,
-        path: '/app/users'
-    },
-    {
         label: 'Settings',
         icon: <SettingsIcon fontSize="small" />,
         path: '/app/settings'

@@ -42,15 +42,6 @@ export const AppRoutes: React.FC = () => {
                                 <Route path="calls" element={<CallsPage />} />
                                 <Route path="notifications" element={<NotificationsPage />} />
                                 <Route
-                                    path="users"
-                                    element={
-                                        <DashboardPlaceholder
-                                            title="Users"
-                                            description="Manage team access, roles, and invitations."
-                                        />
-                                    }
-                                />
-                                <Route
                                     path="settings"
                                     element={
                                         <DashboardPlaceholder

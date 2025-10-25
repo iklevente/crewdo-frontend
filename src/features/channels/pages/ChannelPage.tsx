@@ -88,6 +88,10 @@ export const ChannelPage: React.FC = () => {
     const fetchNextPageRef = React.useRef(fetchNextPage);
     const highlightTimeoutRef = React.useRef<number | null>(null);
 
+    const invalidateDirectMessages = React.useCallback(async (): Promise<void> => {
+        await queryClient.invalidateQueries({ queryKey: ['direct-message-channels'] });
+    }, [queryClient]);
+
     React.useEffect(() => {
         messagesRef.current = messages;
     }, [messages]);
@@ -120,6 +124,7 @@ export const ChannelPage: React.FC = () => {
                 await apiClients.messages.messageControllerMarkChannelAsRead(channelId, payload);
                 void invalidateWorkspaceChannels();
                 void invalidateChannelDetails();
+                void invalidateDirectMessages();
                 if (workspaceId) {
                     void queryClient.invalidateQueries({
                         queryKey: WORKSPACE_DETAIL_QUERY_KEY(workspaceId)
@@ -131,7 +136,14 @@ export const ChannelPage: React.FC = () => {
                 toast.error(message);
             }
         },
-        [channelId, invalidateChannelDetails, invalidateWorkspaceChannels, queryClient, workspaceId]
+        [
+            channelId,
+            invalidateChannelDetails,
+            invalidateDirectMessages,
+            invalidateWorkspaceChannels,
+            queryClient,
+            workspaceId
+        ]
     );
 
     React.useEffect(() => {
@@ -159,10 +171,6 @@ export const ChannelPage: React.FC = () => {
         },
         [navigate, workspaceId]
     );
-
-    const invalidateDirectMessages = React.useCallback(async (): Promise<void> => {
-        await queryClient.invalidateQueries({ queryKey: ['direct-message-channels'] });
-    }, [queryClient]);
 
     const ensureMessageLoaded = React.useCallback(async (messageId: string): Promise<boolean> => {
         if (messagesRef.current.some(message => message.id === messageId)) {

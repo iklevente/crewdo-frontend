@@ -136,51 +136,6 @@ const fetchCalls = async (): Promise<CallSummary[]> => {
     }
 };
 
-const determineRefetchInterval = (calls?: CallSummary[]): number | false => {
-    if (!calls || calls.length === 0) {
-        return 60_000;
-    }
-
-    const now = Date.now();
-
-    if (calls.some(call => call.status === 'active')) {
-        return 10_000;
-    }
-
-    const upcomingTimes = calls
-        .filter(call => call.status === 'scheduled')
-        .map(call => {
-            if (!call.scheduledStartTime) {
-                return null;
-            }
-            const time = new Date(call.scheduledStartTime).getTime();
-            return Number.isNaN(time) ? null : time;
-        })
-        .filter((time): time is number => time !== null)
-        .sort((a, b) => a - b);
-
-    if (upcomingTimes.length === 0) {
-        return 90_000;
-    }
-
-    const nextStart = upcomingTimes[0];
-    const diff = nextStart - now;
-
-    if (diff <= 0) {
-        return 5_000;
-    }
-
-    if (diff <= 5 * 60 * 1000) {
-        return 15_000;
-    }
-
-    if (diff <= 15 * 60 * 1000) {
-        return 30_000;
-    }
-
-    return 60_000;
-};
-
 export const useCalls = (): {
     readonly calls: CallSummary[];
     readonly activeCalls: CallSummary[];
@@ -198,9 +153,9 @@ export const useCalls = (): {
     } = useQuery<CallSummary[]>({
         queryKey: CALLS_QUERY_KEY,
         queryFn: fetchCalls,
-        staleTime: 15_000,
-        refetchInterval: query => determineRefetchInterval(query.state.data),
-        refetchIntervalInBackground: true
+        staleTime: 60_000,
+        refetchOnMount: true,
+        refetchOnReconnect: true
     });
 
     const { activeCalls, scheduledCalls, pastCalls } = useMemo(() => {

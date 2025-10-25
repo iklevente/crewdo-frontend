@@ -10,6 +10,9 @@ import {
     WORKSPACE_MEMBERS_QUERY_KEY
 } from 'features/workspaces/hooks/useWorkspaceDetails';
 import { WORKSPACE_CHANNELS_QUERY_KEY } from 'features/channels/hooks/useWorkspaceChannels';
+import { CALLS_QUERY_KEY, normalizeCallSummary, type RawCall } from 'features/calls/hooks/useCalls';
+import { CALL_QUERY_KEY } from 'features/calls/hooks/useCallById';
+import type { CallSummary } from 'features/calls/types/call';
 
 const createQueryClient = (): QueryClient =>
     new QueryClient({
@@ -96,9 +99,41 @@ const SocketEffects: React.FC = () => {
         socket.on('workspace_member_added', handleWorkspaceMemberAdded);
         socket.on('workspace_member_removed', handleWorkspaceMemberRemoved);
 
+        const handleCallUpdated = (payload: RawCall): void => {
+            const normalized = normalizeCallSummary(payload);
+            if (!normalized) {
+                return;
+            }
+
+            queryClient.setQueryData<CallSummary[]>(CALLS_QUERY_KEY, existing => {
+                if (!existing) {
+                    return [normalized];
+                }
+
+                const index = existing.findIndex(call => call.id === normalized.id);
+                if (index === -1) {
+                    return [normalized, ...existing];
+                }
+
+                const next = existing.slice();
+                next[index] = normalized;
+                return next;
+            });
+
+            queryClient.setQueryData<CallSummary | null>(CALL_QUERY_KEY(normalized.id), current => {
+                if (!current) {
+                    return normalized;
+                }
+                return current.id === normalized.id ? normalized : current;
+            });
+        };
+
+        socket.on('call_updated', handleCallUpdated);
+
         return () => {
             socket.off('workspace_member_added', handleWorkspaceMemberAdded);
             socket.off('workspace_member_removed', handleWorkspaceMemberRemoved);
+            socket.off('call_updated', handleCallUpdated);
         };
     }, [socket, queryClient]);
 
