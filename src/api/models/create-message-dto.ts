@@ -50,6 +50,12 @@ export interface CreateMessageDto {
      */
     mentionedUserIds?: Array<string>;
     /**
+     * Structured payload for embeds
+     * @type {object}
+     * @memberof CreateMessageDto
+     */
+    embedData?: object;
+    /**
      *
      * @type {boolean}
      * @memberof CreateMessageDto

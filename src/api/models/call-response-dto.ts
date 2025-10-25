@@ -87,6 +87,12 @@ export interface CallResponseDto {
     scheduledEndTime?: string;
     /**
      *
+     * @type {string}
+     * @memberof CallResponseDto
+     */
+    roomName?: string;
+    /**
+     *
      * @type {object}
      * @memberof CallResponseDto
      */

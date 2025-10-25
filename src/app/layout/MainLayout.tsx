@@ -31,6 +31,7 @@ import toast from 'react-hot-toast';
 import { useAuthStore } from 'store/auth-store';
 import { useAppLocation, useAppNavigate } from 'appHistory';
 import { PresenceStatusControl } from 'components/PresenceStatusControl';
+import { CallOverlayProvider } from 'features/calls/providers/CallOverlayProvider';
 
 const drawerWidth = 280;
 
@@ -164,71 +165,73 @@ export const MainLayout: React.FC = () => {
     );
 
     return (
-        <Box sx={{ display: 'flex' }}>
-            <AppBar
-                position="fixed"
-                sx={{
-                    width: { sm: `calc(100% - ${drawerWidth}px)` },
-                    ml: { sm: `${drawerWidth}px` }
-                }}
-                color="inherit"
-                elevation={1}
-            >
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        edge="start"
-                        onClick={handleDrawerToggle}
-                        sx={{ mr: 2, display: { sm: 'none' } }}
+        <CallOverlayProvider>
+            <Box sx={{ display: 'flex' }}>
+                <AppBar
+                    position="fixed"
+                    sx={{
+                        width: { sm: `calc(100% - ${drawerWidth}px)` },
+                        ml: { sm: `${drawerWidth}px` }
+                    }}
+                    color="inherit"
+                    elevation={1}
+                >
+                    <Toolbar>
+                        <IconButton
+                            color="inherit"
+                            edge="start"
+                            onClick={handleDrawerToggle}
+                            sx={{ mr: 2, display: { sm: 'none' } }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography variant="h6" noWrap component="div">
+                            Collaborate, chat, and ship work
+                        </Typography>
+                        <Box sx={{ flexGrow: 1 }} />
+                        <Stack direction="row" alignItems="center" spacing={1.5}>
+                            <PresenceStatusControl />
+                        </Stack>
+                    </Toolbar>
+                </AppBar>
+                <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}>
+                    <Drawer
+                        variant="temporary"
+                        open={mobileOpen}
+                        onClose={handleDrawerToggle}
+                        ModalProps={{ keepMounted: true }}
+                        sx={{
+                            display: { xs: 'block', sm: 'none' },
+                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
+                        }}
                     >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" noWrap component="div">
-                        Collaborate, chat, and ship work
-                    </Typography>
-                    <Box sx={{ flexGrow: 1 }} />
-                    <Stack direction="row" alignItems="center" spacing={1.5}>
-                        <PresenceStatusControl />
-                    </Stack>
-                </Toolbar>
-            </AppBar>
-            <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}>
-                <Drawer
-                    variant="temporary"
-                    open={mobileOpen}
-                    onClose={handleDrawerToggle}
-                    ModalProps={{ keepMounted: true }}
+                        {drawer}
+                    </Drawer>
+                    <Drawer
+                        variant="permanent"
+                        sx={{
+                            display: { xs: 'none', sm: 'block' },
+                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
+                        }}
+                        open
+                    >
+                        {drawer}
+                    </Drawer>
+                </Box>
+                <Box
+                    component="main"
                     sx={{
-                        display: { xs: 'block', sm: 'none' },
-                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
+                        flexGrow: 1,
+                        p: 3,
+                        width: { sm: `calc(100% - ${drawerWidth}px)` },
+                        minHeight: '100vh',
+                        bgcolor: 'background.default'
                     }}
                 >
-                    {drawer}
-                </Drawer>
-                <Drawer
-                    variant="permanent"
-                    sx={{
-                        display: { xs: 'none', sm: 'block' },
-                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
-                    }}
-                    open
-                >
-                    {drawer}
-                </Drawer>
+                    <Toolbar />
+                    <Outlet />
+                </Box>
             </Box>
-            <Box
-                component="main"
-                sx={{
-                    flexGrow: 1,
-                    p: 3,
-                    width: { sm: `calc(100% - ${drawerWidth}px)` },
-                    minHeight: '100vh',
-                    bgcolor: 'background.default'
-                }}
-            >
-                <Toolbar />
-                <Outlet />
-            </Box>
-        </Box>
+        </CallOverlayProvider>
     );
 };

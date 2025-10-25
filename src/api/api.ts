@@ -19,7 +19,6 @@ export * from './api/authentication-api';
 export * from './api/calls-api';
 export * from './api/channels-api';
 export * from './api/comments-api';
-export * from './api/media-api';
 export * from './api/messages-api';
 export * from './api/notifications-api';
 export * from './api/presence-api';

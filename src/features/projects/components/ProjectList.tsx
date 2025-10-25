@@ -52,7 +52,8 @@ export const ProjectList: React.FC<ProjectListProps> = ({
                 borderRight: theme => `1px solid ${theme.palette.divider}`,
                 display: 'flex',
                 flexDirection: 'column',
-                height: '100%'
+                height: '100%',
+                flexShrink: 0
             }}
         >
             <Box sx={{ p: 2 }}>

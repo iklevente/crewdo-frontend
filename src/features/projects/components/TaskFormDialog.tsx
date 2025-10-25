@@ -96,18 +96,20 @@ export const TaskFormDialog: React.FC<TaskFormDialogProps> = ({
     });
 
     React.useEffect(() => {
-        reset({
-            title: initialValues?.title ?? '',
-            description: initialValues?.description ?? '',
-            status: initialValues?.status ?? defaultStatus ?? STATUS_OPTIONS[0]?.value,
-            priority: initialValues?.priority ?? PRIORITY_OPTIONS[1]?.value,
-            dueDate: normalizeDate(initialValues?.dueDate ?? null),
-            estimatedHours: initialValues?.estimatedHours ?? null,
-            actualHours: initialValues?.actualHours ?? null,
-            assigneeId: initialValues?.assigneeId ?? '',
-            tags: initialValues?.tags?.join(', ') ?? ''
-        });
-    }, [defaultStatus, initialValues, reset]);
+        if (open) {
+            reset({
+                title: initialValues?.title ?? '',
+                description: initialValues?.description ?? '',
+                status: initialValues?.status ?? defaultStatus ?? STATUS_OPTIONS[0]?.value,
+                priority: initialValues?.priority ?? PRIORITY_OPTIONS[1]?.value,
+                dueDate: normalizeDate(initialValues?.dueDate ?? null),
+                estimatedHours: initialValues?.estimatedHours ?? null,
+                actualHours: initialValues?.actualHours ?? null,
+                assigneeId: initialValues?.assigneeId ?? '',
+                tags: initialValues?.tags?.join(', ') ?? ''
+            });
+        }
+    }, [defaultStatus, initialValues, open, reset]);
 
     const handleFormSubmit: () => Promise<void> = handleSubmit(async values => {
         const payload: TaskFormData = {

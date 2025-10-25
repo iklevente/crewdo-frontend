@@ -33,6 +33,18 @@ export interface StartCallDto {
     title?: string;
     /**
      *
+     * @type {boolean}
+     * @memberof StartCallDto
+     */
+    withVideo?: boolean;
+    /**
+     *
+     * @type {boolean}
+     * @memberof StartCallDto
+     */
+    withAudio?: boolean;
+    /**
+     *
      * @type {Array<string>}
      * @memberof StartCallDto
      */

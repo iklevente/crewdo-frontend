@@ -101,8 +101,10 @@ export const ProjectFormDialog: React.FC<ProjectFormDialogProps> = ({
     });
 
     React.useEffect(() => {
-        reset(defaultFormValues);
-    }, [defaultFormValues, reset]);
+        if (open) {
+            reset(defaultFormValues);
+        }
+    }, [defaultFormValues, open, reset]);
 
     const isWorkspaceListEmpty = workspaceOptions.length === 0;
     const isSubmitDisabled = isSubmitting ?? isWorkspaceListEmpty;

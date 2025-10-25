@@ -7,7 +7,6 @@ import {
     CallsApi,
     ChannelsApi,
     CommentsApi,
-    MediaApi,
     MessagesApi,
     NotificationsApi,
     ProjectsApi,
@@ -23,7 +22,6 @@ interface CrewdoApiClients {
     readonly calls: CallsApi;
     readonly channels: ChannelsApi;
     readonly comments: CommentsApi;
-    readonly media: MediaApi;
     readonly messages: MessagesApi;
     readonly notifications: NotificationsApi;
     readonly projects: ProjectsApi;
@@ -83,7 +81,6 @@ const clients: CrewdoApiClients = {
     calls: new CallsApi(configuration, configuration.basePath, axiosInstance),
     channels: new ChannelsApi(configuration, configuration.basePath, axiosInstance),
     comments: new CommentsApi(configuration, configuration.basePath, axiosInstance),
-    media: new MediaApi(configuration, configuration.basePath, axiosInstance),
     messages: new MessagesApi(configuration, configuration.basePath, axiosInstance),
     notifications: new NotificationsApi(configuration, configuration.basePath, axiosInstance),
     projects: new ProjectsApi(configuration, configuration.basePath, axiosInstance),

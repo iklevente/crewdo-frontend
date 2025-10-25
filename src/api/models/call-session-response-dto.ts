@@ -16,31 +16,43 @@
 /**
  *
  * @export
- * @interface MediaRoomResponseDto
+ * @interface CallSessionResponseDto
  */
-export interface MediaRoomResponseDto {
+export interface CallSessionResponseDto {
     /**
      *
      * @type {string}
-     * @memberof MediaRoomResponseDto
+     * @memberof CallSessionResponseDto
      */
-    id: string;
+    token: string;
     /**
      *
-     * @type {Array<string>}
-     * @memberof MediaRoomResponseDto
+     * @type {string}
+     * @memberof CallSessionResponseDto
      */
-    participants: Array<string>;
+    url: string;
+    /**
+     *
+     * @type {string}
+     * @memberof CallSessionResponseDto
+     */
+    roomName: string;
+    /**
+     *
+     * @type {string}
+     * @memberof CallSessionResponseDto
+     */
+    identity: string;
     /**
      *
      * @type {boolean}
-     * @memberof MediaRoomResponseDto
+     * @memberof CallSessionResponseDto
      */
-    isActive: boolean;
+    isHost: boolean;
     /**
      *
-     * @type {string}
-     * @memberof MediaRoomResponseDto
+     * @type {object}
+     * @memberof CallSessionResponseDto
      */
-    createdAt: string;
+    participantId?: object;
 }

@@ -34,6 +34,7 @@ import { TaskCard } from '../components/TaskCard';
 import { ProjectFormDialog, type ProjectFormValues } from '../components/ProjectFormDialog';
 import { TaskFormDialog, type TaskFormData } from '../components/TaskFormDialog';
 import { ProjectMembersDialog } from '../components/ProjectMembersDialog';
+import { TaskCommentsDrawer } from '../components/TaskCommentsDrawer';
 import { useProjects } from '../hooks/useProjects';
 import { useProjectTasks, PROJECT_TASKS_QUERY_KEY } from '../hooks/useProjectTasks';
 import {
@@ -46,6 +47,8 @@ import {
 import { TASK_STATUS_METADATA, type TaskStatus, type ProjectTask } from '../types/task';
 
 const POSITION_STEP = 1000;
+const MOBILE_LAYOUT_VERTICAL_OFFSET = 104;
+const DESKTOP_LAYOUT_VERTICAL_OFFSET = 112;
 
 interface PendingTaskUpdate {
     readonly id: string;
@@ -205,6 +208,18 @@ export const ProjectsPage: React.FC = () => {
     const [isProcessingProject, setProcessingProject] = React.useState(false);
     const [isProcessingTask, setProcessingTask] = React.useState(false);
     const [isReordering, setIsReordering] = React.useState(false);
+    const [isCommentsDrawerOpen, setCommentsDrawerOpen] = React.useState(false);
+    const [taskWithComments, setTaskWithComments] = React.useState<ProjectTask | null>(null);
+
+    const handleOpenComments = (task: ProjectTask): void => {
+        setTaskWithComments(task);
+        setCommentsDrawerOpen(true);
+    };
+
+    const handleCloseComments = (): void => {
+        setCommentsDrawerOpen(false);
+        setTaskWithComments(null);
+    };
 
     const filteredProjects = React.useMemo(() => {
         if (!selectedWorkspaceId) {
@@ -234,6 +249,11 @@ export const ProjectsPage: React.FC = () => {
         }
         return projects.find(project => project.id === selectedProjectId) ?? null;
     }, [projects, selectedProjectId]);
+
+    React.useEffect(() => {
+        setCommentsDrawerOpen(false);
+        setTaskWithComments(null);
+    }, [selectedProjectId]);
 
     const {
         tasks,
@@ -636,7 +656,17 @@ export const ProjectsPage: React.FC = () => {
         handleSubmitProject(values);
 
     return (
-        <Box sx={{ display: 'flex', height: '100%', minHeight: '80vh' }}>
+        <Box
+            sx={theme => ({
+                display: 'flex',
+                minHeight: 0,
+                overflow: 'hidden',
+                height: `calc(100dvh - ${MOBILE_LAYOUT_VERTICAL_OFFSET}px)`,
+                [theme.breakpoints.up('sm')]: {
+                    height: `calc(100dvh - ${DESKTOP_LAYOUT_VERTICAL_OFFSET}px)`
+                }
+            })}
+        >
             <ProjectList
                 projects={filteredProjects}
                 selectedProjectId={selectedProjectId}
@@ -645,7 +675,18 @@ export const ProjectsPage: React.FC = () => {
                 isLoading={isProjectsLoading}
             />
 
-            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', px: 3, py: 2, gap: 3 }}>
+            <Box
+                sx={{
+                    flex: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    px: 3,
+                    py: 2,
+                    gap: 3,
+                    minHeight: 0,
+                    overflow: 'hidden'
+                }}
+            >
                 <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems="flex-start">
                     <Box sx={{ flex: 1 }}>
                         <Typography variant="h4" fontWeight={600} gutterBottom>
@@ -756,194 +797,228 @@ export const ProjectsPage: React.FC = () => {
 
                 <Divider />
 
-                {isProjectsError ? (
-                    <Alert severity="error">
-                        We could not load your projects. Please refresh the page or try again later.
-                    </Alert>
-                ) : null}
-
-                {activeProject ? (
-                    isTasksError ? (
-                        <Alert severity="error">
-                            We could not load tasks for this project. Try reloading the page.
-                        </Alert>
+                <Box
+                    sx={{ flex: 1, minHeight: 0, minWidth: 0, display: 'flex', overflow: 'hidden' }}
+                >
+                    {isProjectsError ? (
+                        <Stack alignItems="center" justifyContent="center" sx={{ flex: 1 }}>
+                            <Alert severity="error" sx={{ maxWidth: 520 }}>
+                                We could not load your projects. Please refresh the page or try
+                                again later.
+                            </Alert>
+                        </Stack>
+                    ) : !activeProject ? (
+                        isProjectsLoading ? (
+                            <Stack alignItems="center" justifyContent="center" sx={{ flex: 1 }}>
+                                <CircularProgress size={28} />
+                            </Stack>
+                        ) : (
+                            <Stack alignItems="center" justifyContent="center" sx={{ flex: 1 }}>
+                                <Alert severity="info">
+                                    No projects available. Create a project to start organizing
+                                    work.
+                                </Alert>
+                            </Stack>
+                        )
+                    ) : isTasksError ? (
+                        <Stack alignItems="center" justifyContent="center" sx={{ flex: 1 }}>
+                            <Alert severity="error" sx={{ maxWidth: 520 }}>
+                                We could not load tasks for this project. Try reloading the page.
+                            </Alert>
+                        </Stack>
                     ) : (
                         <DragDropContext
                             onDragEnd={result => {
                                 void handleDragEnd(result);
                             }}
                         >
-                            <Stack
-                                direction="row"
-                                spacing={2}
-                                alignItems="flex-start"
-                                sx={{ overflowX: 'auto', pb: 2 }}
-                            >
-                                {statusOrder.map(status => {
-                                    const columnTasks = boardColumns[status] ?? [];
-                                    const statusMeta = TASK_STATUS_METADATA[status];
-                                    return (
-                                        <Droppable droppableId={status} key={status}>
-                                            {provided => (
-                                                <Box
-                                                    ref={provided.innerRef}
-                                                    {...provided.droppableProps}
-                                                    sx={{
-                                                        minWidth: 280,
-                                                        maxWidth: 320,
-                                                        flex: '0 0 auto',
-                                                        bgcolor: 'background.paper',
-                                                        borderRadius: 3,
-                                                        border: theme =>
-                                                            `1px solid ${theme.palette.divider}`,
-                                                        p: 2,
-                                                        minHeight: 480,
-                                                        display: 'flex',
-                                                        flexDirection: 'column'
-                                                    }}
-                                                >
-                                                    <Stack
-                                                        direction="row"
-                                                        alignItems="center"
-                                                        justifyContent="space-between"
-                                                        sx={{ mb: 2 }}
+                            <Box sx={{ flex: 1, minHeight: 0, minWidth: 0, display: 'flex' }}>
+                                <Stack
+                                    direction="row"
+                                    spacing={2}
+                                    alignItems="flex-start"
+                                    sx={{
+                                        flex: 1,
+                                        minHeight: 0,
+                                        minWidth: 0,
+                                        overflowX: 'auto',
+                                        overflowY: 'hidden',
+                                        pb: 2,
+                                        pr: 1
+                                    }}
+                                >
+                                    {statusOrder.map(status => {
+                                        const columnTasks = boardColumns[status] ?? [];
+                                        const statusMeta = TASK_STATUS_METADATA[status];
+                                        return (
+                                            <Droppable droppableId={status} key={status}>
+                                                {provided => (
+                                                    <Box
+                                                        ref={provided.innerRef}
+                                                        {...provided.droppableProps}
+                                                        sx={{
+                                                            minWidth: 280,
+                                                            maxWidth: 320,
+                                                            flex: '0 0 auto',
+                                                            bgcolor: 'background.paper',
+                                                            borderRadius: 3,
+                                                            border: theme =>
+                                                                `1px solid ${theme.palette.divider}`,
+                                                            p: 2,
+                                                            display: 'flex',
+                                                            flexDirection: 'column',
+                                                            minHeight: '100%',
+                                                            maxHeight: '100%'
+                                                        }}
                                                     >
                                                         <Stack
                                                             direction="row"
-                                                            spacing={1}
                                                             alignItems="center"
+                                                            justifyContent="space-between"
+                                                            sx={{ mb: 2 }}
                                                         >
-                                                            <Avatar
+                                                            <Stack
+                                                                direction="row"
+                                                                spacing={1}
+                                                                alignItems="center"
+                                                            >
+                                                                <Avatar
+                                                                    sx={{
+                                                                        width: 32,
+                                                                        height: 32,
+                                                                        bgcolor:
+                                                                            statusMeta.label.includes(
+                                                                                'Done'
+                                                                            )
+                                                                                ? 'success.main'
+                                                                                : 'primary.main'
+                                                                    }}
+                                                                >
+                                                                    {statusMeta.label.charAt(0)}
+                                                                </Avatar>
+                                                                <Box>
+                                                                    <Typography
+                                                                        variant="subtitle1"
+                                                                        fontWeight={600}
+                                                                    >
+                                                                        {statusMeta.label}
+                                                                    </Typography>
+                                                                    <Typography
+                                                                        variant="caption"
+                                                                        color="text.secondary"
+                                                                    >
+                                                                        {columnTasks.length} tasks
+                                                                    </Typography>
+                                                                </Box>
+                                                            </Stack>
+                                                            <Tooltip title="Add task">
+                                                                <span>
+                                                                    <IconButton
+                                                                        size="small"
+                                                                        color="primary"
+                                                                        onClick={() =>
+                                                                            handleOpenTaskDialog(
+                                                                                status
+                                                                            )
+                                                                        }
+                                                                        disabled={
+                                                                            isProcessingTask ||
+                                                                            isReordering
+                                                                        }
+                                                                    >
+                                                                        <AddIcon fontSize="small" />
+                                                                    </IconButton>
+                                                                </span>
+                                                            </Tooltip>
+                                                        </Stack>
+
+                                                        {isTasksLoading ? (
+                                                            <Stack
+                                                                alignItems="center"
+                                                                justifyContent="center"
+                                                                sx={{ flex: 1, py: 3 }}
+                                                            >
+                                                                <CircularProgress size={20} />
+                                                            </Stack>
+                                                        ) : columnTasks.length === 0 ? (
+                                                            <Box
                                                                 sx={{
-                                                                    width: 32,
-                                                                    height: 32,
-                                                                    bgcolor:
-                                                                        statusMeta.label.includes(
-                                                                            'Done'
-                                                                        )
-                                                                            ? 'success.main'
-                                                                            : 'primary.main'
+                                                                    flex: 1,
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    justifyContent: 'center',
+                                                                    textAlign: 'center',
+                                                                    color: 'text.secondary',
+                                                                    px: 2
                                                                 }}
                                                             >
-                                                                {statusMeta.label.charAt(0)}
-                                                            </Avatar>
-                                                            <Box>
-                                                                <Typography
-                                                                    variant="subtitle1"
-                                                                    fontWeight={600}
-                                                                >
-                                                                    {statusMeta.label}
-                                                                </Typography>
-                                                                <Typography
-                                                                    variant="caption"
-                                                                    color="text.secondary"
-                                                                >
-                                                                    {columnTasks.length} tasks
+                                                                <Typography variant="body2">
+                                                                    No tasks yet. Add one to get
+                                                                    started.
                                                                 </Typography>
                                                             </Box>
-                                                        </Stack>
-                                                        <Tooltip title="Add task">
-                                                            <span>
-                                                                <IconButton
-                                                                    size="small"
-                                                                    color="primary"
-                                                                    onClick={() =>
-                                                                        handleOpenTaskDialog(status)
-                                                                    }
-                                                                    disabled={
-                                                                        isProcessingTask ||
-                                                                        isReordering
-                                                                    }
-                                                                >
-                                                                    <AddIcon fontSize="small" />
-                                                                </IconButton>
-                                                            </span>
-                                                        </Tooltip>
-                                                    </Stack>
-
-                                                    {isTasksLoading ? (
-                                                        <Stack
-                                                            alignItems="center"
-                                                            justifyContent="center"
-                                                            sx={{ flex: 1, py: 6 }}
-                                                        >
-                                                            <CircularProgress size={24} />
-                                                        </Stack>
-                                                    ) : columnTasks.length === 0 ? (
-                                                        <Box
-                                                            sx={{
-                                                                flex: 1,
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                justifyContent: 'center',
-                                                                textAlign: 'center',
-                                                                color: 'text.secondary',
-                                                                px: 2
-                                                            }}
-                                                        >
-                                                            <Typography variant="body2">
-                                                                No tasks yet. Add one to get
-                                                                started.
-                                                            </Typography>
-                                                        </Box>
-                                                    ) : (
-                                                        <Stack spacing={2} sx={{ flex: 1 }}>
-                                                            {columnTasks.map((task, index) => (
-                                                                <Draggable
-                                                                    key={task.id}
-                                                                    draggableId={task.id}
-                                                                    index={index}
-                                                                    isDragDisabled={
-                                                                        isProcessingTask ||
-                                                                        isReordering
-                                                                    }
-                                                                >
-                                                                    {dragProvided => (
-                                                                        <Box
-                                                                            ref={
-                                                                                dragProvided.innerRef
-                                                                            }
-                                                                            {...dragProvided.draggableProps}
-                                                                            {...dragProvided.dragHandleProps}
-                                                                        >
-                                                                            <TaskCard
-                                                                                task={task}
-                                                                                onEdit={edited =>
-                                                                                    handleOpenTaskDialog(
-                                                                                        edited.status,
-                                                                                        edited
-                                                                                    )
+                                                        ) : (
+                                                            <Stack
+                                                                spacing={2}
+                                                                sx={{
+                                                                    flex: 1,
+                                                                    minHeight: 0,
+                                                                    overflowY: 'auto',
+                                                                    pr: 0.5
+                                                                }}
+                                                            >
+                                                                {columnTasks.map((task, index) => (
+                                                                    <Draggable
+                                                                        key={task.id}
+                                                                        draggableId={task.id}
+                                                                        index={index}
+                                                                        isDragDisabled={
+                                                                            isProcessingTask ||
+                                                                            isReordering
+                                                                        }
+                                                                    >
+                                                                        {dragProvided => (
+                                                                            <Box
+                                                                                ref={
+                                                                                    dragProvided.innerRef
                                                                                 }
-                                                                                onDelete={deleted => {
-                                                                                    void handleDeleteTask(
-                                                                                        deleted
-                                                                                    );
-                                                                                }}
-                                                                            />
-                                                                        </Box>
-                                                                    )}
-                                                                </Draggable>
-                                                            ))}
-                                                            {provided.placeholder}
-                                                        </Stack>
-                                                    )}
-                                                </Box>
-                                            )}
-                                        </Droppable>
-                                    );
-                                })}
-                            </Stack>
+                                                                                {...dragProvided.draggableProps}
+                                                                                {...dragProvided.dragHandleProps}
+                                                                            >
+                                                                                <TaskCard
+                                                                                    task={task}
+                                                                                    onEdit={edited =>
+                                                                                        handleOpenTaskDialog(
+                                                                                            edited.status,
+                                                                                            edited
+                                                                                        )
+                                                                                    }
+                                                                                    onDelete={deleted => {
+                                                                                        void handleDeleteTask(
+                                                                                            deleted
+                                                                                        );
+                                                                                    }}
+                                                                                    onViewComments={
+                                                                                        handleOpenComments
+                                                                                    }
+                                                                                />
+                                                                            </Box>
+                                                                        )}
+                                                                    </Draggable>
+                                                                ))}
+                                                                {provided.placeholder}
+                                                            </Stack>
+                                                        )}
+                                                    </Box>
+                                                )}
+                                            </Droppable>
+                                        );
+                                    })}
+                                </Stack>
+                            </Box>
                         </DragDropContext>
-                    )
-                ) : isProjectsLoading ? (
-                    <Stack alignItems="center" justifyContent="center" sx={{ flex: 1, py: 6 }}>
-                        <CircularProgress size={28} />
-                    </Stack>
-                ) : (
-                    <Alert severity="info">
-                        No projects available. Create a project to start organizing work.
-                    </Alert>
-                )}
+                    )}
+                </Box>
             </Box>
 
             <ProjectFormDialog
@@ -952,7 +1027,7 @@ export const ProjectsPage: React.FC = () => {
                 title={projectDialogMode === 'create' ? 'Create project' : 'Edit project'}
                 submitLabel={projectDialogMode === 'create' ? 'Create' : 'Save changes'}
                 onSubmit={handleProjectSubmit}
-                initialValues={projectInitialValues}
+                initialValues={projectDialogMode === 'edit' ? projectInitialValues : undefined}
                 isSubmitting={isProcessingProject}
                 workspaceOptions={workspaceOptions}
                 defaultWorkspaceId={selectedWorkspaceId}
@@ -970,7 +1045,7 @@ export const ProjectsPage: React.FC = () => {
                 title={taskBeingEdited ? 'Edit task' : 'Create task'}
                 submitLabel={taskBeingEdited ? 'Save changes' : 'Create task'}
                 defaultStatus={taskDialogDefaultStatus}
-                initialValues={taskDialogInitialValues}
+                initialValues={taskBeingEdited ? taskDialogInitialValues : undefined}
                 participants={participants}
                 isSubmitting={isProcessingTask}
                 onSubmit={handleTaskSubmit}
@@ -991,6 +1066,14 @@ export const ProjectsPage: React.FC = () => {
                 onRemoveMember={async memberId => {
                     await handleRemoveMember(memberId);
                 }}
+            />
+
+            <TaskCommentsDrawer
+                task={taskWithComments}
+                open={isCommentsDrawerOpen}
+                onClose={handleCloseComments}
+                onCommentCreated={invalidateTasks}
+                onCommentDeleted={invalidateTasks}
             />
         </Box>
     );

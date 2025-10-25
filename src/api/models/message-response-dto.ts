@@ -51,6 +51,12 @@ export interface MessageResponseDto {
     isDeleted: boolean;
     /**
      *
+     * @type {boolean}
+     * @memberof MessageResponseDto
+     */
+    isSystemMessage: boolean;
+    /**
+     *
      * @type {object}
      * @memberof MessageResponseDto
      */

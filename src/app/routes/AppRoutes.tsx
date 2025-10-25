@@ -8,6 +8,8 @@ import { WorkspacesPage } from 'features/workspaces/pages/WorkspacesPage';
 import { ChannelPage } from 'features/channels/pages/ChannelPage';
 import { ConversationsPage } from 'features/conversations/pages/ConversationsPage';
 import { ProjectsPage } from 'features/projects/pages/ProjectsPage';
+import { CallsPage } from 'features/calls/pages/CallsPage';
+import { NotificationsPage } from 'features/notifications/pages/NotificationsPage';
 import { MainLayout } from '../layout/MainLayout';
 import { AppProviders } from '../providers/AppProviders';
 import { AuthBootstrap } from '../providers/AuthBootstrap';
@@ -37,24 +39,8 @@ export const AppRoutes: React.FC = () => {
                                     element={<ChannelPage />}
                                 />
                                 <Route path="projects" element={<ProjectsPage />} />
-                                <Route
-                                    path="calls"
-                                    element={
-                                        <DashboardPlaceholder
-                                            title="Calls"
-                                            description="Schedule and review real-time collaboration sessions."
-                                        />
-                                    }
-                                />
-                                <Route
-                                    path="notifications"
-                                    element={
-                                        <DashboardPlaceholder
-                                            title="Notifications"
-                                            description="Stay on top of the latest updates across your workspaces."
-                                        />
-                                    }
-                                />
+                                <Route path="calls" element={<CallsPage />} />
+                                <Route path="notifications" element={<NotificationsPage />} />
                                 <Route
                                     path="users"
                                     element={

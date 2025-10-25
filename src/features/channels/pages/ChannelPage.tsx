@@ -165,40 +165,41 @@ export const ChannelPage: React.FC = () => {
     }, [queryClient]);
 
     const ensureMessageLoaded = React.useCallback(async (messageId: string): Promise<boolean> => {
-        const maxAttempts = 10;
-        let attempts = 0;
-
-        // Quick check before attempting pagination
         if (messagesRef.current.some(message => message.id === messageId)) {
             return true;
         }
 
-        while (hasNextPageRef.current && attempts < maxAttempts) {
-            attempts += 1;
+        const maxAttempts = 10;
+
+        const loadUntilFound = async (attempts: number): Promise<boolean> => {
+            if (attempts >= maxAttempts || !hasNextPageRef.current) {
+                return messagesRef.current.some(message => message.id === messageId);
+            }
+
             const fetchFn = fetchNextPageRef.current;
             if (!fetchFn) {
-                break;
+                return messagesRef.current.some(message => message.id === messageId);
             }
+
             try {
-                // eslint-disable-next-line no-await-in-loop
                 await fetchFn();
             } catch (error) {
                 console.error('Failed to fetch older messages:', error);
-                break;
+                return messagesRef.current.some(message => message.id === messageId);
             }
 
             // Allow React Query to update the cache before inspecting the list again
-            // eslint-disable-next-line no-await-in-loop
             await new Promise(resolve => window.setTimeout(resolve, 0));
 
             if (messagesRef.current.some(message => message.id === messageId)) {
                 return true;
             }
-        }
 
-        return messagesRef.current.some(message => message.id === messageId);
+            return loadUntilFound(attempts + 1);
+        };
+
+        return loadUntilFound(0);
     }, []);
-
     const triggerHighlight = React.useCallback((messageId: string) => {
         if (highlightTimeoutRef.current) {
             window.clearTimeout(highlightTimeoutRef.current);

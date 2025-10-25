@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Box, Chip, IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import { Avatar, Badge, Box, Chip, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/EditOutlined';
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import CommentIcon from '@mui/icons-material/ChatBubbleOutline';
@@ -12,6 +12,7 @@ interface TaskCardProps {
     readonly task: ProjectTask;
     readonly onEdit: (task: ProjectTask) => void;
     readonly onDelete: (task: ProjectTask) => void;
+    readonly onViewComments: (task: ProjectTask) => void;
 }
 
 const getAvatarLabel = (task: ProjectTask): string => {
@@ -37,7 +38,7 @@ const getPersonDisplayName = (
     return person.email ?? fallback;
 };
 
-export const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, onDelete }) => {
+export const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, onDelete, onViewComments }) => {
     const priorityMeta = TASK_PRIORITY_METADATA[task.priority];
     const dueDateLabel = task.dueDate
         ? formatDistanceToNow(new Date(task.dueDate), { addSuffix: true })
@@ -89,6 +90,18 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, onDelete }) =>
                             <DeleteIcon fontSize="small" />
                         </IconButton>
                     </Tooltip>
+                    <Tooltip title="View comments">
+                        <IconButton size="small" onClick={() => onViewComments(task)}>
+                            <Badge
+                                color="primary"
+                                badgeContent={task.commentCount ?? 0}
+                                showZero
+                                overlap="circular"
+                            >
+                                <CommentIcon fontSize="small" />
+                            </Badge>
+                        </IconButton>
+                    </Tooltip>
                 </Stack>
             </Stack>
 
@@ -104,11 +117,10 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, onDelete }) =>
                         <Typography variant="caption">Due {dueDateLabel}</Typography>
                     </Stack>
                 ) : null}
-                {typeof task.commentCount === 'number' && task.commentCount > 0 ? (
-                    <Stack direction="row" spacing={0.5} alignItems="center" color="text.secondary">
-                        <CommentIcon fontSize="inherit" />
-                        <Typography variant="caption">{task.commentCount}</Typography>
-                    </Stack>
+                {typeof task.commentCount === 'number' ? (
+                    <Typography variant="caption" color="text.secondary">
+                        {task.commentCount} {task.commentCount === 1 ? 'comment' : 'comments'}
+                    </Typography>
                 ) : null}
             </Stack>
 
