@@ -95,6 +95,47 @@ const authClientForRefresh = new AuthenticationApi(
     refreshAxiosInstance
 );
 
+export const refreshAccessToken = async (): Promise<string | null> => {
+    const { refreshToken } = useAuthStore.getState();
+
+    if (!refreshToken) {
+        useAuthStore.getState().clearAuth();
+        return null;
+    }
+
+    if (isRefreshing) {
+        return new Promise<string | null>((resolve, reject) => {
+            refreshQueue.push(token => {
+                if (!token) {
+                    reject(new Error('Failed to refresh authentication token'));
+                    return;
+                }
+
+                resolve(token);
+            });
+        });
+    }
+
+    isRefreshing = true;
+
+    try {
+        const response = (await authClientForRefresh.authControllerRefresh({
+            refresh_token: refreshToken
+        })) as unknown as AxiosResponse<{ access_token: string }>;
+
+        const newAccessToken = response.data.access_token;
+        useAuthStore.getState().setTokens(newAccessToken, refreshToken);
+        processRefreshQueue(newAccessToken);
+        return newAccessToken;
+    } catch (error) {
+        processRefreshQueue();
+        useAuthStore.getState().clearAuth();
+        throw error instanceof Error ? error : new Error('Failed to refresh authentication token');
+    } finally {
+        isRefreshing = false;
+    }
+};
+
 const setAuthorizationHeader = (config: RetriableAxiosRequestConfig, token: string): void => {
     if (config.headers instanceof AxiosHeaders) {
         config.headers.set('Authorization', `Bearer ${token}`);

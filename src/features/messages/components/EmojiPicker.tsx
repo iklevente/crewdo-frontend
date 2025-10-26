@@ -37,12 +37,22 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({ onSelect, autoFocus })
 
         if (autoFocus) {
             // Focus the internal search input when requested so users can type immediately.
-            window.setTimeout(() => {
+            const focusSearchInput = (): void => {
                 const searchInput = picker.shadowRoot?.querySelector('input[type="search"]');
                 if (searchInput instanceof HTMLInputElement) {
                     searchInput.focus();
                 }
-            }, 0);
+            };
+
+            if (typeof queueMicrotask === 'function') {
+                queueMicrotask(focusSearchInput);
+            } else {
+                Promise.resolve()
+                    .then(focusSearchInput)
+                    .catch(() => {
+                        focusSearchInput();
+                    });
+            }
         }
 
         return () => {

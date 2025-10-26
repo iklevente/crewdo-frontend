@@ -78,7 +78,10 @@ export const ChannelPage: React.FC = () => {
     const [isDeletingGroup, setIsDeletingGroup] = React.useState(false);
     const [searchTerm, setSearchTerm] = React.useState('');
     const [isSearchingMessages, setIsSearchingMessages] = React.useState(false);
-    const [highlightedMessageId, setHighlightedMessageId] = React.useState<string | null>(null);
+    const [highlightedMessage, setHighlightedMessage] = React.useState<{
+        id: string;
+        token: number;
+    } | null>(null);
 
     useChannelSocket(channelId, workspaceId);
 
@@ -86,7 +89,7 @@ export const ChannelPage: React.FC = () => {
     const messagesRef = React.useRef<Message[]>(messages);
     const hasNextPageRef = React.useRef<boolean>(hasNextPage);
     const fetchNextPageRef = React.useRef(fetchNextPage);
-    const highlightTimeoutRef = React.useRef<number | null>(null);
+    const highlightSequenceRef = React.useRef(0);
 
     const invalidateDirectMessages = React.useCallback(async (): Promise<void> => {
         await queryClient.invalidateQueries({ queryKey: ['direct-message-channels'] });
@@ -103,14 +106,6 @@ export const ChannelPage: React.FC = () => {
     React.useEffect(() => {
         fetchNextPageRef.current = fetchNextPage;
     }, [fetchNextPage]);
-
-    React.useEffect(() => {
-        return () => {
-            if (highlightTimeoutRef.current) {
-                window.clearTimeout(highlightTimeoutRef.current);
-            }
-        };
-    }, []);
 
     const markChannelAsRead = React.useCallback(
         async (upToMessageId: string) => {
@@ -196,8 +191,8 @@ export const ChannelPage: React.FC = () => {
                 return messagesRef.current.some(message => message.id === messageId);
             }
 
-            // Allow React Query to update the cache before inspecting the list again
-            await new Promise(resolve => window.setTimeout(resolve, 0));
+            // Allow React Query to process the newly fetched page before inspecting again
+            await Promise.resolve();
 
             if (messagesRef.current.some(message => message.id === messageId)) {
                 return true;
@@ -209,18 +204,26 @@ export const ChannelPage: React.FC = () => {
         return loadUntilFound(0);
     }, []);
     const triggerHighlight = React.useCallback((messageId: string) => {
-        if (highlightTimeoutRef.current) {
-            window.clearTimeout(highlightTimeoutRef.current);
+        if (!messageId) {
+            return;
         }
 
-        // Reset first so highlighting the same message twice still flashes
-        setHighlightedMessageId(null);
-        window.requestAnimationFrame(() => {
-            setHighlightedMessageId(messageId);
-            highlightTimeoutRef.current = window.setTimeout(() => {
-                setHighlightedMessageId(null);
-                highlightTimeoutRef.current = null;
-            }, 3500);
+        highlightSequenceRef.current += 1;
+        const nextToken = highlightSequenceRef.current;
+        setHighlightedMessage({ id: messageId, token: nextToken });
+    }, []);
+
+    const handleHighlightFinished = React.useCallback((messageId: string, token: number) => {
+        setHighlightedMessage(current => {
+            if (!current) {
+                return current;
+            }
+
+            if (current.id !== messageId || current.token !== token) {
+                return current;
+            }
+
+            return null;
         });
     }, []);
 
@@ -570,7 +573,8 @@ export const ChannelPage: React.FC = () => {
                                     onEdit={handleEditMessage}
                                     onDelete={handleDeleteMessage}
                                     onUserClick={handleUserClick}
-                                    highlightedMessageId={highlightedMessageId}
+                                    highlightedMessage={highlightedMessage}
+                                    onHighlightEnd={handleHighlightFinished}
                                 />
                                 <Box
                                     sx={{

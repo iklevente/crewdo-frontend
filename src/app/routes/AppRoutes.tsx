@@ -20,7 +20,7 @@ export const AppRoutes: React.FC = () => {
     return (
         <AppProviders>
             <AuthBootstrap>
-                <BrowserRouter>
+                <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
                     <Routes>
                         <Route element={<PublicRoute />}>
                             <Route path="/login" element={<LoginPage />} />

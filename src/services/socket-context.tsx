@@ -3,6 +3,7 @@ import { io, type Socket } from 'socket.io-client';
 import { useAuthStore } from 'store/auth-store';
 import { PresenceStatus, usePresenceStore } from 'store/presence-store';
 import { presenceApi } from 'services/presence-api';
+import { refreshAccessToken } from 'services/api-clients';
 
 interface SocketContextValue {
     readonly socket: Socket | null;
@@ -12,6 +13,10 @@ interface SocketContextValue {
 }
 
 const SocketContext = React.createContext<SocketContextValue | undefined>(undefined);
+
+const AUTH_RETRY_INTERVAL_MS = 5000;
+const SERVER_DISCONNECT_RESET_MS = 30000;
+const MAX_CONSECUTIVE_SERVER_DISCONNECTS = 6;
 
 const resolveSocketUrl = (): string => {
     const apiBase = process.env.API_BASE_URL;
@@ -32,136 +37,215 @@ const resolveSocketUrl = (): string => {
     return 'http://localhost:3000';
 };
 
-const joinedChannelsRef = new WeakMap<Socket, Set<string>>();
+const createSocket = (): Socket | null => {
+    if (typeof window === 'undefined') {
+        return null;
+    }
+
+    return io(resolveSocketUrl(), {
+        transports: ['websocket'],
+        withCredentials: true,
+        autoConnect: false
+    });
+};
 
 export const SocketProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const accessToken = useAuthStore(state => state.accessToken);
+    const refreshToken = useAuthStore(state => state.refreshToken);
     const currentUserId = useAuthStore(state => state.user?.id ?? null);
     const [isConnected, setIsConnected] = React.useState(false);
-    const socketRef = React.useRef<Socket | null>(null);
+    const [socket] = React.useState<Socket | null>(() => createSocket());
+    const socketRef = React.useRef<Socket | null>(socket);
+    const joinedChannelIdsRef = React.useRef<Set<string>>(new Set());
+    const previousTokenRef = React.useRef<string | null>(null);
+    const isRefreshingRef = React.useRef(false);
+    const lastAuthAttemptRef = React.useRef(0);
+    const consecutiveServerDisconnectsRef = React.useRef(0);
+    const lastServerDisconnectTimestampRef = React.useRef(0);
 
-    React.useEffect(() => {
-        const existingSocket = socketRef.current;
-        if (existingSocket) {
-            existingSocket.removeAllListeners();
-            existingSocket.disconnect();
-            socketRef.current = null;
-            setIsConnected(false);
-        }
+    const ensurePresenceSnapshot = React.useCallback(async (): Promise<void> => {
+        try {
+            const [current, snapshot] = await Promise.all([
+                presenceApi.fetchCurrent().catch(() => null),
+                presenceApi.fetchAll().catch(() => [])
+            ]);
 
-        if (!accessToken) {
-            usePresenceStore.getState().clear();
-            return;
-        }
-
-        const socket = io(resolveSocketUrl(), {
-            transports: ['websocket'],
-            withCredentials: true,
-            auth: { token: accessToken },
-            autoConnect: true
-        });
-
-        socket.on('connect', () => {
-            setIsConnected(true);
-            if (currentUserId) {
-                usePresenceStore.getState().ensureOnline(currentUserId);
-            }
-            const joinedChannels = joinedChannelsRef.get(socket);
-            if (joinedChannels) {
-                joinedChannels.forEach(channelId => {
-                    socket.emit('join_channel', { channelId });
-                });
+            if (current) {
+                usePresenceStore
+                    .getState()
+                    .setPresence(current.userId, presenceApi.toStateEntry(current));
             }
 
-            void (async () => {
-                try {
-                    const [current, snapshot] = await Promise.all([
-                        presenceApi.fetchCurrent().catch(() => null),
-                        presenceApi.fetchAll().catch(() => [])
-                    ]);
-
-                    if (current) {
-                        usePresenceStore
-                            .getState()
-                            .setPresence(current.userId, presenceApi.toStateEntry(current));
-                    }
-
-                    if (Array.isArray(snapshot) && snapshot.length > 0) {
-                        const updates = snapshot.map(item => ({
-                            userId: item.userId,
-                            entry: presenceApi.toStateEntry(item)
-                        }));
-                        usePresenceStore.getState().setMany(updates);
-                    }
-                } catch (error) {
-                    console.warn('Failed to refresh presence state after reconnect:', error);
-                }
-            })();
-        });
-
-        socket.on('disconnect', reason => {
-            console.info('Socket disconnected:', reason);
-            setIsConnected(false);
-        });
-
-        socket.on('connect_error', error => {
-            console.error('Socket connection error:', error);
-        });
-
-        socketRef.current = socket;
-
-        return () => {
-            socket.removeAllListeners();
-            socket.disconnect();
-            socketRef.current = null;
-            setIsConnected(false);
-        };
-    }, [accessToken, currentUserId]);
-
-    React.useEffect(() => {
-        let isActive = true;
-
-        if (!accessToken) {
-            return () => {
-                isActive = false;
-            };
-        }
-
-        void (async () => {
-            try {
-                const snapshot = await presenceApi.fetchAll();
-                if (!isActive || snapshot.length === 0) {
-                    return;
-                }
-
+            if (Array.isArray(snapshot) && snapshot.length > 0) {
                 const updates = snapshot.map(item => ({
                     userId: item.userId,
                     entry: presenceApi.toStateEntry(item)
                 }));
                 usePresenceStore.getState().setMany(updates);
-            } catch (error) {
-                console.warn('Failed to load presence snapshot:', error);
             }
-        })();
+        } catch (error) {
+            console.warn('Failed to refresh presence state after reconnect:', error);
+        }
+    }, []);
 
-        return () => {
-            isActive = false;
-        };
-    }, [accessToken]);
+    const normalizeStatus = React.useCallback((value?: string): PresenceStatus => {
+        const normalized = (value ?? '').toLowerCase();
+        if (normalized === 'online' || normalized === 'away' || normalized === 'busy') {
+            return normalized as PresenceStatus;
+        }
+        return 'offline';
+    }, []);
+
+    const attemptReauthentication = React.useCallback(async () => {
+        if (isRefreshingRef.current) {
+            return;
+        }
+
+        const now = Date.now();
+        const timeSinceLastAttempt = now - lastAuthAttemptRef.current;
+        if (timeSinceLastAttempt < AUTH_RETRY_INTERVAL_MS) {
+            return;
+        }
+
+        lastAuthAttemptRef.current = now;
+
+        if (!refreshToken) {
+            useAuthStore.getState().clearAuth();
+            return;
+        }
+
+        isRefreshingRef.current = true;
+
+        try {
+            const newToken = await refreshAccessToken();
+            if (!newToken) {
+                return;
+            }
+
+            const activeSocket = socketRef.current;
+            previousTokenRef.current = newToken;
+
+            if (activeSocket) {
+                activeSocket.auth = { ...(activeSocket.auth ?? {}), token: newToken };
+                if (activeSocket.connected) {
+                    activeSocket.disconnect();
+                }
+                activeSocket.connect();
+            }
+        } catch (error) {
+            console.warn('Socket token refresh failed:', error);
+        } finally {
+            isRefreshingRef.current = false;
+        }
+    }, [refreshToken]);
+
+    const isAuthenticationError = React.useCallback((error: unknown): boolean => {
+        if (!error || typeof error !== 'object') {
+            return false;
+        }
+
+        const { message, data } = error as { message?: unknown; data?: unknown };
+        const baseMessage = typeof message === 'string' ? message.toLowerCase() : '';
+        const dataMessage =
+            typeof (data as { message?: string } | undefined)?.message === 'string'
+                ? ((data as { message?: string })?.message ?? '').toLowerCase()
+                : '';
+        const statusCode = (data as { statusCode?: number } | undefined)?.statusCode;
+
+        if (statusCode === 401 || statusCode === 403) {
+            return true;
+        }
+
+        return (
+            baseMessage.includes('jwt') ||
+            baseMessage.includes('token') ||
+            baseMessage.includes('auth') ||
+            dataMessage.includes('jwt') ||
+            dataMessage.includes('token') ||
+            dataMessage.includes('auth')
+        );
+    }, []);
 
     React.useEffect(() => {
-        const socket = socketRef.current;
+        socketRef.current = socket;
+    }, [socket]);
+
+    React.useEffect(() => {
         if (!socket) {
             return;
         }
 
-        const normalizeStatus = (value?: string): PresenceStatus => {
-            const normalized = (value ?? '').toLowerCase();
-            if (normalized === 'online' || normalized === 'away' || normalized === 'busy') {
-                return normalized as PresenceStatus;
+        const handleConnect = (): void => {
+            setIsConnected(true);
+
+            consecutiveServerDisconnectsRef.current = 0;
+            lastAuthAttemptRef.current = 0;
+            lastServerDisconnectTimestampRef.current = 0;
+
+            if (currentUserId) {
+                usePresenceStore.getState().ensureOnline(currentUserId);
             }
-            return 'offline';
+
+            joinedChannelIdsRef.current.forEach(channelId => {
+                socket.emit('join_channel', { channelId });
+            });
+
+            void ensurePresenceSnapshot();
         };
+
+        const handleDisconnect = (reason: string): void => {
+            console.info('Socket disconnected:', reason);
+            setIsConnected(false);
+
+            if (reason === 'io server disconnect') {
+                const now = Date.now();
+                if (now - lastServerDisconnectTimestampRef.current > SERVER_DISCONNECT_RESET_MS) {
+                    consecutiveServerDisconnectsRef.current = 0;
+                }
+
+                consecutiveServerDisconnectsRef.current += 1;
+                lastServerDisconnectTimestampRef.current = now;
+
+                if (consecutiveServerDisconnectsRef.current >= MAX_CONSECUTIVE_SERVER_DISCONNECTS) {
+                    console.warn(
+                        'Too many server disconnects, clearing auth state to prevent loops.'
+                    );
+                    useAuthStore.getState().clearAuth();
+                    return;
+                }
+
+                void attemptReauthentication();
+            }
+        };
+
+        const handleConnectError = (error: Error): void => {
+            console.error('Socket connection error:', error);
+            if (isAuthenticationError(error)) {
+                void attemptReauthentication();
+            }
+        };
+
+        socket.on('connect', handleConnect);
+        socket.on('disconnect', handleDisconnect);
+        socket.on('connect_error', handleConnectError);
+
+        return () => {
+            socket.off('connect', handleConnect);
+            socket.off('disconnect', handleDisconnect);
+            socket.off('connect_error', handleConnectError);
+        };
+    }, [
+        socket,
+        currentUserId,
+        attemptReauthentication,
+        ensurePresenceSnapshot,
+        isAuthenticationError
+    ]);
+
+    React.useEffect(() => {
+        if (!socket) {
+            return;
+        }
 
         const handlePresenceUpdate = (payload: {
             userId: string;
@@ -176,6 +260,7 @@ export const SocketProvider: React.FC<React.PropsWithChildren> = ({ children }) 
             if (!payload?.userId) {
                 return;
             }
+
             usePresenceStore.getState().setPresence(payload.userId, {
                 status: normalizeStatus(payload.status),
                 customStatus: payload.customStatus,
@@ -204,6 +289,7 @@ export const SocketProvider: React.FC<React.PropsWithChildren> = ({ children }) 
             if (!payload || payload.length === 0) {
                 return;
             }
+
             const updates = payload
                 .filter(item => Boolean(item?.userId))
                 .map(item => ({
@@ -218,6 +304,7 @@ export const SocketProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                         timestamp: item.timestamp
                     }
                 }));
+
             if (updates.length > 0) {
                 usePresenceStore.getState().setMany(updates);
             }
@@ -230,22 +317,50 @@ export const SocketProvider: React.FC<React.PropsWithChildren> = ({ children }) 
             socket.off('presence_updated', handlePresenceUpdate);
             socket.off('presence_snapshot', handlePresenceSnapshot);
         };
-    }, [accessToken, isConnected]);
+    }, [socket, normalizeStatus]);
+
+    React.useEffect(() => {
+        if (!socket) {
+            return;
+        }
+
+        if (!accessToken) {
+            previousTokenRef.current = null;
+            if (socket.connected || socket.active) {
+                socket.disconnect();
+            }
+            usePresenceStore.getState().clear();
+            return;
+        }
+
+        const previousToken = previousTokenRef.current;
+        previousTokenRef.current = accessToken;
+
+        socket.auth = { ...(socket.auth ?? {}), token: accessToken };
+
+        if (socket.connected) {
+            if (previousToken && previousToken !== accessToken) {
+                socket.disconnect();
+                socket.connect();
+            }
+        } else if (!socket.active) {
+            socket.connect();
+        }
+    }, [socket, accessToken]);
 
     const joinChannel = React.useCallback((channelId: string) => {
         if (!channelId) {
             return;
         }
-        const socket = socketRef.current;
-        if (!socket) {
+
+        const activeSocket = socketRef.current;
+        if (!activeSocket) {
             return;
         }
-        if (!joinedChannelsRef.has(socket)) {
-            joinedChannelsRef.set(socket, new Set<string>());
-        }
-        joinedChannelsRef.get(socket)!.add(channelId);
-        if (socket.connected) {
-            socket.emit('join_channel', { channelId });
+
+        joinedChannelIdsRef.current.add(channelId);
+        if (activeSocket.connected) {
+            activeSocket.emit('join_channel', { channelId });
         }
     }, []);
 
@@ -253,16 +368,15 @@ export const SocketProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         if (!channelId) {
             return;
         }
-        const socket = socketRef.current;
-        if (!socket) {
+
+        const activeSocket = socketRef.current;
+        if (!activeSocket) {
             return;
         }
-        const joinedChannels = joinedChannelsRef.get(socket);
-        if (joinedChannels) {
-            joinedChannels.delete(channelId);
-        }
-        if (socket.connected) {
-            socket.emit('leave_channel', { channelId });
+
+        joinedChannelIdsRef.current.delete(channelId);
+        if (activeSocket.connected) {
+            activeSocket.emit('leave_channel', { channelId });
         }
     }, []);
 

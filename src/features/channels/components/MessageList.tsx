@@ -16,6 +16,7 @@ import {
     Tooltip,
     Typography
 } from '@mui/material';
+import { keyframes } from '@mui/system';
 import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
@@ -42,8 +43,27 @@ interface MessageListProps {
     readonly onEdit: (messageId: string, content: string) => Promise<void>;
     readonly onDelete: (messageId: string) => Promise<void>;
     readonly onUserClick?: (userId: string, snapshot: UserProfileSnapshot) => void;
-    readonly highlightedMessageId?: string | null;
+    readonly highlightedMessage?: { id: string; token: number } | null;
+    readonly onHighlightEnd?: (messageId: string, token: number) => void;
 }
+
+const messageHighlightPulse = keyframes`
+    0% {
+        background-color: rgba(255, 215, 0, 0.22);
+        border-color: #FFC107;
+        box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.4);
+    }
+    60% {
+        background-color: rgba(255, 215, 0, 0.12);
+        border-color: rgba(255, 193, 7, 0.75);
+        box-shadow: 0 0 0 1px rgba(255, 193, 7, 0.25);
+    }
+    100% {
+        background-color: transparent;
+        border-color: inherit;
+        box-shadow: none;
+    }
+`;
 
 const formatAuthorName = (message: Message): string => {
     const { firstName, lastName, email } = message.author;
@@ -254,7 +274,8 @@ export const MessageList: React.FC<MessageListProps> = ({
     onEdit,
     onDelete,
     onUserClick,
-    highlightedMessageId
+    highlightedMessage,
+    onHighlightEnd
 }) => {
     const bottomRef = React.useRef<HTMLDivElement | null>(null);
     const previousCount = React.useRef<number>(0);
@@ -374,14 +395,14 @@ export const MessageList: React.FC<MessageListProps> = ({
     );
 
     React.useEffect(() => {
-        if (!highlightedMessageId) {
+        if (!highlightedMessage?.id) {
             return;
         }
-        const node = messageRefs.current.get(highlightedMessageId);
+        const node = messageRefs.current.get(highlightedMessage.id);
         if (node) {
             node.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-    }, [highlightedMessageId]);
+    }, [highlightedMessage]);
 
     return (
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
@@ -425,7 +446,12 @@ export const MessageList: React.FC<MessageListProps> = ({
                         const userHasReacted = message.reactions.some(
                             reaction => reaction.userReacted
                         );
-                        const isHighlighted = highlightedMessageId === message.id;
+                        const highlightToken =
+                            highlightedMessage?.id === message.id ? highlightedMessage.token : null;
+                        const isHighlighted = highlightToken !== null;
+                        const messageKey = isHighlighted
+                            ? `${message.id}-${highlightToken}`
+                            : message.id;
                         const authorSnapshot: UserProfileSnapshot = {
                             id: message.author.id,
                             firstName: message.author.firstName,
@@ -435,7 +461,7 @@ export const MessageList: React.FC<MessageListProps> = ({
 
                         return (
                             <Paper
-                                key={message.id}
+                                key={messageKey}
                                 variant="outlined"
                                 ref={getMessageRef(message.id)}
                                 sx={{
@@ -450,7 +476,23 @@ export const MessageList: React.FC<MessageListProps> = ({
                                         isHighlighted ? '#FFC107' : theme.palette.divider,
                                     boxShadow: isHighlighted
                                         ? '0 0 0 2px rgba(255, 193, 7, 0.4)'
-                                        : 'none'
+                                        : 'none',
+                                    animation: isHighlighted
+                                        ? `${messageHighlightPulse} 3.5s ease-out`
+                                        : 'none',
+                                    animationFillMode: 'forwards'
+                                }}
+                                onAnimationEnd={event => {
+                                    if (!isHighlighted) {
+                                        return;
+                                    }
+                                    if (event.target !== event.currentTarget) {
+                                        return;
+                                    }
+                                    if (highlightToken === null) {
+                                        return;
+                                    }
+                                    onHighlightEnd?.(message.id, highlightToken);
                                 }}
                             >
                                 <Stack direction="row" spacing={2} alignItems="flex-start">

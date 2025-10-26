@@ -51,9 +51,7 @@ export const useChannelMessages = (channelId: string | null): UseChannelMessages
         },
         enabled: Boolean(channelId),
         initialPageParam: undefined,
-        getNextPageParam: lastPage => (lastPage.hasMore ? lastPage.nextCursor : undefined),
-        refetchInterval: 7000,
-        refetchIntervalInBackground: true
+        getNextPageParam: lastPage => (lastPage.hasMore ? lastPage.nextCursor : undefined)
     });
 
     const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } =
