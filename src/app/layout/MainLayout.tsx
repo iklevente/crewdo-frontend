@@ -22,7 +22,6 @@ import WorkspacesIcon from '@mui/icons-material/CottageOutlined';
 import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
 import NotificationsIcon from '@mui/icons-material/NotificationsNone';
 import CallIcon from '@mui/icons-material/Call';
-import GroupIcon from '@mui/icons-material/GroupOutlined';
 import SettingsIcon from '@mui/icons-material/SettingsOutlined';
 import LogoutIcon from '@mui/icons-material/LogoutOutlined';
 import ForumIcon from '@mui/icons-material/ForumOutlined';
