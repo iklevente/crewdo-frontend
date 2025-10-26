@@ -32,7 +32,7 @@ import { useAppLocation, useAppNavigate } from 'appHistory';
 import { PresenceStatusControl } from 'components/PresenceStatusControl';
 import { CallOverlayProvider } from 'features/calls/providers/CallOverlayProvider';
 
-const drawerWidth = 280;
+const drawerWidth = 290;
 
 interface NavigationItem {
     readonly label: string;
@@ -115,10 +115,16 @@ export const MainLayout: React.FC = () => {
                     <ListItemButton
                         key={item.path}
                         onClick={() => handleNavigate(item.path)}
-                        selected={
-                            location.pathname === item.path ||
-                            location.pathname.startsWith(`${item.path}/`)
-                        }
+                        selected={(() => {
+                            const isRootPath = item.path === '/app';
+                            if (location.pathname === item.path) {
+                                return true;
+                            }
+                            if (!isRootPath && location.pathname.startsWith(`${item.path}/`)) {
+                                return true;
+                            }
+                            return false;
+                        })()}
                     >
                         <ListItemIcon>{item.icon}</ListItemIcon>
                         <ListItemText primary={item.label} />
