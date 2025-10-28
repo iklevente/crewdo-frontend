@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { axiosInstance } from 'services/api-clients';
 import type { CallSummary, CallParticipantSummary } from '../types/call';
@@ -152,9 +152,29 @@ export const useCalls = (): {
         isError
     } = useQuery<CallSummary[]>({
         queryKey: CALLS_QUERY_KEY,
-        queryFn: fetchCalls,
-        staleTime: 60_000
+        queryFn: fetchCalls
     });
+
+    // Check scheduled calls every minute to see if any should transition to active
+    useEffect(() => {
+        const checkScheduledCalls = (): void => {
+            const now = new Date();
+            calls.forEach(call => {
+                if (call.status === 'scheduled' && call.scheduledStartTime) {
+                    const scheduledTime = new Date(call.scheduledStartTime);
+                    // If scheduled time has passed, invalidate to refetch
+                    if (scheduledTime <= now) {
+                        void queryClient.invalidateQueries({ queryKey: CALLS_QUERY_KEY });
+                    }
+                }
+            });
+        };
+
+        const interval = setInterval(checkScheduledCalls, 60_000); // Check every minute
+        checkScheduledCalls(); // Check immediately
+
+        return () => clearInterval(interval);
+    }, [calls, queryClient]);
 
     const { activeCalls, scheduledCalls, pastCalls } = useMemo(() => {
         const active = calls

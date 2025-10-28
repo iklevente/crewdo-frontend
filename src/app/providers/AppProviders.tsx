@@ -16,7 +16,6 @@ import { CHANNEL_MESSAGES_QUERY_KEY } from 'features/channels/hooks/useChannelMe
 import { DIRECT_MESSAGE_CHANNELS_QUERY_KEY } from 'features/channels/hooks/useDirectMessageChannels';
 import { CALLS_QUERY_KEY, normalizeCallSummary, type RawCall } from 'features/calls/hooks/useCalls';
 import { CALL_QUERY_KEY } from 'features/calls/hooks/useCallById';
-import type { CallSummary } from 'features/calls/types/call';
 
 const createQueryClient = (): QueryClient =>
     new QueryClient({
@@ -63,8 +62,11 @@ const SocketEffects: React.FC = () => {
 
     React.useEffect(() => {
         if (!socket) {
+            console.log('[Socket] No socket available');
             return;
         }
+
+        console.log('[Socket] Setting up event listeners, connected:', socket.connected);
 
         const handleWorkspaceMemberAdded = (payload: {
             workspaceId: string;
@@ -182,41 +184,37 @@ const SocketEffects: React.FC = () => {
         socket.on('new_message', handleNewMessage);
 
         const handleCallUpdated = (payload: RawCall): void => {
+            console.log('[Socket] call_updated received:', payload);
             const normalized = normalizeCallSummary(payload);
             if (!normalized) {
+                console.warn('[Socket] Failed to normalize call data');
                 return;
             }
 
-            queryClient.setQueryData<CallSummary[]>(CALLS_QUERY_KEY, existing => {
-                if (!existing) {
-                    return [normalized];
-                }
+            console.log('[Socket] Invalidating calls queries for call:', normalized.id);
+            // Invalidate queries to force refetch and re-render
+            void queryClient.invalidateQueries({ queryKey: CALLS_QUERY_KEY });
 
-                const index = existing.findIndex(call => call.id === normalized.id);
-                if (index === -1) {
-                    return [normalized, ...existing];
-                }
-
-                const next = existing.slice();
-                next[index] = normalized;
-                return next;
-            });
-
-            queryClient.setQueryData<CallSummary | null>(CALL_QUERY_KEY(normalized.id), current => {
-                if (!current) {
-                    return normalized;
-                }
-                return current.id === normalized.id ? normalized : current;
-            });
+            // Also invalidate individual call query if someone is viewing it
+            void queryClient.invalidateQueries({ queryKey: CALL_QUERY_KEY(normalized.id) });
         };
 
         socket.on('call_updated', handleCallUpdated);
+
+        // Debug: Log all incoming call-related events
+        const debugListener = (eventName: string, ...args: unknown[]): void => {
+            if (eventName && eventName.toString().includes('call')) {
+                console.log('[Socket] Received event:', eventName, args);
+            }
+        };
+        socket.onAny(debugListener);
 
         return () => {
             socket.off('workspace_member_added', handleWorkspaceMemberAdded);
             socket.off('workspace_member_removed', handleWorkspaceMemberRemoved);
             socket.off('new_message', handleNewMessage);
             socket.off('call_updated', handleCallUpdated);
+            socket.offAny(debugListener);
         };
     }, [socket, queryClient]);
 

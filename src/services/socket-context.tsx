@@ -176,6 +176,7 @@ export const SocketProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         }
 
         const handleConnect = (): void => {
+            console.log('[Socket] Connected successfully!');
             setIsConnected(true);
 
             consecutiveServerDisconnectsRef.current = 0;
@@ -219,8 +220,9 @@ export const SocketProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         };
 
         const handleConnectError = (error: Error): void => {
-            console.error('Socket connection error:', error);
+            console.error('[Socket] Connection error:', error);
             if (isAuthenticationError(error)) {
+                console.log('[Socket] Authentication error detected, attempting refresh');
                 void attemptReauthentication();
             }
         };
@@ -336,14 +338,17 @@ export const SocketProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         const previousToken = previousTokenRef.current;
         previousTokenRef.current = accessToken;
 
+        console.log('[Socket] Setting auth token, has token:', Boolean(accessToken));
         socket.auth = { ...(socket.auth ?? {}), token: accessToken };
 
         if (socket.connected) {
             if (previousToken && previousToken !== accessToken) {
+                console.log('[Socket] Token changed, reconnecting');
                 socket.disconnect();
                 socket.connect();
             }
         } else if (!socket.active) {
+            console.log('[Socket] Not connected, attempting to connect');
             socket.connect();
         }
     }, [socket, accessToken]);
