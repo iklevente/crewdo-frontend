@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { axiosInstance } from 'services/api-clients';
+import { apiClients } from 'services/api-clients';
+import type { NotificationControllerGetMyNotificationsTypeEnum } from 'api/api/notifications-api';
 import type {
     NotificationCollection,
     NotificationItem,
@@ -124,18 +125,20 @@ const fetchNotifications = async (
     try {
         const sanitized = sanitizeFilters(filters);
         const params = buildQueryParams(sanitized);
-        const response = await axiosInstance.get<RawNotificationResponse>(
-            '/notifications/my-notifications',
-            {
-                params
-            }
-        );
+        const response = (await apiClients.notifications.notificationControllerGetMyNotifications(
+            params.type as NotificationControllerGetMyNotificationsTypeEnum | undefined,
+            params.isRead as boolean | undefined,
+            params.limit as number | undefined,
+            params.offset as number | undefined
+        )) as unknown as { data: RawNotificationResponse };
 
         const payload = response.data ?? {};
         const items = Array.isArray(payload.notifications)
             ? payload.notifications
-                  .map(item => normalizeNotification(item))
-                  .filter((item): item is NotificationItem => item !== null)
+                  .map((item: RawNotification) => normalizeNotification(item))
+                  .filter(
+                      (item: NotificationItem | null): item is NotificationItem => item !== null
+                  )
             : [];
 
         return {
@@ -144,7 +147,7 @@ const fetchNotifications = async (
             unreadCount:
                 typeof payload.unreadCount === 'number'
                     ? payload.unreadCount
-                    : items.filter(n => !n.isRead).length
+                    : items.filter((n: NotificationItem) => !n.isRead).length
         };
     } catch (error) {
         console.warn('Failed to load notifications', error);

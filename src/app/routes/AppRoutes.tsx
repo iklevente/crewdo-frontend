@@ -3,7 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { LoginPage } from 'features/auth/pages/LoginPage';
 import { RegisterPage } from 'features/auth/pages/RegisterPage';
 import { OverviewPage } from 'features/dashboard/pages/OverviewPage';
-import { DashboardPlaceholder } from 'features/dashboard/pages/DashboardPlaceholder';
+import { SettingsPage } from 'features/settings/pages/SettingsPage';
 import { WorkspacesPage } from 'features/workspaces/pages/WorkspacesPage';
 import { ChannelPage } from 'features/channels/pages/ChannelPage';
 import { ConversationsPage } from 'features/conversations/pages/ConversationsPage';
@@ -41,15 +41,7 @@ export const AppRoutes: React.FC = () => {
                                 <Route path="projects" element={<ProjectsPage />} />
                                 <Route path="calls" element={<CallsPage />} />
                                 <Route path="notifications" element={<NotificationsPage />} />
-                                <Route
-                                    path="settings"
-                                    element={
-                                        <DashboardPlaceholder
-                                            title="Settings"
-                                            description="Configure organization preferences, integrations, and more."
-                                        />
-                                    }
-                                />
+                                <Route path="settings" element={<SettingsPage />} />
                             </Route>
                         </Route>
 

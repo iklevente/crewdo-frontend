@@ -1,5 +1,5 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
-import { axiosInstance } from 'services/api-clients';
+import { apiClients } from 'services/api-clients';
 import type { CallSummary } from '../types/call';
 import { normalizeCallSummary, type RawCall } from './useCalls';
 
@@ -17,7 +17,9 @@ export const useCallById = (callId: string | null): UseQueryResult<CallSummary |
                 return null;
             }
 
-            const response = await axiosInstance.get<RawCall>(`/calls/${callId}`);
+            const response = (await apiClients.calls.callControllerFindOne(callId)) as unknown as {
+                data: RawCall;
+            };
             return normalizeCallSummary(response.data);
         },
         staleTime: 60_000

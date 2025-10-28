@@ -1,5 +1,5 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
-import { axiosInstance } from 'services/api-clients';
+import { apiClients } from 'services/api-clients';
 import type { CallSessionCredentials } from '../types/call';
 
 interface RawCallSession {
@@ -92,7 +92,9 @@ export const useCallSession = (
                 return null;
             }
 
-            const response = await axiosInstance.post<RawCallSession>(`/calls/${callId}/session`);
+            const response = (await apiClients.calls.callControllerCreateSession(
+                callId
+            )) as unknown as { data: RawCallSession };
             const normalized = normalizeSession(response.data);
             if (!normalized) {
                 console.warn('Invalid call session payload', response.data);

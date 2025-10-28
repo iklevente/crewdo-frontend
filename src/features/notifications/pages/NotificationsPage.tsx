@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
     Alert,
@@ -33,8 +33,8 @@ export const NotificationsPage: React.FC = () => {
         useNotifications(filters);
 
     const queryClient = useQueryClient();
-    const invalidateNotifications = React.useCallback(async (): Promise<void> => {
-        await queryClient.invalidateQueries({ queryKey: NOTIFICATIONS_QUERY_KEY });
+    const invalidateNotifications = useCallback(() => {
+        void queryClient.invalidateQueries({ queryKey: NOTIFICATIONS_QUERY_KEY });
     }, [queryClient]);
 
     const { toggleRead, deleteNotification, markAllAsRead, isMarkAllPending } =

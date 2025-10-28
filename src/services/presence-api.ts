@@ -1,6 +1,6 @@
 import type { PresenceSource, PresenceStatus, PresenceStateEntry } from 'store/presence-store';
 
-import { axiosInstance } from './api-clients';
+import { apiClients } from './api-clients';
 
 interface PresenceResponse {
     readonly userId: string;
@@ -30,26 +30,32 @@ const mapResponseToEntry = (response: PresenceResponse): PresenceStateEntry => (
 
 export const presenceApi = {
     async fetchAll(): Promise<PresenceResponse[]> {
-        const { data } = await axiosInstance.get<PresenceResponse[]>('/presence');
-        return data;
+        const response = (await apiClients.presence.presenceControllerFindAll()) as unknown as {
+            data: PresenceResponse[];
+        };
+        return response.data;
     },
 
     async fetchCurrent(): Promise<PresenceResponse> {
-        const { data } = await axiosInstance.get<PresenceResponse>('/presence/me');
-        return data;
+        const response = (await apiClients.presence.presenceControllerFindMine()) as unknown as {
+            data: PresenceResponse;
+        };
+        return response.data;
     },
 
     async setManual(payload: ManualPresencePayload): Promise<PresenceResponse> {
-        const { data } = await axiosInstance.patch<PresenceResponse>(
-            '/presence/me/manual',
+        const response = (await apiClients.presence.presenceControllerSetManualPresence(
             payload
-        );
-        return data;
+        )) as unknown as { data: PresenceResponse };
+        return response.data;
     },
 
     async clearManual(): Promise<PresenceResponse> {
-        const { data } = await axiosInstance.delete<PresenceResponse>('/presence/me/manual');
-        return data;
+        const response =
+            (await apiClients.presence.presenceControllerClearManualPresence()) as unknown as {
+                data: PresenceResponse;
+            };
+        return response.data;
     },
 
     toStateEntry: mapResponseToEntry

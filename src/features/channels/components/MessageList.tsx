@@ -27,7 +27,7 @@ import DescriptionIcon from '@mui/icons-material/DescriptionOutlined';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
 import type { Message, MessageAttachment } from 'features/messages/types/message';
-import { axiosInstance } from 'services/api-clients';
+import { apiClients } from 'services/api-clients';
 import { EmojiPicker } from 'features/messages/components/EmojiPicker';
 import type { UserProfileSnapshot } from 'features/users/types/user-profile-snapshot';
 
@@ -99,9 +99,12 @@ const MessageAttachmentItem: React.FC<MessageAttachmentItemProps> = ({ attachmen
     const isImage = Boolean(attachment.mimeType?.startsWith('image/'));
 
     const loadAttachmentBlob = React.useCallback(async (): Promise<Blob> => {
-        const response = await axiosInstance.get<Blob>(`/attachments/${attachment.id}/download`, {
-            responseType: 'blob'
-        });
+        const response = (await apiClients.attachments.attachmentControllerDownloadFile(
+            attachment.id,
+            {
+                responseType: 'blob'
+            }
+        )) as unknown as { data: Blob };
         return response.data;
     }, [attachment.id]);
 

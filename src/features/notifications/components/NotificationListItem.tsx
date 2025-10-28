@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Avatar,
     Chip,
@@ -17,6 +18,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
 import type { NotificationItem } from '../types/notification';
 import { formatNotificationType, getNotificationMeta } from '../utils/notificationMeta';
+import { getNotificationLink } from '../utils/getNotificationLink';
 
 interface NotificationListItemProps {
     readonly notification: NotificationItem;
@@ -30,6 +32,7 @@ export const NotificationListItem: React.FC<NotificationListItemProps> = ({
     onDelete
 }) => {
     const theme = useTheme();
+    const navigate = useNavigate();
     const [isToggling, setIsToggling] = React.useState(false);
     const [isDeleting, setIsDeleting] = React.useState(false);
 
@@ -38,6 +41,8 @@ export const NotificationListItem: React.FC<NotificationListItemProps> = ({
     const paletteColor = theme.palette[meta.paletteKey];
     const accentColor = paletteColor?.main ?? theme.palette.primary.main;
     const isUnread = !notification.isRead;
+    const notificationLink = React.useMemo(() => getNotificationLink(notification), [notification]);
+    const isClickable = Boolean(notificationLink);
 
     const createdAtText = React.useMemo(() => {
         if (!notification.createdAt) {
@@ -71,16 +76,39 @@ export const NotificationListItem: React.FC<NotificationListItemProps> = ({
         }
     };
 
+    const handleClick = (): void => {
+        if (!notificationLink) {
+            return;
+        }
+        // Mark as read when clicking
+        if (!notification.isRead) {
+            void onToggleRead(notification.id, true);
+        }
+        navigate(notificationLink);
+    };
+
     return (
         <Paper
             variant="outlined"
+            onClick={isClickable && !isDeleting && !isToggling ? handleClick : undefined}
             sx={{
                 p: { xs: 2, sm: 2.5 },
                 display: 'flex',
                 gap: 2,
                 alignItems: 'flex-start',
                 borderLeft: theme => `4px solid ${isUnread ? accentColor : theme.palette.divider}`,
-                bgcolor: isUnread ? alpha(accentColor, 0.06) : 'background.paper'
+                bgcolor: isUnread ? alpha(accentColor, 0.06) : 'background.paper',
+                cursor: isClickable ? 'pointer' : 'default',
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': isClickable
+                    ? {
+                          bgcolor: isUnread
+                              ? alpha(accentColor, 0.12)
+                              : theme => alpha(theme.palette.action.hover, 0.04),
+                          transform: 'translateY(-2px)',
+                          boxShadow: 2
+                      }
+                    : {}
             }}
         >
             <Avatar
@@ -130,7 +158,8 @@ export const NotificationListItem: React.FC<NotificationListItemProps> = ({
                             <span>
                                 <IconButton
                                     size="small"
-                                    onClick={() => {
+                                    onClick={e => {
+                                        e.stopPropagation();
                                         void handleToggleRead();
                                     }}
                                     disabled={isToggling || isDeleting}
@@ -155,7 +184,8 @@ export const NotificationListItem: React.FC<NotificationListItemProps> = ({
                                 <IconButton
                                     size="small"
                                     color="error"
-                                    onClick={() => {
+                                    onClick={e => {
+                                        e.stopPropagation();
                                         void handleDelete();
                                     }}
                                     disabled={isDeleting}

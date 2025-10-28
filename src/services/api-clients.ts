@@ -9,6 +9,7 @@ import {
     CommentsApi,
     MessagesApi,
     NotificationsApi,
+    PresenceApi,
     ProjectsApi,
     TasksApi,
     UsersApi,
@@ -24,6 +25,7 @@ interface CrewdoApiClients {
     readonly comments: CommentsApi;
     readonly messages: MessagesApi;
     readonly notifications: NotificationsApi;
+    readonly presence: PresenceApi;
     readonly projects: ProjectsApi;
     readonly tasks: TasksApi;
     readonly users: UsersApi;
@@ -83,6 +85,7 @@ const clients: CrewdoApiClients = {
     comments: new CommentsApi(configuration, configuration.basePath, axiosInstance),
     messages: new MessagesApi(configuration, configuration.basePath, axiosInstance),
     notifications: new NotificationsApi(configuration, configuration.basePath, axiosInstance),
+    presence: new PresenceApi(configuration, configuration.basePath, axiosInstance),
     projects: new ProjectsApi(configuration, configuration.basePath, axiosInstance),
     tasks: new TasksApi(configuration, configuration.basePath, axiosInstance),
     users: new UsersApi(configuration, configuration.basePath, axiosInstance),

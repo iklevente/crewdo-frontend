@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import {
     AppBar,
     Avatar,
+    Badge,
     Box,
     Button,
     Divider,
@@ -31,6 +32,7 @@ import { useAuthStore } from 'store/auth-store';
 import { useAppLocation, useAppNavigate } from 'appHistory';
 import { PresenceStatusControl } from 'components/PresenceStatusControl';
 import { CallOverlayProvider } from 'features/calls/providers/CallOverlayProvider';
+import { useUnreadCount } from 'features/notifications/hooks/useUnreadCount';
 
 const drawerWidth = 290;
 
@@ -85,6 +87,9 @@ export const MainLayout: React.FC = () => {
     const user = useAuthStore(state => state.user);
     const clearAuth = useAuthStore(state => state.clearAuth);
     const queryClient = useQueryClient();
+    const { unreadCount } = useUnreadCount();
+
+    console.log('[MainLayout] Unread count:', unreadCount);
 
     const handleDrawerToggle = (): void => {
         setMobileOpen(prev => !prev);
@@ -111,25 +116,37 @@ export const MainLayout: React.FC = () => {
             </Toolbar>
             <Divider />
             <List sx={{ flex: 1 }}>
-                {navigationItems.map(item => (
-                    <ListItemButton
-                        key={item.path}
-                        onClick={() => handleNavigate(item.path)}
-                        selected={(() => {
-                            const isRootPath = item.path === '/app';
-                            if (location.pathname === item.path) {
-                                return true;
-                            }
-                            if (!isRootPath && location.pathname.startsWith(`${item.path}/`)) {
-                                return true;
-                            }
-                            return false;
-                        })()}
-                    >
-                        <ListItemIcon>{item.icon}</ListItemIcon>
-                        <ListItemText primary={item.label} />
-                    </ListItemButton>
-                ))}
+                {navigationItems.map(item => {
+                    const isNotifications = item.path === '/app/notifications';
+                    const icon =
+                        isNotifications && unreadCount > 0 ? (
+                            <Badge badgeContent={unreadCount} color="error">
+                                {item.icon}
+                            </Badge>
+                        ) : (
+                            item.icon
+                        );
+
+                    return (
+                        <ListItemButton
+                            key={item.path}
+                            onClick={() => handleNavigate(item.path)}
+                            selected={(() => {
+                                const isRootPath = item.path === '/app';
+                                if (location.pathname === item.path) {
+                                    return true;
+                                }
+                                if (!isRootPath && location.pathname.startsWith(`${item.path}/`)) {
+                                    return true;
+                                }
+                                return false;
+                            })()}
+                        >
+                            <ListItemIcon>{icon}</ListItemIcon>
+                            <ListItemText primary={item.label} />
+                        </ListItemButton>
+                    );
+                })}
             </List>
             <Divider />
             <Box

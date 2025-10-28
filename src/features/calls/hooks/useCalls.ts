@@ -1,6 +1,6 @@
 import { useMemo, useCallback, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { axiosInstance } from 'services/api-clients';
+import { apiClients } from 'services/api-clients';
 import type { CallSummary, CallParticipantSummary } from '../types/call';
 
 export const CALLS_QUERY_KEY = ['calls', 'me'];
@@ -125,10 +125,12 @@ export const normalizeCallSummary = (raw: RawCall): CallSummary | null => {
 
 const fetchCalls = async (): Promise<CallSummary[]> => {
     try {
-        const response = await axiosInstance.get<RawCall[]>('/calls');
+        const response = (await apiClients.calls.callControllerFindAll('all')) as unknown as {
+            data: RawCall[];
+        };
         const payload = Array.isArray(response.data) ? response.data : [];
         return payload
-            .map(item => normalizeCallSummary(item))
+            .map((item: RawCall) => normalizeCallSummary(item))
             .filter((item): item is CallSummary => item !== null);
     } catch (error) {
         console.warn('Failed to load calls:', error);
@@ -162,7 +164,6 @@ export const useCalls = (): {
             calls.forEach(call => {
                 if (call.status === 'scheduled' && call.scheduledStartTime) {
                     const scheduledTime = new Date(call.scheduledStartTime);
-                    // If scheduled time has passed, invalidate to refetch
                     if (scheduledTime <= now) {
                         void queryClient.invalidateQueries({ queryKey: CALLS_QUERY_KEY });
                     }
