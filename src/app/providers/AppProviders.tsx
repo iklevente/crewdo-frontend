@@ -4,12 +4,16 @@ import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/reac
 import { Toaster } from 'react-hot-toast';
 import { muiTheme } from 'theme';
 import { SocketProvider, useSocket } from 'services/socket-context';
+import type { MessageResponseDto } from 'api/models/message-response-dto';
 import { WORKSPACES_QUERY_KEY } from 'features/workspaces/hooks/useWorkspaces';
 import {
     WORKSPACE_DETAIL_QUERY_KEY,
     WORKSPACE_MEMBERS_QUERY_KEY
 } from 'features/workspaces/hooks/useWorkspaceDetails';
 import { WORKSPACE_CHANNELS_QUERY_KEY } from 'features/channels/hooks/useWorkspaceChannels';
+import { CHANNEL_DETAILS_QUERY_KEY } from 'features/channels/hooks/useChannelDetails';
+import { CHANNEL_MESSAGES_QUERY_KEY } from 'features/channels/hooks/useChannelMessages';
+import { DIRECT_MESSAGE_CHANNELS_QUERY_KEY } from 'features/channels/hooks/useDirectMessageChannels';
 import { CALLS_QUERY_KEY, normalizeCallSummary, type RawCall } from 'features/calls/hooks/useCalls';
 import { CALL_QUERY_KEY } from 'features/calls/hooks/useCallById';
 import type { CallSummary } from 'features/calls/types/call';
@@ -99,6 +103,84 @@ const SocketEffects: React.FC = () => {
         socket.on('workspace_member_added', handleWorkspaceMemberAdded);
         socket.on('workspace_member_removed', handleWorkspaceMemberRemoved);
 
+        const handleNewMessage = (payload: MessageResponseDto): void => {
+            const channelDetails = (payload?.channel ?? {}) as {
+                id?: string;
+                type?: string | null;
+            };
+
+            const channelId = typeof channelDetails.id === 'string' ? channelDetails.id : null;
+            const normalizedType = (channelDetails.type ?? '').toString().toLowerCase();
+
+            if (channelId) {
+                void queryClient.invalidateQueries({
+                    queryKey: CHANNEL_DETAILS_QUERY_KEY(channelId)
+                });
+                void queryClient.invalidateQueries({
+                    queryKey: CHANNEL_MESSAGES_QUERY_KEY(channelId)
+                });
+            }
+
+            if (normalizedType === 'dm' || normalizedType === 'group_dm') {
+                void queryClient.invalidateQueries({
+                    queryKey: DIRECT_MESSAGE_CHANNELS_QUERY_KEY
+                });
+                return;
+            }
+
+            let matchedWorkspaceId: string | null = null;
+
+            if (channelId) {
+                const workspaceChannelEntries = queryClient.getQueriesData<{ id?: string }[]>({
+                    queryKey: ['workspace-channels']
+                });
+
+                for (const [queryKey, data] of workspaceChannelEntries) {
+                    if (!Array.isArray(data)) {
+                        continue;
+                    }
+
+                    const belongsToWorkspace = data.some(channel => {
+                        return (
+                            channel !== null &&
+                            typeof channel === 'object' &&
+                            'id' in channel &&
+                            (channel as { id?: string }).id === channelId
+                        );
+                    });
+
+                    if (!belongsToWorkspace) {
+                        continue;
+                    }
+
+                    const typedKey = queryKey as [string, string];
+                    matchedWorkspaceId =
+                        typedKey?.length > 1 && typeof typedKey[1] === 'string'
+                            ? typedKey[1]
+                            : null;
+
+                    if (matchedWorkspaceId) {
+                        void queryClient.invalidateQueries({
+                            queryKey: WORKSPACE_CHANNELS_QUERY_KEY(matchedWorkspaceId)
+                        });
+                        void queryClient.invalidateQueries({
+                            queryKey: WORKSPACE_DETAIL_QUERY_KEY(matchedWorkspaceId)
+                        });
+                    }
+                    break;
+                }
+            }
+
+            if (!matchedWorkspaceId) {
+                void queryClient.invalidateQueries({ queryKey: ['workspace-channels'] });
+                void queryClient.invalidateQueries({ queryKey: ['workspace'] });
+            }
+
+            void queryClient.invalidateQueries({ queryKey: WORKSPACES_QUERY_KEY });
+        };
+
+        socket.on('new_message', handleNewMessage);
+
         const handleCallUpdated = (payload: RawCall): void => {
             const normalized = normalizeCallSummary(payload);
             if (!normalized) {
@@ -133,6 +215,7 @@ const SocketEffects: React.FC = () => {
         return () => {
             socket.off('workspace_member_added', handleWorkspaceMemberAdded);
             socket.off('workspace_member_removed', handleWorkspaceMemberRemoved);
+            socket.off('new_message', handleNewMessage);
             socket.off('call_updated', handleCallUpdated);
         };
     }, [socket, queryClient]);

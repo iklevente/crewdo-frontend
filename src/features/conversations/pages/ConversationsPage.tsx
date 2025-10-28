@@ -17,6 +17,7 @@ import {
 import ForumIcon from '@mui/icons-material/ForumOutlined';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import GroupAddIcon from '@mui/icons-material/GroupAddOutlined';
+import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import type { CreateDirectMessageDto } from 'api/models/create-direct-message-dto';
 import type { ChannelResponseDto } from 'api/models/channel-response-dto';
@@ -27,11 +28,15 @@ import { useAuthStore } from 'store/auth-store';
 import { PresenceBadge } from 'components/PresenceBadge';
 import { usePresence } from 'store/presence-store';
 import { ChannelListItem } from 'features/channels/components/ChannelListItem';
-import { useDirectMessageChannels } from 'features/channels/hooks/useDirectMessageChannels';
+import {
+    useDirectMessageChannels,
+    DIRECT_MESSAGE_CHANNELS_QUERY_KEY
+} from 'features/channels/hooks/useDirectMessageChannels';
 import { mapChannelResponse, type Channel } from 'features/channels/types/channel';
 import type { WorkspaceMember } from 'features/workspaces/types/workspace';
 import { GroupConversationDialog } from 'features/channels/components/GroupConversationDialog';
-import { useUserDirectory } from 'features/users/hooks/useUserDirectory';
+import { useUserDirectory, USER_DIRECTORY_QUERY_KEY } from 'features/users/hooks/useUserDirectory';
+import { useConversationChannelSubscriptions } from '../hooks/useConversationChannelSubscriptions';
 
 const MemberDirectoryRow: React.FC<{
     readonly member: WorkspaceMember;
@@ -88,21 +93,56 @@ const MemberDirectoryRow: React.FC<{
 export const ConversationsPage: React.FC = () => {
     const navigate = useAppNavigate();
     const currentUserId = useAuthStore(state => state.user?.id ?? null);
+    const queryClient = useQueryClient();
     const {
         channels: directMessageChannels,
         isLoading: isDirectMessagesLoading,
         isError: isDirectMessagesError,
-        refetch: refetchDirectMessages,
         invalidate: invalidateDirectMessages
     } = useDirectMessageChannels();
     const {
         members: directoryMembers,
         isLoading: isDirectoryLoading,
-        isError: isDirectoryError,
-        refetch: refetchDirectory
+        isError: isDirectoryError
     } = useUserDirectory();
     const [isGroupDialogOpen, setIsGroupDialogOpen] = React.useState(false);
     const [isCreatingConversation, setIsCreatingConversation] = React.useState(false);
+
+    const conversationChannelIds = React.useMemo(() => {
+        return directMessageChannels.map(channel => channel.id);
+    }, [directMessageChannels]);
+
+    useConversationChannelSubscriptions(conversationChannelIds);
+
+    const upsertDirectMessageChannel = React.useCallback(
+        (channel: Channel) => {
+            queryClient.setQueryData<Channel[]>(DIRECT_MESSAGE_CHANNELS_QUERY_KEY, existing => {
+                if (!existing || existing.length === 0) {
+                    return [channel];
+                }
+
+                const next = existing.slice();
+                const index = next.findIndex(item => item.id === channel.id);
+
+                if (index === -1) {
+                    next.unshift(channel);
+                } else {
+                    next[index] = channel;
+                    const [updated] = next.splice(index, 1);
+                    next.unshift(updated);
+                }
+
+                next.sort((a, b) => {
+                    const aTime = new Date(a.updatedAt ?? a.createdAt).getTime();
+                    const bTime = new Date(b.updatedAt ?? b.createdAt).getTime();
+                    return bTime - aTime;
+                });
+
+                return next;
+            });
+        },
+        [queryClient]
+    );
 
     const availableMembers = React.useMemo(() => {
         return directoryMembers
@@ -113,6 +153,10 @@ export const ConversationsPage: React.FC = () => {
                 return aName.localeCompare(bName);
             });
     }, [currentUserId, directoryMembers]);
+
+    const invalidateDirectory = React.useCallback(async (): Promise<void> => {
+        await queryClient.invalidateQueries({ queryKey: USER_DIRECTORY_QUERY_KEY });
+    }, [queryClient]);
 
     const oneToOneChannels = React.useMemo(
         () =>
@@ -150,8 +194,8 @@ export const ConversationsPage: React.FC = () => {
                 const createdChannel = mapChannelResponse(
                     response.data as unknown as ChannelResponseDto
                 );
+                upsertDirectMessageChannel(createdChannel);
                 await invalidateDirectMessages();
-                void refetchDirectMessages();
                 navigate(`/app/conversations/${createdChannel.id}`);
             } catch (error) {
                 const message =
@@ -161,7 +205,7 @@ export const ConversationsPage: React.FC = () => {
                 setIsCreatingConversation(false);
             }
         },
-        [invalidateDirectMessages, isCreatingConversation, navigate, refetchDirectMessages]
+        [invalidateDirectMessages, isCreatingConversation, navigate, upsertDirectMessageChannel]
     );
 
     const handleCreateGroupConversation = React.useCallback(
@@ -180,8 +224,8 @@ export const ConversationsPage: React.FC = () => {
                 const createdChannel = mapChannelResponse(
                     response.data as unknown as ChannelResponseDto
                 );
+                upsertDirectMessageChannel(createdChannel);
                 await invalidateDirectMessages();
-                void refetchDirectMessages();
                 setIsGroupDialogOpen(false);
                 navigate(`/app/conversations/${createdChannel.id}`);
             } catch (error) {
@@ -193,7 +237,7 @@ export const ConversationsPage: React.FC = () => {
                 setIsCreatingConversation(false);
             }
         },
-        [invalidateDirectMessages, isCreatingConversation, navigate, refetchDirectMessages]
+        [invalidateDirectMessages, isCreatingConversation, navigate, upsertDirectMessageChannel]
     );
 
     return (
@@ -348,7 +392,7 @@ export const ConversationsPage: React.FC = () => {
                                     color="inherit"
                                     size="small"
                                     onClick={() => {
-                                        void refetchDirectory();
+                                        void invalidateDirectory();
                                     }}
                                 >
                                     Retry

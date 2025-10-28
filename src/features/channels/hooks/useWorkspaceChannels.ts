@@ -13,7 +13,6 @@ interface UseWorkspaceChannelsResult {
     readonly channels: Channel[];
     readonly isLoading: boolean;
     readonly isError: boolean;
-    readonly refetch: () => Promise<unknown>;
     readonly invalidate: () => Promise<void>;
 }
 
@@ -22,8 +21,7 @@ export const useWorkspaceChannels = (workspaceId: string | null): UseWorkspaceCh
     const {
         data: channels = [],
         isLoading,
-        isError,
-        refetch
+        isError
     } = useQuery<Channel[]>({
         queryKey: WORKSPACE_CHANNELS_QUERY_KEY(workspaceId ?? ''),
         queryFn: async () => {
@@ -35,9 +33,7 @@ export const useWorkspaceChannels = (workspaceId: string | null): UseWorkspaceCh
             const payload = response.data as unknown as ChannelResponseDto[];
             return payload.map(mapChannelResponse);
         },
-        enabled: Boolean(workspaceId),
-        refetchInterval: 15000,
-        refetchIntervalInBackground: true
+        enabled: Boolean(workspaceId)
     });
 
     const invalidate = React.useCallback(async (): Promise<void> => {
@@ -53,7 +49,6 @@ export const useWorkspaceChannels = (workspaceId: string | null): UseWorkspaceCh
         channels,
         isLoading,
         isError,
-        refetch,
         invalidate
     };
 };

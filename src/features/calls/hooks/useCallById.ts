@@ -20,7 +20,6 @@ export const useCallById = (callId: string | null): UseQueryResult<CallSummary |
             const response = await axiosInstance.get<RawCall>(`/calls/${callId}`);
             return normalizeCallSummary(response.data);
         },
-        staleTime: 60_000,
-        refetchOnReconnect: true
+        staleTime: 60_000
     });
 };

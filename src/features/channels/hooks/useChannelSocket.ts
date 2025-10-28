@@ -8,9 +8,11 @@ import {
     WORKSPACE_DETAIL_QUERY_KEY,
     WORKSPACE_MEMBERS_QUERY_KEY
 } from 'features/workspaces/hooks/useWorkspaceDetails';
+import { WORKSPACES_QUERY_KEY } from 'features/workspaces/hooks/useWorkspaces';
 import { CHANNEL_MESSAGES_QUERY_KEY } from './useChannelMessages';
 import { CHANNEL_DETAILS_QUERY_KEY } from './useChannelDetails';
 import { WORKSPACE_CHANNELS_QUERY_KEY } from './useWorkspaceChannels';
+import { DIRECT_MESSAGE_CHANNELS_QUERY_KEY } from './useDirectMessageChannels';
 
 export const useChannelSocket = (channelId: string | null, workspaceId: string | null): void => {
     const { socket, joinChannel, leaveChannel } = useSocket();
@@ -81,6 +83,7 @@ export const useChannelSocket = (channelId: string | null, workspaceId: string |
         const handleNewMessage = (payload: MessageResponseDto): void => {
             const message = mapMessageResponse(payload);
             const targetChannelId = message.channel.id;
+            const channelType = (message.channel.type ?? '').toLowerCase();
             updateMessageCache(targetChannelId, message);
             void queryClient.invalidateQueries({
                 queryKey: CHANNEL_DETAILS_QUERY_KEY(targetChannelId)
@@ -91,6 +94,13 @@ export const useChannelSocket = (channelId: string | null, workspaceId: string |
                 });
                 void queryClient.invalidateQueries({
                     queryKey: WORKSPACE_DETAIL_QUERY_KEY(workspaceId)
+                });
+                void queryClient.invalidateQueries({
+                    queryKey: WORKSPACES_QUERY_KEY
+                });
+            } else if (channelType === 'dm' || channelType === 'group_dm') {
+                void queryClient.invalidateQueries({
+                    queryKey: DIRECT_MESSAGE_CHANNELS_QUERY_KEY
                 });
             }
         };
@@ -106,6 +116,13 @@ export const useChannelSocket = (channelId: string | null, workspaceId: string |
                 });
                 void queryClient.invalidateQueries({
                     queryKey: WORKSPACE_DETAIL_QUERY_KEY(workspaceId)
+                });
+                void queryClient.invalidateQueries({
+                    queryKey: WORKSPACES_QUERY_KEY
+                });
+            } else {
+                void queryClient.invalidateQueries({
+                    queryKey: DIRECT_MESSAGE_CHANNELS_QUERY_KEY
                 });
             }
         };
@@ -136,16 +153,28 @@ export const useChannelSocket = (channelId: string | null, workspaceId: string |
             }
         };
 
+        const handleReactionUpdated = (): void => {
+            if (!channelId) {
+                return;
+            }
+            // Invalidate messages to refresh reactions
+            void queryClient.invalidateQueries({
+                queryKey: CHANNEL_MESSAGES_QUERY_KEY(channelId)
+            });
+        };
+
         socket.on('new_message', handleNewMessage);
         socket.on('messages_read', handleMessagesRead);
         socket.on('user_joined_channel', handleUserJoinedChannel);
         socket.on('user_left_channel', handleUserLeftChannel);
+        socket.on('reaction_updated', handleReactionUpdated);
 
         return () => {
             socket.off('new_message', handleNewMessage);
             socket.off('messages_read', handleMessagesRead);
             socket.off('user_joined_channel', handleUserJoinedChannel);
             socket.off('user_left_channel', handleUserLeftChannel);
+            socket.off('reaction_updated', handleReactionUpdated);
         };
     }, [socket, queryClient, workspaceId, channelId, updateMessageCache]);
 };

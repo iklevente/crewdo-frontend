@@ -550,7 +550,7 @@ const CallSection: React.FC<CallSectionProps> = ({
 export const CallsPage: React.FC = () => {
     const currentUserId = useAuthStore(state => state.user?.id ?? null);
     const { members, isLoading: isUserDirectoryLoading } = useUserDirectory();
-    const { activeCalls, scheduledCalls, pastCalls, isLoading, isError, refetch } = useCalls();
+    const { activeCalls, scheduledCalls, pastCalls, isLoading, isError, invalidate } = useCalls();
     const {
         state: { activeCallId },
         actions: {
@@ -957,7 +957,13 @@ export const CallsPage: React.FC = () => {
                         <Alert
                             severity="error"
                             action={
-                                <Button color="inherit" size="small" onClick={() => void refetch()}>
+                                <Button
+                                    color="inherit"
+                                    size="small"
+                                    onClick={() => {
+                                        void invalidate();
+                                    }}
+                                >
                                     Retry
                                 </Button>
                             }

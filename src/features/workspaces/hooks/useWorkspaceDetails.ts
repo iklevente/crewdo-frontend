@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { apiClients } from 'services/api-clients';
 import {
@@ -31,9 +31,12 @@ interface UseWorkspaceDetailsResult {
     readonly isWorkspaceError: boolean;
     readonly isMembersLoading: boolean;
     readonly isMembersError: boolean;
+    readonly invalidateWorkspace: () => Promise<void>;
+    readonly invalidateMembers: () => Promise<void>;
 }
 
 export const useWorkspaceDetails = (workspaceId: string | null): UseWorkspaceDetailsResult => {
+    const queryClient = useQueryClient();
     const {
         data: workspace,
         isLoading: isWorkspaceLoading,
@@ -47,9 +50,7 @@ export const useWorkspaceDetails = (workspaceId: string | null): UseWorkspaceDet
             const response = await apiClients.workspaces.workspaceControllerFindOne(workspaceId);
             return response.data as unknown as Workspace;
         },
-        enabled: Boolean(workspaceId),
-        refetchInterval: 10000,
-        refetchIntervalInBackground: true
+        enabled: Boolean(workspaceId)
     });
 
     const {
@@ -65,10 +66,26 @@ export const useWorkspaceDetails = (workspaceId: string | null): UseWorkspaceDet
             const response = await apiClients.workspaces.workspaceControllerGetMembers(workspaceId);
             return response.data as unknown as WorkspaceMembersResponse;
         },
-        enabled: Boolean(workspaceId),
-        refetchInterval: 10000,
-        refetchIntervalInBackground: true
+        enabled: Boolean(workspaceId)
     });
+
+    const invalidateWorkspace = React.useCallback(async (): Promise<void> => {
+        if (!workspaceId) {
+            return;
+        }
+        await queryClient.invalidateQueries({
+            queryKey: WORKSPACE_DETAIL_QUERY_KEY(workspaceId)
+        });
+    }, [queryClient, workspaceId]);
+
+    const invalidateMembers = React.useCallback(async (): Promise<void> => {
+        if (!workspaceId) {
+            return;
+        }
+        await queryClient.invalidateQueries({
+            queryKey: WORKSPACE_MEMBERS_QUERY_KEY(workspaceId)
+        });
+    }, [queryClient, workspaceId]);
 
     React.useEffect(() => {
         if (!membersPayload) {
@@ -168,6 +185,8 @@ export const useWorkspaceDetails = (workspaceId: string | null): UseWorkspaceDet
         isWorkspaceLoading,
         isWorkspaceError,
         isMembersLoading,
-        isMembersError
+        isMembersError,
+        invalidateWorkspace,
+        invalidateMembers
     };
 };

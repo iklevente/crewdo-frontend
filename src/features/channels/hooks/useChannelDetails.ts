@@ -34,9 +34,7 @@ export const useChannelDetails = (channelId: string | null): UseChannelDetailsRe
             const payload = response.data as unknown as ChannelResponseDto;
             return mapChannelResponse(payload);
         },
-        enabled: Boolean(channelId),
-        refetchInterval: 15000,
-        refetchIntervalInBackground: true
+        enabled: Boolean(channelId)
     });
 
     const invalidate = React.useCallback(async (): Promise<void> => {

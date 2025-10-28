@@ -14,7 +14,6 @@ interface UseProjectsResult {
     readonly projects: Project[];
     readonly isLoading: boolean;
     readonly isError: boolean;
-    readonly refetch: () => Promise<unknown>;
     readonly createProject: (payload: CreateProjectDto) => Promise<void>;
     readonly updateProject: (id: string, payload: UpdateProjectDto) => Promise<void>;
     readonly deleteProject: (id: string) => Promise<void>;
@@ -33,8 +32,7 @@ export const useProjects = (workspaceId: string | null): UseProjectsResult => {
     const {
         data: projects = [],
         isLoading,
-        isError,
-        refetch
+        isError
     } = useQuery<Project[]>({
         queryKey,
         queryFn: async () => {
@@ -47,8 +45,8 @@ export const useProjects = (workspaceId: string | null): UseProjectsResult => {
     });
 
     const invalidate = React.useCallback(async (): Promise<void> => {
-        await queryClient.invalidateQueries({ queryKey: PROJECTS_QUERY_KEY });
-    }, [queryClient]);
+        await queryClient.invalidateQueries({ queryKey });
+    }, [queryClient, queryKey]);
 
     const { mutateAsync: handleCreate } = useMutation({
         mutationFn: async (payload: CreateProjectDto) => {
@@ -126,7 +124,6 @@ export const useProjects = (workspaceId: string | null): UseProjectsResult => {
         projects,
         isLoading,
         isError,
-        refetch,
         createProject: React.useCallback(
             async (payload: CreateProjectDto) => {
                 await handleCreate(payload);

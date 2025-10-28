@@ -4,13 +4,12 @@ import type { ChannelResponseDto } from 'api/models/channel-response-dto';
 import { apiClients } from 'services/api-clients';
 import { mapChannelResponse, type Channel } from '../types/channel';
 
-const DIRECT_MESSAGE_CHANNELS_QUERY_KEY = ['direct-message-channels'];
+export const DIRECT_MESSAGE_CHANNELS_QUERY_KEY = ['direct-message-channels'] as const;
 
 interface UseDirectMessageChannelsResult {
     readonly channels: Channel[];
     readonly isLoading: boolean;
     readonly isError: boolean;
-    readonly refetch: () => Promise<unknown>;
     readonly invalidate: () => Promise<void>;
 }
 
@@ -19,17 +18,14 @@ export const useDirectMessageChannels = (): UseDirectMessageChannelsResult => {
     const {
         data: channels = [],
         isLoading,
-        isError,
-        refetch
+        isError
     } = useQuery<Channel[]>({
         queryKey: DIRECT_MESSAGE_CHANNELS_QUERY_KEY,
         queryFn: async () => {
             const response = await apiClients.channels.channelControllerFindDirectMessages();
             const payload = response.data as unknown as ChannelResponseDto[];
             return payload.map(mapChannelResponse);
-        },
-        refetchInterval: 15000,
-        refetchIntervalInBackground: true
+        }
     });
 
     const invalidate = React.useCallback(async (): Promise<void> => {
@@ -40,7 +36,6 @@ export const useDirectMessageChannels = (): UseDirectMessageChannelsResult => {
         channels,
         isLoading,
         isError,
-        refetch,
         invalidate
     };
 };

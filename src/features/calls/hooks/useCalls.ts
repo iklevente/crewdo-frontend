@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMemo, useCallback } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { axiosInstance } from 'services/api-clients';
 import type { CallSummary, CallParticipantSummary } from '../types/call';
 
@@ -143,19 +143,17 @@ export const useCalls = (): {
     readonly pastCalls: CallSummary[];
     readonly isLoading: boolean;
     readonly isError: boolean;
-    readonly refetch: () => Promise<unknown>;
+    readonly invalidate: () => Promise<void>;
 } => {
+    const queryClient = useQueryClient();
     const {
         data: calls = [],
         isLoading,
-        isError,
-        refetch
+        isError
     } = useQuery<CallSummary[]>({
         queryKey: CALLS_QUERY_KEY,
         queryFn: fetchCalls,
-        staleTime: 60_000,
-        refetchOnMount: true,
-        refetchOnReconnect: true
+        staleTime: 60_000
     });
 
     const { activeCalls, scheduledCalls, pastCalls } = useMemo(() => {
@@ -175,6 +173,10 @@ export const useCalls = (): {
         return { activeCalls: active, scheduledCalls: scheduled, pastCalls: past };
     }, [calls]);
 
+    const invalidate = useCallback(async (): Promise<void> => {
+        await queryClient.invalidateQueries({ queryKey: CALLS_QUERY_KEY });
+    }, [queryClient]);
+
     return {
         calls,
         activeCalls,
@@ -182,6 +184,6 @@ export const useCalls = (): {
         pastCalls,
         isLoading,
         isError,
-        refetch
+        invalidate
     };
 };

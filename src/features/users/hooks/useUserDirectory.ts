@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { apiClients } from 'services/api-clients';
 import type { WorkspaceMember } from 'features/workspaces/types/workspace';
 
-const USER_DIRECTORY_QUERY_KEY = ['user-directory'];
+export const USER_DIRECTORY_QUERY_KEY = ['user-directory'] as const;
 
 interface RawUser {
     readonly id: string;
@@ -16,15 +16,13 @@ interface UseUserDirectoryResult {
     readonly members: WorkspaceMember[];
     readonly isLoading: boolean;
     readonly isError: boolean;
-    readonly refetch: () => Promise<unknown>;
 }
 
 export const useUserDirectory = (): UseUserDirectoryResult => {
     const {
         data: members = [],
         isLoading,
-        isError,
-        refetch
+        isError
     } = useQuery<WorkspaceMember[]>({
         queryKey: USER_DIRECTORY_QUERY_KEY,
         queryFn: async () => {
@@ -44,7 +42,6 @@ export const useUserDirectory = (): UseUserDirectoryResult => {
     return {
         members,
         isLoading,
-        isError,
-        refetch
+        isError
     };
 };

@@ -33,6 +33,7 @@ import { WorkspaceOverview } from '../components/WorkspaceOverview';
 import { WorkspaceMembersPanel } from '../components/WorkspaceMembersPanel';
 import { useWorkspaces } from '../hooks/useWorkspaces';
 import { useWorkspaceDetails } from '../hooks/useWorkspaceDetails';
+import { useWorkspaceChannelSubscriptions } from '../hooks/useWorkspaceChannelSubscriptions';
 
 export const WorkspacesPage: React.FC = () => {
     const navigate = useAppNavigate();
@@ -129,6 +130,15 @@ export const WorkspacesPage: React.FC = () => {
     } = useChannelManagement(currentWorkspaceId);
 
     const combinedBusyState = isSubmittingWorkspace || isChannelBusy;
+
+    const subscriptionChannelIds = React.useMemo(() => {
+        if (!currentWorkspaceId) {
+            return [] as string[];
+        }
+        return channels.map(channel => channel.id);
+    }, [channels, currentWorkspaceId]);
+
+    useWorkspaceChannelSubscriptions(subscriptionChannelIds);
 
     const workspaceInitialValues = React.useMemo<WorkspaceFormValues | undefined>(() => {
         if (!currentWorkspace) {

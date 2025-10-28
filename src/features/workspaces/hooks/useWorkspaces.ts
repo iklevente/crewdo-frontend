@@ -13,12 +13,12 @@ interface UseWorkspacesResult {
     readonly isLoading: boolean;
     readonly isFetched: boolean;
     readonly isError: boolean;
-    readonly refetch: () => Promise<unknown>;
     readonly createWorkspace: (payload: CreateWorkspaceDto) => Promise<void>;
     readonly updateWorkspace: (id: string, payload: UpdateWorkspaceDto) => Promise<void>;
     readonly deleteWorkspace: (id: string) => Promise<void>;
     readonly addWorkspaceMember: (workspaceId: string, email: string) => Promise<void>;
     readonly removeWorkspaceMember: (workspaceId: string, userId: string) => Promise<void>;
+    readonly invalidate: () => Promise<void>;
 }
 
 export const useWorkspaces = (): UseWorkspacesResult => {
@@ -28,8 +28,7 @@ export const useWorkspaces = (): UseWorkspacesResult => {
         data: workspaces = [],
         isLoading,
         isFetched,
-        isError,
-        refetch
+        isError
     } = useQuery<Workspace[]>({
         queryKey: WORKSPACES_QUERY_KEY,
         queryFn: async () => {
@@ -38,8 +37,8 @@ export const useWorkspaces = (): UseWorkspacesResult => {
         }
     });
 
-    const handleInvalidate = React.useCallback(() => {
-        void queryClient.invalidateQueries({ queryKey: WORKSPACES_QUERY_KEY });
+    const invalidate = React.useCallback(async (): Promise<void> => {
+        await queryClient.invalidateQueries({ queryKey: WORKSPACES_QUERY_KEY });
     }, [queryClient]);
 
     const { mutateAsync: handleCreate } = useMutation({
@@ -49,7 +48,7 @@ export const useWorkspaces = (): UseWorkspacesResult => {
         },
         onSuccess: created => {
             toast.success(`Workspace “${created.name}” created`);
-            handleInvalidate();
+            void invalidate();
         },
         onError: error => {
             toast.error(error instanceof Error ? error.message : 'Failed to create workspace');
@@ -63,7 +62,7 @@ export const useWorkspaces = (): UseWorkspacesResult => {
         },
         onSuccess: updated => {
             toast.success(`Workspace “${updated.name}” updated`);
-            handleInvalidate();
+            void invalidate();
         },
         onError: error => {
             toast.error(error instanceof Error ? error.message : 'Failed to update workspace');
@@ -76,7 +75,7 @@ export const useWorkspaces = (): UseWorkspacesResult => {
         },
         onSuccess: () => {
             toast.success('Workspace deleted');
-            handleInvalidate();
+            void invalidate();
         },
         onError: error => {
             toast.error(error instanceof Error ? error.message : 'Failed to delete workspace');
@@ -89,7 +88,7 @@ export const useWorkspaces = (): UseWorkspacesResult => {
         },
         onSuccess: () => {
             toast.success('Member added to workspace');
-            handleInvalidate();
+            void invalidate();
         },
         onError: error => {
             toast.error(error instanceof Error ? error.message : 'Failed to add member');
@@ -102,7 +101,7 @@ export const useWorkspaces = (): UseWorkspacesResult => {
         },
         onSuccess: () => {
             toast.success('Member removed from workspace');
-            handleInvalidate();
+            void invalidate();
         },
         onError: error => {
             toast.error(error instanceof Error ? error.message : 'Failed to remove member');
@@ -114,7 +113,6 @@ export const useWorkspaces = (): UseWorkspacesResult => {
         isLoading,
         isFetched,
         isError,
-        refetch,
         createWorkspace: React.useCallback(
             async (payload: CreateWorkspaceDto) => {
                 await handleCreate(payload);
@@ -144,6 +142,7 @@ export const useWorkspaces = (): UseWorkspacesResult => {
                 await handleRemoveMember({ workspaceId, userId });
             },
             [handleRemoveMember]
-        )
+        ),
+        invalidate
     };
 };

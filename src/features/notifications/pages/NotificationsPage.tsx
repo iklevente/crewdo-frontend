@@ -1,4 +1,5 @@
 import React from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import {
     Alert,
     Box,
@@ -15,7 +16,7 @@ import RefreshIcon from '@mui/icons-material/RefreshOutlined';
 import { NotificationFilters } from '../components/NotificationFilters';
 import { NotificationListItem } from '../components/NotificationListItem';
 import { useNotificationMutations } from '../hooks/useNotificationMutations';
-import { useNotifications } from '../hooks/useNotifications';
+import { useNotifications, NOTIFICATIONS_QUERY_KEY } from '../hooks/useNotifications';
 import type { NotificationQueryState } from '../types/notification';
 
 const DEFAULT_FILTERS: NotificationQueryState = {
@@ -28,16 +29,13 @@ const DEFAULT_FILTERS: NotificationQueryState = {
 export const NotificationsPage: React.FC = () => {
     const [filters, setFilters] = React.useState<NotificationQueryState>(DEFAULT_FILTERS);
 
-    const {
-        notifications,
-        total,
-        unreadCount,
-        isLoading,
-        isFetching,
-        isError,
-        refetch,
-        resolvedFilters
-    } = useNotifications(filters);
+    const { notifications, total, unreadCount, isLoading, isFetching, isError, resolvedFilters } =
+        useNotifications(filters);
+
+    const queryClient = useQueryClient();
+    const invalidateNotifications = React.useCallback(async (): Promise<void> => {
+        await queryClient.invalidateQueries({ queryKey: NOTIFICATIONS_QUERY_KEY });
+    }, [queryClient]);
 
     const { toggleRead, deleteNotification, markAllAsRead, isMarkAllPending } =
         useNotificationMutations();
@@ -101,7 +99,7 @@ export const NotificationsPage: React.FC = () => {
                             variant="outlined"
                             startIcon={<RefreshIcon />}
                             onClick={() => {
-                                void refetch();
+                                void invalidateNotifications();
                             }}
                             disabled={isFetching}
                         >
@@ -138,7 +136,13 @@ export const NotificationsPage: React.FC = () => {
                     <Alert
                         severity="error"
                         action={
-                            <Button color="inherit" size="small" onClick={() => void refetch()}>
+                            <Button
+                                color="inherit"
+                                size="small"
+                                onClick={() => {
+                                    void invalidateNotifications();
+                                }}
+                            >
                                 Retry
                             </Button>
                         }
@@ -163,7 +167,7 @@ export const NotificationsPage: React.FC = () => {
                                 variant="outlined"
                                 startIcon={<RefreshIcon />}
                                 onClick={() => {
-                                    void refetch();
+                                    void invalidateNotifications();
                                 }}
                                 disabled={isFetching}
                             >
