@@ -6,6 +6,9 @@ const apiBaseUrl = parsed.API_BASE_URL ?? process.env.API_BASE_URL ?? '';
 
 export default defineConfig({
     plugins: [pluginReact()],
+    server: {
+        port: 3001
+    },
     source: {
         define: {
             'process.env.API_BASE_URL': JSON.stringify(apiBaseUrl)

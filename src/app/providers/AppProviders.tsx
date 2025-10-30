@@ -122,6 +122,130 @@ const SocketEffects: React.FC<SocketEffectsProps> = ({ showIncomingCall }) => {
         socket.on('workspace_member_added', handleWorkspaceMemberAdded);
         socket.on('workspace_member_removed', handleWorkspaceMemberRemoved);
 
+        const invalidateWorkspace = (workspaceId: string | null): void => {
+            invalidate(WORKSPACES_QUERY_KEY);
+
+            if (!workspaceId) {
+                return;
+            }
+
+            invalidate(WORKSPACE_DETAIL_QUERY_KEY(workspaceId));
+            invalidate(WORKSPACE_MEMBERS_QUERY_KEY(workspaceId));
+            invalidate(WORKSPACE_CHANNELS_QUERY_KEY(workspaceId));
+        };
+
+        const handleWorkspaceCreated = (payload: { workspaceId?: string | null }): void => {
+            const workspaceId =
+                typeof payload?.workspaceId === 'string' && payload.workspaceId.length > 0
+                    ? payload.workspaceId
+                    : null;
+
+            console.log('[Socket] workspace_created received:', payload);
+            invalidateWorkspace(workspaceId);
+        };
+
+        const handleWorkspaceUpdated = (payload: { workspaceId?: string | null }): void => {
+            const workspaceId =
+                typeof payload?.workspaceId === 'string' && payload.workspaceId.length > 0
+                    ? payload.workspaceId
+                    : null;
+
+            console.log('[Socket] workspace_updated received:', payload);
+            invalidateWorkspace(workspaceId);
+        };
+
+        const handleWorkspaceDeleted = (payload: { workspaceId?: string | null }): void => {
+            const workspaceId =
+                typeof payload?.workspaceId === 'string' && payload.workspaceId.length > 0
+                    ? payload.workspaceId
+                    : null;
+
+            console.log('[Socket] workspace_deleted received:', payload);
+
+            if (workspaceId) {
+                queryClient.removeQueries({ queryKey: WORKSPACE_DETAIL_QUERY_KEY(workspaceId) });
+                queryClient.removeQueries({ queryKey: WORKSPACE_MEMBERS_QUERY_KEY(workspaceId) });
+                queryClient.removeQueries({ queryKey: WORKSPACE_CHANNELS_QUERY_KEY(workspaceId) });
+            }
+
+            invalidateWorkspace(workspaceId);
+        };
+
+        socket.on('workspace_created', handleWorkspaceCreated);
+        socket.on('workspace_updated', handleWorkspaceUpdated);
+        socket.on('workspace_deleted', handleWorkspaceDeleted);
+
+        const refreshChannelCaches = (args: {
+            channelId?: string | null;
+            workspaceId?: string | null;
+        }): void => {
+            const channelId =
+                typeof args.channelId === 'string' && args.channelId.length > 0
+                    ? args.channelId
+                    : null;
+            const workspaceId =
+                typeof args.workspaceId === 'string' && args.workspaceId.length > 0
+                    ? args.workspaceId
+                    : null;
+
+            if (channelId) {
+                invalidate(CHANNEL_DETAILS_QUERY_KEY(channelId));
+                invalidate(CHANNEL_MESSAGES_QUERY_KEY(channelId));
+            }
+
+            if (workspaceId) {
+                invalidate(WORKSPACE_CHANNELS_QUERY_KEY(workspaceId));
+                invalidate(WORKSPACE_DETAIL_QUERY_KEY(workspaceId));
+            } else {
+                invalidate(DIRECT_MESSAGE_CHANNELS_QUERY_KEY);
+            }
+
+            invalidate(WORKSPACES_QUERY_KEY);
+        };
+
+        const handleChannelCreated = (payload: {
+            channelId?: string | null;
+            workspaceId?: string | null;
+        }): void => {
+            console.log('[Socket] channel_created received:', payload);
+            refreshChannelCaches(payload);
+        };
+
+        const handleChannelUpdated = (payload: {
+            channelId?: string | null;
+            workspaceId?: string | null;
+        }): void => {
+            console.log('[Socket] channel_updated received:', payload);
+            refreshChannelCaches(payload);
+        };
+
+        const handleChannelDeleted = (payload: {
+            channelId?: string | null;
+            workspaceId?: string | null;
+        }): void => {
+            console.log('[Socket] channel_deleted received:', payload);
+
+            const channelId =
+                typeof payload?.channelId === 'string' && payload.channelId.length > 0
+                    ? payload.channelId
+                    : null;
+            const workspaceId =
+                typeof payload?.workspaceId === 'string' && payload.workspaceId.length > 0
+                    ? payload.workspaceId
+                    : null;
+
+            if (channelId) {
+                queryClient.removeQueries({ queryKey: CHANNEL_DETAILS_QUERY_KEY(channelId) });
+                queryClient.removeQueries({ queryKey: CHANNEL_MESSAGES_QUERY_KEY(channelId) });
+            }
+
+            refreshChannelCaches({ channelId, workspaceId });
+        };
+
+        socket.on('channel_created', handleChannelCreated);
+        socket.on('channel_updated', handleChannelUpdated);
+        socket.on('channel_deleted', handleChannelDeleted);
+
         const handleNewMessage = (payload: MessageResponseDto): void => {
             console.log('[Socket] new_message received, payload:', payload);
 
@@ -351,6 +475,12 @@ const SocketEffects: React.FC<SocketEffectsProps> = ({ showIncomingCall }) => {
         return () => {
             socket.off('workspace_member_added', handleWorkspaceMemberAdded);
             socket.off('workspace_member_removed', handleWorkspaceMemberRemoved);
+            socket.off('workspace_created', handleWorkspaceCreated);
+            socket.off('workspace_updated', handleWorkspaceUpdated);
+            socket.off('workspace_deleted', handleWorkspaceDeleted);
+            socket.off('channel_created', handleChannelCreated);
+            socket.off('channel_updated', handleChannelUpdated);
+            socket.off('channel_deleted', handleChannelDeleted);
             socket.off('new_message', handleNewMessage);
             socket.off('call_updated', handleCallUpdated);
             socket.off('incoming_call', handleIncomingCall);
