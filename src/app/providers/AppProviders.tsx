@@ -58,7 +58,6 @@ export const AppProviders: React.FC<React.PropsWithChildren> = ({ children }) =>
             <SocketProvider>
                 <ThemeProvider theme={muiTheme}>
                     <CssBaseline />
-                    <SocketEffects />
                     {children}
                     <Toaster position="top-right" />
                 </ThemeProvider>
@@ -67,7 +66,22 @@ export const AppProviders: React.FC<React.PropsWithChildren> = ({ children }) =>
     );
 };
 
-const SocketEffects: React.FC = () => {
+export { SocketEffects };
+
+interface SocketEffectsProps {
+    readonly showIncomingCall?: (call: {
+        id: string;
+        title?: string;
+        type: 'voice' | 'video';
+        initiator: {
+            id: string;
+            firstName: string;
+            lastName: string;
+        };
+    }) => void;
+}
+
+const SocketEffects: React.FC<SocketEffectsProps> = ({ showIncomingCall }) => {
     const { socket } = useSocket();
     const queryClient = useQueryClient();
 
@@ -81,7 +95,6 @@ const SocketEffects: React.FC = () => {
 
         const invalidate = (queryKey: QueryKey): void => {
             void queryClient.invalidateQueries({ queryKey });
-            // void queryClient.refetchQueries({ queryKey, type: 'active' });
         };
 
         const handleWorkspaceMemberAdded = (payload: {
@@ -207,6 +220,34 @@ const SocketEffects: React.FC = () => {
 
         socket.on('call_updated', handleCallUpdated);
 
+        const handleIncomingCall = (payload: RawCall): void => {
+            console.log('[Socket] incoming_call received:', payload);
+            const normalized = normalizeCallSummary(payload);
+            if (!normalized) {
+                console.warn('[Socket] Failed to normalize incoming call data');
+                return;
+            }
+
+            // Show the incoming call modal if handler is provided
+            if (showIncomingCall) {
+                showIncomingCall({
+                    id: normalized.id,
+                    title: normalized.title ?? undefined,
+                    type: normalized.type as 'voice' | 'video',
+                    initiator: {
+                        id: normalized.initiator.id,
+                        firstName: normalized.initiator.firstName ?? 'Unknown',
+                        lastName: normalized.initiator.lastName ?? ''
+                    }
+                });
+            }
+
+            // Also invalidate calls queries
+            invalidate(CALLS_QUERY_KEY);
+        };
+
+        socket.on('incoming_call', handleIncomingCall);
+
         // Debug: Log all incoming events
         const debugListener = (eventName: string, ...args: unknown[]): void => {
             console.log('[Socket] Received event:', eventName, args);
@@ -312,6 +353,7 @@ const SocketEffects: React.FC = () => {
             socket.off('workspace_member_removed', handleWorkspaceMemberRemoved);
             socket.off('new_message', handleNewMessage);
             socket.off('call_updated', handleCallUpdated);
+            socket.off('incoming_call', handleIncomingCall);
             socket.off('project_created', handleProjectCreated);
             socket.off('project_updated', handleProjectUpdated);
             socket.off('project_deleted', handleProjectDeleted);
@@ -327,7 +369,7 @@ const SocketEffects: React.FC = () => {
             socket.off('notifications_marked_read', handleNotificationsMarkedRead);
             socket.offAny(debugListener);
         };
-    }, [socket, queryClient]);
+    }, [socket, queryClient, showIncomingCall]);
 
     return null;
 };
