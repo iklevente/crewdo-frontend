@@ -398,18 +398,18 @@ const CallCard: React.FC<{
 
     const participantsWithHost = React.useMemo(() => {
         const seenUserIds = new Set<string>();
-        const items: Array<{
+        const items: {
             readonly key: string;
             readonly displayName: string;
             readonly initials: string;
             readonly isHost: boolean;
-        }> = [];
+        }[] = [];
 
         const addParticipant = (
             userId: string,
             firstName?: string,
             lastName?: string,
-            isHost: boolean = false
+            isHost = false
         ): void => {
             if (seenUserIds.has(userId)) {
                 return;

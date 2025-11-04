@@ -7,7 +7,6 @@ import {
     Button,
     Card,
     CardContent,
-    CardActions,
     Chip,
     Divider,
     List,
@@ -26,7 +25,6 @@ import CallIcon from '@mui/icons-material/Call';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import AddIcon from '@mui/icons-material/Add';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
 import { apiClients } from 'services/api-clients';
