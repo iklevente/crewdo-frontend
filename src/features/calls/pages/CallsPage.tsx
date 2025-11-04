@@ -7,7 +7,6 @@ import {
     Button,
     Chip,
     CircularProgress,
-    MenuItem,
     Paper,
     Stack,
     Switch,
@@ -66,11 +65,30 @@ const useCameraPreview = (
     readonly videoRef: React.RefObject<HTMLVideoElement | null>;
     readonly isLoading: boolean;
     readonly error: string | null;
+    readonly needsManualStart: boolean;
+    readonly requestManualStart: () => Promise<void>;
 } => {
     const videoRef = React.useRef<HTMLVideoElement | null>(null);
     const streamRef = React.useRef<MediaStream | null>(null);
     const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState<string | null>(null);
+    const [needsManualStart, setNeedsManualStart] = React.useState(false);
+
+    const attemptPlay = React.useCallback(async (): Promise<void> => {
+        const element = videoRef.current;
+        if (!element) {
+            return;
+        }
+        try {
+            await element.play();
+            setNeedsManualStart(false);
+            setError(null);
+        } catch (playError) {
+            console.warn('Failed to start camera playback', playError);
+            setNeedsManualStart(true);
+            setError(null);
+        }
+    }, []);
 
     React.useEffect(() => {
         let active = true;
@@ -81,12 +99,14 @@ const useCameraPreview = (
             }
             streamRef.current.getTracks().forEach(track => track.stop());
             streamRef.current = null;
+            setNeedsManualStart(false);
         };
 
         const startPreview = async (): Promise<void> => {
             if (!enabled) {
                 stopStream();
                 setError(null);
+                setNeedsManualStart(false);
                 return;
             }
 
@@ -103,9 +123,7 @@ const useCameraPreview = (
                 streamRef.current = stream;
                 if (videoRef.current) {
                     videoRef.current.srcObject = stream;
-                    void videoRef.current.play().catch(() => {
-                        /* ignore autoplay errors */
-                    });
+                    await attemptPlay();
                 }
                 setError(null);
             } catch (previewError) {
@@ -124,14 +142,22 @@ const useCameraPreview = (
             active = false;
             stopStream();
         };
-    }, [enabled]);
+    }, [attemptPlay, enabled]);
 
-    return { videoRef, isLoading, error } as const;
+    return {
+        videoRef,
+        isLoading,
+        error,
+        needsManualStart,
+        requestManualStart: attemptPlay
+    } as const;
 };
 
 const CameraPreview: React.FC<{ readonly enabled: boolean }> = ({ enabled }) => {
     const theme = useTheme();
-    const { videoRef, isLoading, error } = useCameraPreview(enabled);
+    const { videoRef, isLoading, error, needsManualStart, requestManualStart } =
+        useCameraPreview(enabled);
+    const manualStartOverlayVisible = enabled && needsManualStart;
 
     return (
         <Box
@@ -189,6 +215,35 @@ const CameraPreview: React.FC<{ readonly enabled: boolean }> = ({ enabled }) => 
                 >
                     <CircularProgress size={32} color="inherit" />
                     <Typography variant="body2">Connecting to camera…</Typography>
+                </Stack>
+            ) : null}
+            {manualStartOverlayVisible ? (
+                <Stack
+                    spacing={1}
+                    alignItems="center"
+                    justifyContent="center"
+                    sx={{
+                        position: 'absolute',
+                        inset: 0,
+                        bgcolor: alpha(theme.palette.common.black, 0.5),
+                        color: 'common.white',
+                        textAlign: 'center',
+                        p: 3
+                    }}
+                >
+                    <Typography variant="body2">
+                        Your browser blocked the camera preview. Enable it to see yourself before
+                        joining.
+                    </Typography>
+                    <Button
+                        variant="contained"
+                        size="small"
+                        onClick={() => {
+                            void requestManualStart();
+                        }}
+                    >
+                        Enable preview
+                    </Button>
                 </Stack>
             ) : null}
         </Box>
@@ -341,7 +396,52 @@ const CallCard: React.FC<{
     const scheduledText = formatDateTime(call.scheduledStartTime);
     const endedText = formatDateTime(call.endedAt);
 
-    const { participants } = call;
+    const participantsWithHost = React.useMemo(() => {
+        const seenUserIds = new Set<string>();
+        const items: Array<{
+            readonly key: string;
+            readonly displayName: string;
+            readonly initials: string;
+            readonly isHost: boolean;
+        }> = [];
+
+        const addParticipant = (
+            userId: string,
+            firstName?: string,
+            lastName?: string,
+            isHost: boolean = false
+        ): void => {
+            if (seenUserIds.has(userId)) {
+                return;
+            }
+            seenUserIds.add(userId);
+            const displayName = getDisplayName(firstName, lastName);
+            const initials = displayName
+                .split(' ')
+                .filter(Boolean)
+                .map(part => part.charAt(0).toUpperCase())
+                .join('')
+                .slice(0, 2);
+            items.push({
+                key: `${isHost ? 'host' : 'participant'}-${userId}`,
+                displayName: isHost ? `${displayName} (Host)` : displayName,
+                initials: initials.length > 0 ? initials : displayName.charAt(0).toUpperCase(),
+                isHost
+            });
+        };
+
+        addParticipant(call.initiator.id, call.initiator.firstName, call.initiator.lastName, true);
+        for (const participantItem of call.participants) {
+            addParticipant(
+                participantItem.user.id,
+                participantItem.user.firstName,
+                participantItem.user.lastName,
+                participantItem.user.id === call.initiator.id
+            );
+        }
+
+        return items;
+    }, [call.initiator, call.participants]);
     const displayTitle = call.title?.trim();
     const fallbackTitle = `${call.type === 'voice' ? 'Voice' : call.type === 'video' ? 'Video' : 'Screen share'} call`;
     const callIcon =
@@ -419,27 +519,22 @@ const CallCard: React.FC<{
                             max={6}
                             sx={{ justifyContent: { xs: 'flex-start', sm: 'flex-end' } }}
                         >
-                            {participants.map(participantItem => {
-                                const displayName = getDisplayName(
-                                    participantItem.user.firstName,
-                                    participantItem.user.lastName
-                                );
-                                const initials = displayName
-                                    .split(' ')
-                                    .map(part => part.charAt(0))
-                                    .join('')
-                                    .slice(0, 2)
-                                    .toUpperCase();
-                                return (
-                                    <Tooltip
-                                        key={participantItem.id}
-                                        title={displayName}
-                                        placement="top"
+                            {participantsWithHost.map(item => (
+                                <Tooltip key={item.key} title={item.displayName} placement="top">
+                                    <Avatar
+                                        sx={
+                                            item.isHost
+                                                ? {
+                                                      bgcolor: 'primary.main',
+                                                      color: 'primary.contrastText'
+                                                  }
+                                                : undefined
+                                        }
                                     >
-                                        <Avatar>{initials}</Avatar>
-                                    </Tooltip>
-                                );
-                            })}
+                                        {item.initials}
+                                    </Avatar>
+                                </Tooltip>
+                            ))}
                         </AvatarGroup>
                     </Stack>
                 </Stack>
@@ -608,7 +703,6 @@ export const CallsPage: React.FC = () => {
 
     const [scheduleTitle, setScheduleTitle] = React.useState('');
     const [scheduleDescription, setScheduleDescription] = React.useState('');
-    const [scheduleCallType, setScheduleCallType] = React.useState<CallType>('video');
     const [scheduleStart, setScheduleStart] = React.useState('');
     const [scheduleEnd, setScheduleEnd] = React.useState('');
     const [scheduleParticipants, setScheduleParticipants] = React.useState<string[]>([]);
@@ -678,9 +772,8 @@ export const CallsPage: React.FC = () => {
         }
 
         try {
-            const scheduledType = scheduleCallType;
             await scheduleCall.mutateAsync({
-                type: scheduledType,
+                type: 'video',
                 title: trimmedTitle,
                 description: scheduleDescription,
                 scheduledStartTime: startDate.toISOString(),
@@ -692,7 +785,6 @@ export const CallsPage: React.FC = () => {
             setScheduleStart('');
             setScheduleEnd('');
             setScheduleParticipants([]);
-            setScheduleCallType('video');
         } catch (error) {
             console.debug('Failed to schedule call', error);
         }
@@ -873,20 +965,6 @@ export const CallsPage: React.FC = () => {
                                         fullWidth
                                     />
 
-                                    <TextField
-                                        label="Call type"
-                                        select
-                                        value={scheduleCallType}
-                                        onChange={event =>
-                                            setScheduleCallType(event.target.value as CallType)
-                                        }
-                                        fullWidth
-                                    >
-                                        <MenuItem value="video">Video call</MenuItem>
-                                        <MenuItem value="voice">Voice call</MenuItem>
-                                        <MenuItem value="screen_share">Screen share</MenuItem>
-                                    </TextField>
-
                                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                                         <TextField
                                             label="Starts"
@@ -931,15 +1009,7 @@ export const CallsPage: React.FC = () => {
                                     <Button
                                         type="submit"
                                         variant="contained"
-                                        startIcon={
-                                            scheduleCallType === 'video' ? (
-                                                <VideocamIcon />
-                                            ) : scheduleCallType === 'voice' ? (
-                                                <PhoneIcon />
-                                            ) : (
-                                                <ScreenShareIcon />
-                                            )
-                                        }
+                                        startIcon={<VideocamIcon />}
                                         disabled={scheduleCall.isPending}
                                     >
                                         {scheduleCall.isPending ? 'Scheduling…' : 'Schedule call'}

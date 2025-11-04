@@ -350,17 +350,6 @@ export const OverviewPage: React.FC = () => {
                                 </List>
                             )}
                         </CardContent>
-                        {workspaces.length > 0 ? (
-                            <CardActions>
-                                <Button
-                                    size="small"
-                                    endIcon={<ArrowForwardIcon />}
-                                    onClick={() => navigate('/app/workspaces')}
-                                >
-                                    View All Workspaces
-                                </Button>
-                            </CardActions>
-                        ) : null}
                     </Card>
 
                     {/* Recent Projects */}
@@ -443,17 +432,6 @@ export const OverviewPage: React.FC = () => {
                                 </List>
                             )}
                         </CardContent>
-                        {recentProjects.length > 0 ? (
-                            <CardActions>
-                                <Button
-                                    size="small"
-                                    endIcon={<ArrowForwardIcon />}
-                                    onClick={() => navigate('/app/projects')}
-                                >
-                                    View All Projects
-                                </Button>
-                            </CardActions>
-                        ) : null}
                     </Card>
 
                     {/* Upcoming Calls */}
@@ -556,17 +534,6 @@ export const OverviewPage: React.FC = () => {
                                 </Stack>
                             )}
                         </CardContent>
-                        {upcomingCalls.length > 0 ? (
-                            <CardActions>
-                                <Button
-                                    size="small"
-                                    endIcon={<ArrowForwardIcon />}
-                                    onClick={() => navigate('/app/calls')}
-                                >
-                                    View All Calls
-                                </Button>
-                            </CardActions>
-                        ) : null}
                     </Card>
 
                     {/* Recent Conversations */}
@@ -638,17 +605,6 @@ export const OverviewPage: React.FC = () => {
                                 </List>
                             )}
                         </CardContent>
-                        {recentDMs.length > 0 ? (
-                            <CardActions>
-                                <Button
-                                    size="small"
-                                    endIcon={<ArrowForwardIcon />}
-                                    onClick={() => navigate('/app/conversations')}
-                                >
-                                    View All Conversations
-                                </Button>
-                            </CardActions>
-                        ) : null}
                     </Card>
                 </Box>
 
