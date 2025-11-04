@@ -98,7 +98,9 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
 
     const handleSubmit = React.useCallback(async (): Promise<void> => {
         const trimmed = value.trim();
-        if (!trimmed) {
+        const hasText = trimmed.length > 0;
+        const hasAttachments = attachments.length > 0;
+        if (!hasText && !hasAttachments) {
             toast.error('Message cannot be empty');
             return;
         }
@@ -108,7 +110,7 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
 
         try {
             await onSend({
-                content: trimmed,
+                content: hasText ? trimmed : '',
                 attachments: attachments.map(item => item.file),
                 parentMessageId: replyTo?.messageId
             });
@@ -198,6 +200,7 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
 
     const emojiPickerOpen = Boolean(emojiAnchor);
     const trimmedValue = value.trim();
+    const canSend = trimmedValue.length > 0 || attachments.length > 0;
 
     return (
         <Paper
@@ -333,7 +336,7 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
                             variant="contained"
                             type="submit"
                             loading={isSending}
-                            disabled={!trimmedValue || isSending}
+                            disabled={!canSend || isSending}
                         >
                             Send
                         </LoadingButton>

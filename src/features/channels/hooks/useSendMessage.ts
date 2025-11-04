@@ -98,8 +98,10 @@ export const useSendMessage = ({
             toast.error('Cannot send message without a channel');
             return null;
         }
-        if (!payload.content.trim()) {
-            toast.error('Message cannot be empty');
+        const hasText = payload.content.trim().length > 0;
+        const hasAttachments = Boolean(payload.attachmentIds?.length);
+        if (!hasText && !hasAttachments) {
+            toast.error('Add a message or attach a file before sending.');
             return null;
         }
         try {

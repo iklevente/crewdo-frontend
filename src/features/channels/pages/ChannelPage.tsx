@@ -295,13 +295,14 @@ export const ChannelPage: React.FC = () => {
             parentMessageId?: string;
         }) => {
             const trimmed = content.trim();
-            if (!trimmed) {
-                throw new Error('Message cannot be empty');
+            const hasAttachments = attachments.length > 0;
+            if (!trimmed && !hasAttachments) {
+                throw new Error('Message must include text or attachments');
             }
 
             let attachmentIds: string[] | undefined;
 
-            if (attachments.length > 0) {
+            if (hasAttachments) {
                 if (!channelId) {
                     toast.error('Select a channel before attaching files.');
                     throw new Error('Channel ID is required');

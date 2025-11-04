@@ -435,6 +435,7 @@ export const OverviewPage: React.FC = () => {
                                                             ) : null}
                                                         </Stack>
                                                     }
+                                                    secondaryTypographyProps={{ component: 'div' }}
                                                 />
                                             </ListItemButton>
                                         </React.Fragment>

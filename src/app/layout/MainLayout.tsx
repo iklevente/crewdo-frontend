@@ -94,8 +94,6 @@ export const MainLayout: React.FC = () => {
     const queryClient = useQueryClient();
     const { unreadCount } = useUnreadCount();
 
-    console.log('[MainLayout] Unread count:', unreadCount);
-
     const handleDrawerToggle = (): void => {
         setMobileOpen(prev => !prev);
     };
