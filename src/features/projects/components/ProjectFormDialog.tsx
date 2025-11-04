@@ -150,7 +150,10 @@ export const ProjectFormDialog: React.FC<ProjectFormDialogProps> = ({
                             label="Status"
                             select
                             fullWidth
-                            {...register('status', { required: true })}
+                            required
+                            {...register('status', { required: 'Status is required' })}
+                            error={Boolean(errors.status)}
+                            helperText={errors.status?.message}
                         >
                             {STATUS_OPTIONS.map(option => (
                                 <MenuItem key={option.value} value={option.value}>
@@ -162,7 +165,10 @@ export const ProjectFormDialog: React.FC<ProjectFormDialogProps> = ({
                             label="Priority"
                             select
                             fullWidth
-                            {...register('priority', { required: true })}
+                            required
+                            {...register('priority', { required: 'Priority is required' })}
+                            error={Boolean(errors.priority)}
+                            helperText={errors.priority?.message}
                         >
                             {PRIORITY_OPTIONS.map(option => (
                                 <MenuItem key={option.value} value={option.value}>
@@ -218,9 +224,9 @@ export const ProjectFormDialog: React.FC<ProjectFormDialogProps> = ({
                         control={control}
                         rules={{ required: 'Workspace is required' }}
                         render={({ field }) => (
-                            <FormControl fullWidth error={Boolean(errors.workspaceId)}>
+                            <FormControl fullWidth required error={Boolean(errors.workspaceId)}>
                                 <InputLabel id="project-workspace-select-label">
-                                    Workspace
+                                    Workspace *
                                 </InputLabel>
                                 <Select
                                     labelId="project-workspace-select-label"

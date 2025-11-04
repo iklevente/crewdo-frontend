@@ -17,7 +17,6 @@ export interface CallParticipantSummary {
     readonly isMuted: boolean;
     readonly isVideoEnabled: boolean;
     readonly isScreenSharing: boolean;
-    readonly isHandRaised: boolean;
     readonly connectionQuality?: string | null;
 }
 

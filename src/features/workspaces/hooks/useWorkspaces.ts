@@ -5,6 +5,7 @@ import { apiClients } from 'services/api-clients';
 import type { CreateWorkspaceDto } from 'api/models/create-workspace-dto';
 import type { UpdateWorkspaceDto } from 'api/models/update-workspace-dto';
 import type { Workspace } from '../types/workspace';
+import { WORKSPACE_MEMBERS_QUERY_KEY, WORKSPACE_DETAIL_QUERY_KEY } from './useWorkspaceDetails';
 
 export const WORKSPACES_QUERY_KEY = ['workspaces'];
 
@@ -85,10 +86,17 @@ export const useWorkspaces = (): UseWorkspacesResult => {
     const { mutateAsync: handleAddMember } = useMutation({
         mutationFn: async ({ workspaceId, email }: { workspaceId: string; email: string }) => {
             await apiClients.workspaces.workspaceControllerAddMember(workspaceId, email);
+            return { workspaceId };
         },
-        onSuccess: () => {
+        onSuccess: ({ workspaceId }) => {
             toast.success('Member added to workspace');
             void invalidate();
+            void queryClient.invalidateQueries({
+                queryKey: WORKSPACE_MEMBERS_QUERY_KEY(workspaceId)
+            });
+            void queryClient.invalidateQueries({
+                queryKey: WORKSPACE_DETAIL_QUERY_KEY(workspaceId)
+            });
         },
         onError: error => {
             toast.error(error instanceof Error ? error.message : 'Failed to add member');
@@ -98,10 +106,17 @@ export const useWorkspaces = (): UseWorkspacesResult => {
     const { mutateAsync: handleRemoveMember } = useMutation({
         mutationFn: async ({ workspaceId, userId }: { workspaceId: string; userId: string }) => {
             await apiClients.workspaces.workspaceControllerRemoveMember(workspaceId, userId);
+            return { workspaceId };
         },
-        onSuccess: () => {
+        onSuccess: ({ workspaceId }) => {
             toast.success('Member removed from workspace');
             void invalidate();
+            void queryClient.invalidateQueries({
+                queryKey: WORKSPACE_MEMBERS_QUERY_KEY(workspaceId)
+            });
+            void queryClient.invalidateQueries({
+                queryKey: WORKSPACE_DETAIL_QUERY_KEY(workspaceId)
+            });
         },
         onError: error => {
             toast.error(error instanceof Error ? error.message : 'Failed to remove member');

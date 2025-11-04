@@ -152,7 +152,10 @@ export const TaskFormDialog: React.FC<TaskFormDialogProps> = ({
                             label="Status"
                             select
                             fullWidth
-                            {...register('status', { required: true })}
+                            required
+                            {...register('status', { required: 'Status is required' })}
+                            error={Boolean(errors.status)}
+                            helperText={errors.status?.message}
                         >
                             {STATUS_OPTIONS.map(option => (
                                 <MenuItem key={option.value} value={option.value}>
@@ -164,7 +167,10 @@ export const TaskFormDialog: React.FC<TaskFormDialogProps> = ({
                             label="Priority"
                             select
                             fullWidth
-                            {...register('priority', { required: true })}
+                            required
+                            {...register('priority', { required: 'Priority is required' })}
+                            error={Boolean(errors.priority)}
+                            helperText={errors.priority?.message}
                         >
                             {PRIORITY_OPTIONS.map(option => (
                                 <MenuItem key={option.value} value={option.value}>

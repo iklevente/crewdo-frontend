@@ -29,8 +29,7 @@ export const useUnreadCount = (): {
     const { data, isLoading } = useQuery({
         queryKey: UNREAD_COUNT_QUERY_KEY,
         queryFn: fetchUnreadCount,
-        staleTime: 30_000,
-        refetchInterval: 60_000 // Refetch every minute as fallback
+        staleTime: 30_000
     });
 
     return {

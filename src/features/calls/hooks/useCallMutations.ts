@@ -39,7 +39,6 @@ interface UpdateParticipantVariables {
     readonly isMuted?: boolean;
     readonly isVideoEnabled?: boolean;
     readonly isScreenSharing?: boolean;
-    readonly isHandRaised?: boolean;
 }
 
 interface ErrorPayload {
@@ -222,9 +221,6 @@ export const useCallMutations = (): CallMutations => {
             }
             if (typeof rest.isScreenSharing === 'boolean') {
                 payload.isScreenSharing = rest.isScreenSharing;
-            }
-            if (typeof rest.isHandRaised === 'boolean') {
-                payload.isHandRaised = rest.isHandRaised;
             }
 
             await apiClients.calls.callControllerUpdateParticipant(callId, payload);

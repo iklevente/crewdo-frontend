@@ -22,7 +22,6 @@ interface UseChannelMessagesResult {
     readonly fetchNextPage: () => Promise<unknown>;
     readonly hasNextPage: boolean;
     readonly isFetchingNextPage: boolean;
-    readonly refetch: () => Promise<unknown>;
     readonly invalidate: () => Promise<void>;
 }
 
@@ -54,8 +53,7 @@ export const useChannelMessages = (channelId: string | null): UseChannelMessages
         getNextPageParam: lastPage => (lastPage.hasMore ? lastPage.nextCursor : undefined)
     });
 
-    const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } =
-        queryResult;
+    const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = queryResult;
 
     const messages: Message[] = React.useMemo(() => {
         if (!data?.pages) {
@@ -85,7 +83,6 @@ export const useChannelMessages = (channelId: string | null): UseChannelMessages
         fetchNextPage,
         hasNextPage: Boolean(hasNextPage),
         isFetchingNextPage,
-        refetch,
         invalidate
     };
 };

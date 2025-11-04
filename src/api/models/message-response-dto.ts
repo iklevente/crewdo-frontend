@@ -109,22 +109,4 @@ export interface MessageResponseDto {
      * @memberof MessageResponseDto
      */
     reactions: Array<string>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof MessageResponseDto
-     */
-    mentionedUsers: Array<string>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof MessageResponseDto
-     */
-    threadReplies?: Array<string>;
-    /**
-     *
-     * @type {number}
-     * @memberof MessageResponseDto
-     */
-    threadCount?: number;
 }

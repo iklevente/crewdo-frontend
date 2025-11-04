@@ -161,7 +161,6 @@ export const useNotifications = (
     readonly isLoading: boolean;
     readonly isFetching: boolean;
     readonly isError: boolean;
-    readonly refetch: () => Promise<unknown>;
     readonly resolvedFilters: NotificationQueryState;
 } => {
     const sanitizedFilters = useMemo(() => sanitizeFilters(filters), [filters]);
@@ -181,7 +180,6 @@ export const useNotifications = (
         isLoading: queryResult.isLoading,
         isFetching: queryResult.isFetching,
         isError: queryResult.isError,
-        refetch: queryResult.refetch,
         resolvedFilters: sanitizedFilters
     };
 };

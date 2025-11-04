@@ -16,7 +16,6 @@ interface UseProjectTasksResult {
     readonly tasks: ProjectTask[];
     readonly isLoading: boolean;
     readonly isError: boolean;
-    readonly refetch: () => Promise<unknown>;
     readonly createTask: (payload: CreateTaskDto) => Promise<ProjectTask | null>;
     readonly updateTask: (id: string, payload: UpdateTaskDto) => Promise<ProjectTask | null>;
     readonly updateTaskSilently: (
@@ -35,8 +34,7 @@ export const useProjectTasks = (projectId: string | null): UseProjectTasksResult
     const {
         data: tasks = [],
         isLoading,
-        isError,
-        refetch
+        isError
     } = useQuery<ProjectTask[]>({
         queryKey,
         enabled: Boolean(projectId),
@@ -123,7 +121,6 @@ export const useProjectTasks = (projectId: string | null): UseProjectTasksResult
         tasks,
         isLoading,
         isError,
-        refetch,
         createTask: React.useCallback(
             async (payload: CreateTaskDto) => {
                 const result = await handleCreate(payload);

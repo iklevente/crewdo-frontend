@@ -46,7 +46,7 @@ const emptyPasswordValues: PasswordFormValues = {
 };
 
 export const SettingsPage: React.FC = () => {
-    const { profile, isLoading, isError, refetch } = useCurrentUserProfile();
+    const { profile, isLoading, isError } = useCurrentUserProfile();
     const { updateProfile, isPending: isProfileUpdating } = useUpdateCurrentUserProfile();
     const { changePassword, isPending: isPasswordUpdating } = useChangePassword();
 
@@ -159,14 +159,6 @@ export const SettingsPage: React.FC = () => {
                     <Alert severity="error" sx={{ width: '100%' }}>
                         Unable to load your settings right now.
                     </Alert>
-                    <Button
-                        variant="contained"
-                        onClick={() => {
-                            void refetch();
-                        }}
-                    >
-                        Retry
-                    </Button>
                 </Stack>
             </Paper>
         );

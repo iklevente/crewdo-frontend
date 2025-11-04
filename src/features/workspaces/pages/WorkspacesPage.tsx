@@ -182,7 +182,7 @@ export const WorkspacesPage: React.FC = () => {
             await updateWorkspace(currentWorkspaceId, {
                 name: payload.name,
                 description: payload.description,
-                type: payload.type as UpdateWorkspaceDtoTypeEnum
+                type: payload.type! as UpdateWorkspaceDtoTypeEnum
             });
             setEditDialogOpen(false);
         } catch (error) {

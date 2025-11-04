@@ -56,7 +56,6 @@ export const useCurrentUserProfile = (): {
     readonly isLoading: boolean;
     readonly isFetching: boolean;
     readonly isError: boolean;
-    readonly refetch: () => Promise<unknown>;
 } => {
     const queryResult = useQuery<UserProfile>({
         queryKey: CURRENT_USER_PROFILE_QUERY_KEY,
@@ -68,7 +67,6 @@ export const useCurrentUserProfile = (): {
         profile: queryResult.data ?? null,
         isLoading: queryResult.isLoading,
         isFetching: queryResult.isFetching,
-        isError: queryResult.isError,
-        refetch: queryResult.refetch
+        isError: queryResult.isError
     };
 };

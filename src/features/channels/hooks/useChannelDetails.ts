@@ -13,7 +13,6 @@ interface UseChannelDetailsResult {
     readonly channel: Channel | undefined;
     readonly isLoading: boolean;
     readonly isError: boolean;
-    readonly refetch: () => Promise<unknown>;
     readonly invalidate: () => Promise<void>;
 }
 
@@ -22,8 +21,7 @@ export const useChannelDetails = (channelId: string | null): UseChannelDetailsRe
     const {
         data: channel,
         isLoading,
-        isError,
-        refetch
+        isError
     } = useQuery<Channel>({
         queryKey: CHANNEL_DETAILS_QUERY_KEY(channelId ?? ''),
         queryFn: async () => {
@@ -48,7 +46,6 @@ export const useChannelDetails = (channelId: string | null): UseChannelDetailsRe
         channel,
         isLoading,
         isError,
-        refetch,
         invalidate
     };
 };

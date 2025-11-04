@@ -25,7 +25,7 @@ interface WorkspaceFormDialogProps {
 export interface WorkspaceFormValues {
     readonly name: string;
     readonly description?: string;
-    readonly type: CreateWorkspaceDtoTypeEnum;
+    readonly type?: CreateWorkspaceDtoTypeEnum;
 }
 
 const WORKSPACE_TYPE_OPTIONS: readonly {
@@ -84,7 +84,7 @@ export const WorkspaceFormDialog: React.FC<WorkspaceFormDialogProps> = ({
         await onSubmit({
             name: values.name,
             description: values.description,
-            type: values.type
+            type: values.type ?? undefined
         });
         onClose();
     });
@@ -113,11 +113,12 @@ export const WorkspaceFormDialog: React.FC<WorkspaceFormDialogProps> = ({
                         label="Type"
                         select
                         fullWidth
-                        required
-                        {...register('type', { required: 'Type is required' })}
-                        error={Boolean(errors.type)}
-                        helperText={errors.type?.message}
+                        {...register('type')}
+                        SelectProps={{ displayEmpty: true }}
                     >
+                        <MenuItem value="">
+                            <em>Not specified</em>
+                        </MenuItem>
                         {WORKSPACE_TYPE_OPTIONS.map(option => (
                             <MenuItem key={option.value} value={option.value}>
                                 {option.label}

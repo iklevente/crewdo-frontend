@@ -226,4 +226,3 @@ axiosInstance.interceptors.response.use(
 );
 
 export const apiClients = clients;
-export { axiosInstance };

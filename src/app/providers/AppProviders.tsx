@@ -99,7 +99,7 @@ const SocketEffects: React.FC<SocketEffectsProps> = ({ showIncomingCall }) => {
 
         const handleWorkspaceMemberAdded = (payload: {
             workspaceId: string;
-            memberId: string;
+            member: unknown;
         }): void => {
             const { workspaceId } = payload;
             invalidate(WORKSPACES_QUERY_KEY);
@@ -372,45 +372,39 @@ const SocketEffects: React.FC<SocketEffectsProps> = ({ showIncomingCall }) => {
 
         socket.on('incoming_call', handleIncomingCall);
 
-        // Debug: Log all incoming events
-        const debugListener = (eventName: string, ...args: unknown[]): void => {
-            console.log('[Socket] Received event:', eventName, args);
-        };
-        socket.onAny(debugListener);
-
         // Project events
         const handleProjectCreated = (): void => {
             console.log('[Socket] project_created received - refetching queries');
-            invalidate(PROJECTS_QUERY_KEY);
+            void queryClient.invalidateQueries({ queryKey: PROJECTS_QUERY_KEY });
         };
 
         const handleProjectUpdated = (): void => {
             console.log('[Socket] project_updated received - refetching queries');
-            invalidate(PROJECTS_QUERY_KEY);
+            void queryClient.invalidateQueries({ queryKey: PROJECTS_QUERY_KEY });
         };
 
         const handleProjectDeleted = (): void => {
             console.log('[Socket] project_deleted received - refetching queries');
-            invalidate(PROJECTS_QUERY_KEY);
+            void queryClient.invalidateQueries({ queryKey: PROJECTS_QUERY_KEY });
         };
 
         // Task events
         const handleTaskCreated = (): void => {
             console.log('[Socket] task_created received - refetching queries');
             invalidate(TASKS_QUERY_KEY);
-            invalidate(PROJECTS_QUERY_KEY);
+            void queryClient.invalidateQueries({ queryKey: PROJECTS_QUERY_KEY });
         };
 
         const handleTaskUpdated = (): void => {
             console.log('[Socket] task_updated received - refetching queries');
             invalidate(TASKS_QUERY_KEY);
-            invalidate(PROJECTS_QUERY_KEY);
+            void queryClient.invalidateQueries({ queryKey: PROJECTS_QUERY_KEY });
         };
 
         const handleTaskDeleted = (): void => {
             console.log('[Socket] task_deleted received - refetching queries');
             invalidate(TASKS_QUERY_KEY);
-            invalidate(PROJECTS_QUERY_KEY);
+            void queryClient.invalidateQueries({ queryKey: PROJECTS_QUERY_KEY });
         };
 
         // Comment events
@@ -497,7 +491,6 @@ const SocketEffects: React.FC<SocketEffectsProps> = ({ showIncomingCall }) => {
             socket.off('notification_updated', handleNotificationUpdated);
             socket.off('notification_deleted', handleNotificationDeleted);
             socket.off('notifications_marked_read', handleNotificationsMarkedRead);
-            socket.offAny(debugListener);
         };
     }, [socket, queryClient, showIncomingCall]);
 

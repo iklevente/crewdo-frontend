@@ -41,13 +41,6 @@ interface ParentMessageSummary {
     readonly author: MessageAuthor;
 }
 
-interface MessageThreadReply {
-    readonly id: string;
-    readonly content: string;
-    readonly author: MessageAuthor;
-    readonly createdAt: string;
-}
-
 export interface Message {
     readonly id: string;
     readonly content: string;
@@ -63,9 +56,6 @@ export interface Message {
     readonly parentMessage?: ParentMessageSummary;
     readonly attachments: MessageAttachment[];
     readonly reactions: MessageReaction[];
-    readonly mentionedUsers: MessageAuthor[];
-    readonly threadReplies?: MessageThreadReply[];
-    readonly threadCount?: number;
 }
 
 export interface MessageHistoryResponse {
@@ -81,12 +71,6 @@ export const mapMessageResponse = (payload: MessageResponseDto): Message => {
     const reactions = Array.isArray(payload.reactions)
         ? (payload.reactions as unknown as MessageReaction[])
         : [];
-    const mentionedUsers = Array.isArray(payload.mentionedUsers)
-        ? (payload.mentionedUsers as unknown as MessageAuthor[])
-        : [];
-    const threadReplies = Array.isArray(payload.threadReplies)
-        ? (payload.threadReplies as unknown as MessageThreadReply[])
-        : undefined;
 
     return {
         id: payload.id,
@@ -102,9 +86,6 @@ export const mapMessageResponse = (payload: MessageResponseDto): Message => {
         channel: payload.channel as MessageChannelInfo,
         parentMessage: payload.parentMessage as ParentMessageSummary | undefined,
         attachments,
-        reactions,
-        mentionedUsers,
-        threadReplies,
-        threadCount: payload.threadCount
+        reactions
     };
 };

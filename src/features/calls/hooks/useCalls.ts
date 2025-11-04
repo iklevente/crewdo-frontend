@@ -13,7 +13,6 @@ interface RawCallParticipant {
     readonly isMuted?: boolean;
     readonly isVideoEnabled?: boolean;
     readonly isScreenSharing?: boolean;
-    readonly isHandRaised?: boolean;
     readonly connectionQuality?: string | null;
     readonly user?: {
         readonly id?: string;
@@ -74,7 +73,6 @@ const normalizeParticipant = (participant: RawCallParticipant): CallParticipantS
         isMuted: isJoined ? Boolean(participant.isMuted) : false,
         isVideoEnabled: isJoined ? Boolean(participant.isVideoEnabled) : false,
         isScreenSharing: Boolean(participant.isScreenSharing),
-        isHandRaised: Boolean(participant.isHandRaised),
         connectionQuality: participant.connectionQuality ?? null
     };
 };
