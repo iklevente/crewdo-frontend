@@ -353,48 +353,6 @@ export const MessagesApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          *
-         * @summary Get pinned messages in channel
-         * @param {string} channelId Channel ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        messageControllerGetPinnedMessages: async (
-            channelId: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
-            // verify required parameter 'channelId' is not null or undefined
-            assertParamExists('messageControllerGetPinnedMessages', 'channelId', channelId);
-            const localVarPath = `/messages/channel/{channelId}/pinned`.replace(
-                `{${'channelId'}}`,
-                encodeURIComponent(String(channelId))
-            );
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
-            };
-        },
-        /**
-         *
          * @summary Mark messages as read in a channel
          * @param {string} channelId Channel ID
          * @param {MarkAsReadDto} markAsReadDto
@@ -857,37 +815,6 @@ export const MessagesApiFp = function (configuration?: Configuration) {
         },
         /**
          *
-         * @summary Get pinned messages in channel
-         * @param {string} channelId Channel ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async messageControllerGetPinnedMessages(
-            channelId: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<MessageResponseDto>>
-        > {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.messageControllerGetPinnedMessages(
-                    channelId,
-                    options
-                );
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['MessagesApi.messageControllerGetPinnedMessages']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         *
          * @summary Mark messages as read in a channel
          * @param {string} channelId Channel ID
          * @param {MarkAsReadDto} markAsReadDto
@@ -1170,21 +1097,6 @@ export const MessagesApiFactory = function (
         },
         /**
          *
-         * @summary Get pinned messages in channel
-         * @param {string} channelId Channel ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        messageControllerGetPinnedMessages(
-            channelId: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<Array<MessageResponseDto>> {
-            return localVarFp
-                .messageControllerGetPinnedMessages(channelId, options)
-                .then(request => request(axios, basePath));
-        },
-        /**
-         *
          * @summary Mark messages as read in a channel
          * @param {string} channelId Channel ID
          * @param {MarkAsReadDto} markAsReadDto
@@ -1394,20 +1306,6 @@ export class MessagesApi extends BaseAPI {
     ) {
         return MessagesApiFp(this.configuration)
             .messageControllerGetMessageReadStatus(channelId, messageIds, options)
-            .then(request => request(this.axios, this.basePath));
-    }
-
-    /**
-     *
-     * @summary Get pinned messages in channel
-     * @param {string} channelId Channel ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof MessagesApi
-     */
-    public messageControllerGetPinnedMessages(channelId: string, options?: RawAxiosRequestConfig) {
-        return MessagesApiFp(this.configuration)
-            .messageControllerGetPinnedMessages(channelId, options)
             .then(request => request(this.axios, this.basePath));
     }
 

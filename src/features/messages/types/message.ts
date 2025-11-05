@@ -48,9 +48,7 @@ export interface Message {
     readonly updatedAt: string;
     readonly editedAt?: string;
     readonly isEdited: boolean;
-    readonly isPinned: boolean;
     readonly isDeleted: boolean;
-    readonly embedData?: unknown;
     readonly author: MessageAuthor;
     readonly channel: MessageChannelInfo;
     readonly parentMessage?: ParentMessageSummary;
@@ -79,9 +77,7 @@ export const mapMessageResponse = (payload: MessageResponseDto): Message => {
         updatedAt: payload.updatedAt,
         editedAt: payload.editedAt,
         isEdited: payload.isEdited,
-        isPinned: payload.isPinned,
         isDeleted: payload.isDeleted,
-        embedData: payload.embedData,
         author: payload.author as MessageAuthor,
         channel: payload.channel as MessageChannelInfo,
         parentMessage: payload.parentMessage as ParentMessageSummary | undefined,

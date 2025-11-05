@@ -42,12 +42,6 @@ export interface MessageResponseDto {
      * @type {boolean}
      * @memberof MessageResponseDto
      */
-    isPinned: boolean;
-    /**
-     *
-     * @type {boolean}
-     * @memberof MessageResponseDto
-     */
     isDeleted: boolean;
     /**
      *
@@ -55,12 +49,6 @@ export interface MessageResponseDto {
      * @memberof MessageResponseDto
      */
     isSystemMessage: boolean;
-    /**
-     *
-     * @type {object}
-     * @memberof MessageResponseDto
-     */
-    embedData?: object;
     /**
      *
      * @type {string}

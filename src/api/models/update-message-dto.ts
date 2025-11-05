@@ -25,16 +25,4 @@ export interface UpdateMessageDto {
      * @memberof UpdateMessageDto
      */
     content?: string;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof UpdateMessageDto
-     */
-    mentionedUserIds?: Array<string>;
-    /**
-     *
-     * @type {boolean}
-     * @memberof UpdateMessageDto
-     */
-    isPinned?: boolean;
 }

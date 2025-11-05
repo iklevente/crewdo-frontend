@@ -42,8 +42,7 @@ export const useSendMessage = ({
                 content: payload.content,
                 channelId,
                 parentMessageId: payload.parentMessageId,
-                attachmentIds: payload.attachmentIds,
-                mentionedUserIds: payload.mentionedUserIds
+                attachmentIds: payload.attachmentIds
             };
             const response = await apiClients.messages.messageControllerCreate(requestPayload);
             const messageResponse = response.data as unknown as MessageResponseDto;

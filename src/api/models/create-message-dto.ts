@@ -44,12 +44,6 @@ export interface CreateMessageDto {
      */
     attachmentIds?: Array<string>;
     /**
-     *
-     * @type {Array<string>}
-     * @memberof CreateMessageDto
-     */
-    mentionedUserIds?: Array<string>;
-    /**
      * Structured payload for embeds
      * @type {object}
      * @memberof CreateMessageDto
