@@ -13,108 +13,110 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface TaskResponseDto
  */
 export interface TaskResponseDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof TaskResponseDto
      */
-    id: string;
+    'id': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TaskResponseDto
      */
-    title: string;
+    'title': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TaskResponseDto
      */
-    description?: string;
+    'description'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TaskResponseDto
      */
-    status: TaskResponseDtoStatusEnum;
+    'status': TaskResponseDtoStatusEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TaskResponseDto
      */
-    priority: TaskResponseDtoPriorityEnum;
+    'priority': TaskResponseDtoPriorityEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TaskResponseDto
      */
-    dueDate?: string;
+    'dueDate'?: string;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TaskResponseDto
      */
-    estimatedHours: number;
+    'estimatedHours': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TaskResponseDto
      */
-    actualHours: number;
+    'actualHours': number;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof TaskResponseDto
      */
-    tags?: Array<string>;
+    'tags'?: Array<string>;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TaskResponseDto
      */
-    position?: number;
+    'position'?: number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TaskResponseDto
      */
-    createdAt: string;
+    'createdAt': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TaskResponseDto
      */
-    updatedAt: string;
+    'updatedAt': string;
     /**
-     *
+     * 
      * @type {object}
      * @memberof TaskResponseDto
      */
-    project: object;
+    'project': object;
     /**
-     *
+     * 
      * @type {object}
      * @memberof TaskResponseDto
      */
-    assignee?: object;
+    'assignee'?: object;
     /**
-     *
+     * 
      * @type {object}
      * @memberof TaskResponseDto
      */
-    creator: object;
+    'creator': object;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TaskResponseDto
      */
-    commentCount?: number;
+    'commentCount'?: number;
 }
 
 export const TaskResponseDtoStatusEnum = {
@@ -125,8 +127,7 @@ export const TaskResponseDtoStatusEnum = {
     Cancelled: 'cancelled'
 } as const;
 
-export type TaskResponseDtoStatusEnum =
-    (typeof TaskResponseDtoStatusEnum)[keyof typeof TaskResponseDtoStatusEnum];
+export type TaskResponseDtoStatusEnum = typeof TaskResponseDtoStatusEnum[keyof typeof TaskResponseDtoStatusEnum];
 export const TaskResponseDtoPriorityEnum = {
     Low: 'low',
     Medium: 'medium',
@@ -134,5 +135,6 @@ export const TaskResponseDtoPriorityEnum = {
     Urgent: 'urgent'
 } as const;
 
-export type TaskResponseDtoPriorityEnum =
-    (typeof TaskResponseDtoPriorityEnum)[keyof typeof TaskResponseDtoPriorityEnum];
+export type TaskResponseDtoPriorityEnum = typeof TaskResponseDtoPriorityEnum[keyof typeof TaskResponseDtoPriorityEnum];
+
+

@@ -13,32 +13,15 @@
  * Do not edit the class manually.
  */
 
+
 import type { Configuration } from '../configuration';
 import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import {
-    DUMMY_BASE_URL,
-    assertParamExists,
-    setApiKeyToObject,
-    setBasicAuthToObject,
-    setBearerAuthToObject,
-    setOAuthToObject,
-    setSearchParams,
-    serializeDataIfNeeded,
-    toPathString,
-    createRequestFunction
-} from '../common';
+import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from '../common';
 // @ts-ignore
-import {
-    BASE_PATH,
-    COLLECTION_FORMATS,
-    type RequestArgs,
-    BaseAPI,
-    RequiredError,
-    operationServerMap
-} from '../base';
+import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 // @ts-ignore
 import type { CallResponseDto } from '../models';
 // @ts-ignore
@@ -58,22 +41,17 @@ import type { UpdateCallParticipantDto } from '../models';
 export const CallsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         *
+         * 
          * @summary Generate media session credentials for LiveKit
          * @param {string} id Call ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        callControllerCreateSession: async (
-            id: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        callControllerCreateSession: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('callControllerCreateSession', 'id', id);
-            const localVarPath = `/calls/{id}/session`.replace(
-                `{${'id'}}`,
-                encodeURIComponent(String(id))
-            );
+            assertParamExists('callControllerCreateSession', 'id', id)
+            const localVarPath = `/calls/{id}/session`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -81,41 +59,33 @@ export const CallsApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary End a call (initiator only)
          * @param {string} id Call ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        callControllerEndCall: async (
-            id: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        callControllerEndCall: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('callControllerEndCall', 'id', id);
-            const localVarPath = `/calls/{id}/end`.replace(
-                `{${'id'}}`,
-                encodeURIComponent(String(id))
-            );
+            assertParamExists('callControllerEndCall', 'id', id)
+            const localVarPath = `/calls/{id}/end`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -123,37 +93,31 @@ export const CallsApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary List calls visible to the current user
-         * @param {string} status
+         * @param {string} status 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        callControllerFindAll: async (
-            status: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        callControllerFindAll: async (status: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'status' is not null or undefined
-            assertParamExists('callControllerFindAll', 'status', status);
+            assertParamExists('callControllerFindAll', 'status', status)
             const localVarPath = `/calls`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -162,7 +126,7 @@ export const CallsApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -170,34 +134,29 @@ export const CallsApiAxiosParamCreator = function (configuration?: Configuration
                 localVarQueryParameter['status'] = status;
             }
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Get call by ID
          * @param {string} id Call ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        callControllerFindOne: async (
-            id: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        callControllerFindOne: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('callControllerFindOne', 'id', id);
-            const localVarPath = `/calls/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+            assertParamExists('callControllerFindOne', 'id', id)
+            const localVarPath = `/calls/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -205,45 +164,36 @@ export const CallsApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Join a call
          * @param {string} id Call ID (UUID)
-         * @param {JoinCallDto} joinCallDto
+         * @param {JoinCallDto} joinCallDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        callControllerJoinCall: async (
-            id: string,
-            joinCallDto: JoinCallDto,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        callControllerJoinCall: async (id: string, joinCallDto: JoinCallDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('callControllerJoinCall', 'id', id);
+            assertParamExists('callControllerJoinCall', 'id', id)
             // verify required parameter 'joinCallDto' is not null or undefined
-            assertParamExists('callControllerJoinCall', 'joinCallDto', joinCallDto);
-            const localVarPath = `/calls/{id}/join`.replace(
-                `{${'id'}}`,
-                encodeURIComponent(String(id))
-            );
+            assertParamExists('callControllerJoinCall', 'joinCallDto', joinCallDto)
+            const localVarPath = `/calls/{id}/join`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -251,48 +201,36 @@ export const CallsApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
-            localVarRequestOptions.data = serializeDataIfNeeded(
-                joinCallDto,
-                localVarRequestOptions,
-                configuration
-            );
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(joinCallDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Leave a call
          * @param {string} id Call ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        callControllerLeaveCall: async (
-            id: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        callControllerLeaveCall: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('callControllerLeaveCall', 'id', id);
-            const localVarPath = `/calls/{id}/leave`.replace(
-                `{${'id'}}`,
-                encodeURIComponent(String(id))
-            );
+            assertParamExists('callControllerLeaveCall', 'id', id)
+            const localVarPath = `/calls/{id}/leave`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -300,37 +238,31 @@ export const CallsApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Schedule a call
-         * @param {ScheduleCallDto} scheduleCallDto
+         * @param {ScheduleCallDto} scheduleCallDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        callControllerScheduleCall: async (
-            scheduleCallDto: ScheduleCallDto,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        callControllerScheduleCall: async (scheduleCallDto: ScheduleCallDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'scheduleCallDto' is not null or undefined
-            assertParamExists('callControllerScheduleCall', 'scheduleCallDto', scheduleCallDto);
+            assertParamExists('callControllerScheduleCall', 'scheduleCallDto', scheduleCallDto)
             const localVarPath = `/calls/schedule`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -339,44 +271,34 @@ export const CallsApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
-            localVarRequestOptions.data = serializeDataIfNeeded(
-                scheduleCallDto,
-                localVarRequestOptions,
-                configuration
-            );
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(scheduleCallDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Start a new call
-         * @param {StartCallDto} startCallDto
+         * @param {StartCallDto} startCallDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        callControllerStartCall: async (
-            startCallDto: StartCallDto,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        callControllerStartCall: async (startCallDto: StartCallDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'startCallDto' is not null or undefined
-            assertParamExists('callControllerStartCall', 'startCallDto', startCallDto);
+            assertParamExists('callControllerStartCall', 'startCallDto', startCallDto)
             const localVarPath = `/calls/start`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -385,56 +307,39 @@ export const CallsApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
-            localVarRequestOptions.data = serializeDataIfNeeded(
-                startCallDto,
-                localVarRequestOptions,
-                configuration
-            );
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(startCallDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Update participant settings (mute/unmute)
          * @param {string} id Call ID (UUID)
-         * @param {UpdateCallParticipantDto} updateCallParticipantDto
+         * @param {UpdateCallParticipantDto} updateCallParticipantDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        callControllerUpdateParticipant: async (
-            id: string,
-            updateCallParticipantDto: UpdateCallParticipantDto,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        callControllerUpdateParticipant: async (id: string, updateCallParticipantDto: UpdateCallParticipantDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('callControllerUpdateParticipant', 'id', id);
+            assertParamExists('callControllerUpdateParticipant', 'id', id)
             // verify required parameter 'updateCallParticipantDto' is not null or undefined
-            assertParamExists(
-                'callControllerUpdateParticipant',
-                'updateCallParticipantDto',
-                updateCallParticipantDto
-            );
-            const localVarPath = `/calls/{id}/participant`.replace(
-                `{${'id'}}`,
-                encodeURIComponent(String(id))
-            );
+            assertParamExists('callControllerUpdateParticipant', 'updateCallParticipantDto', updateCallParticipantDto)
+            const localVarPath = `/calls/{id}/participant`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -442,448 +347,255 @@ export const CallsApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
-            localVarRequestOptions.data = serializeDataIfNeeded(
-                updateCallParticipantDto,
-                localVarRequestOptions,
-                configuration
-            );
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateCallParticipantDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
-        }
-    };
+        },
+    }
 };
 
 /**
  * CallsApi - functional programming interface
  * @export
  */
-export const CallsApiFp = function (configuration?: Configuration) {
-    const localVarAxiosParamCreator = CallsApiAxiosParamCreator(configuration);
+export const CallsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = CallsApiAxiosParamCreator(configuration)
     return {
         /**
-         *
+         * 
          * @summary Generate media session credentials for LiveKit
          * @param {string} id Call ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async callControllerCreateSession(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<CallSessionResponseDto>
-        > {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.callControllerCreateSession(
-                id,
-                options
-            );
+        async callControllerCreateSession(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CallSessionResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.callControllerCreateSession(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['CallsApi.callControllerCreateSession']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['CallsApi.callControllerCreateSession']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary End a call (initiator only)
          * @param {string} id Call ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async callControllerEndCall(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.callControllerEndCall(
-                id,
-                options
-            );
+        async callControllerEndCall(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.callControllerEndCall(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['CallsApi.callControllerEndCall']?.[localVarOperationServerIndex]
-                    ?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['CallsApi.callControllerEndCall']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary List calls visible to the current user
-         * @param {string} status
+         * @param {string} status 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async callControllerFindAll(
-            status: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CallResponseDto>>
-        > {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.callControllerFindAll(
-                status,
-                options
-            );
+        async callControllerFindAll(status: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CallResponseDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.callControllerFindAll(status, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['CallsApi.callControllerFindAll']?.[localVarOperationServerIndex]
-                    ?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['CallsApi.callControllerFindAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Get call by ID
          * @param {string} id Call ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async callControllerFindOne(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CallResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.callControllerFindOne(
-                id,
-                options
-            );
+        async callControllerFindOne(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CallResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.callControllerFindOne(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['CallsApi.callControllerFindOne']?.[localVarOperationServerIndex]
-                    ?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['CallsApi.callControllerFindOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Join a call
          * @param {string} id Call ID (UUID)
-         * @param {JoinCallDto} joinCallDto
+         * @param {JoinCallDto} joinCallDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async callControllerJoinCall(
-            id: string,
-            joinCallDto: JoinCallDto,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.callControllerJoinCall(
-                id,
-                joinCallDto,
-                options
-            );
+        async callControllerJoinCall(id: string, joinCallDto: JoinCallDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.callControllerJoinCall(id, joinCallDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['CallsApi.callControllerJoinCall']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['CallsApi.callControllerJoinCall']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Leave a call
          * @param {string} id Call ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async callControllerLeaveCall(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.callControllerLeaveCall(
-                id,
-                options
-            );
+        async callControllerLeaveCall(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.callControllerLeaveCall(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['CallsApi.callControllerLeaveCall']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['CallsApi.callControllerLeaveCall']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Schedule a call
-         * @param {ScheduleCallDto} scheduleCallDto
+         * @param {ScheduleCallDto} scheduleCallDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async callControllerScheduleCall(
-            scheduleCallDto: ScheduleCallDto,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CallResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.callControllerScheduleCall(
-                scheduleCallDto,
-                options
-            );
+        async callControllerScheduleCall(scheduleCallDto: ScheduleCallDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CallResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.callControllerScheduleCall(scheduleCallDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['CallsApi.callControllerScheduleCall']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['CallsApi.callControllerScheduleCall']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Start a new call
-         * @param {StartCallDto} startCallDto
+         * @param {StartCallDto} startCallDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async callControllerStartCall(
-            startCallDto: StartCallDto,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CallResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.callControllerStartCall(
-                startCallDto,
-                options
-            );
+        async callControllerStartCall(startCallDto: StartCallDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CallResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.callControllerStartCall(startCallDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['CallsApi.callControllerStartCall']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['CallsApi.callControllerStartCall']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Update participant settings (mute/unmute)
          * @param {string} id Call ID (UUID)
-         * @param {UpdateCallParticipantDto} updateCallParticipantDto
+         * @param {UpdateCallParticipantDto} updateCallParticipantDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async callControllerUpdateParticipant(
-            id: string,
-            updateCallParticipantDto: UpdateCallParticipantDto,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.callControllerUpdateParticipant(
-                    id,
-                    updateCallParticipantDto,
-                    options
-                );
+        async callControllerUpdateParticipant(id: string, updateCallParticipantDto: UpdateCallParticipantDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.callControllerUpdateParticipant(id, updateCallParticipantDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['CallsApi.callControllerUpdateParticipant']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
-        }
-    };
+            const localVarOperationServerBasePath = operationServerMap['CallsApi.callControllerUpdateParticipant']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
 };
 
 /**
  * CallsApi - factory interface
  * @export
  */
-export const CallsApiFactory = function (
-    configuration?: Configuration,
-    basePath?: string,
-    axios?: AxiosInstance
-) {
-    const localVarFp = CallsApiFp(configuration);
+export const CallsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = CallsApiFp(configuration)
     return {
         /**
-         *
+         * 
          * @summary Generate media session credentials for LiveKit
          * @param {string} id Call ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        callControllerCreateSession(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<CallSessionResponseDto> {
-            return localVarFp
-                .callControllerCreateSession(id, options)
-                .then(request => request(axios, basePath));
+        callControllerCreateSession(id: string, options?: RawAxiosRequestConfig): AxiosPromise<CallSessionResponseDto> {
+            return localVarFp.callControllerCreateSession(id, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary End a call (initiator only)
          * @param {string} id Call ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         callControllerEndCall(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp
-                .callControllerEndCall(id, options)
-                .then(request => request(axios, basePath));
+            return localVarFp.callControllerEndCall(id, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary List calls visible to the current user
-         * @param {string} status
+         * @param {string} status 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        callControllerFindAll(
-            status: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<Array<CallResponseDto>> {
-            return localVarFp
-                .callControllerFindAll(status, options)
-                .then(request => request(axios, basePath));
+        callControllerFindAll(status: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<CallResponseDto>> {
+            return localVarFp.callControllerFindAll(status, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Get call by ID
          * @param {string} id Call ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        callControllerFindOne(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<CallResponseDto> {
-            return localVarFp
-                .callControllerFindOne(id, options)
-                .then(request => request(axios, basePath));
+        callControllerFindOne(id: string, options?: RawAxiosRequestConfig): AxiosPromise<CallResponseDto> {
+            return localVarFp.callControllerFindOne(id, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Join a call
          * @param {string} id Call ID (UUID)
-         * @param {JoinCallDto} joinCallDto
+         * @param {JoinCallDto} joinCallDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        callControllerJoinCall(
-            id: string,
-            joinCallDto: JoinCallDto,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<void> {
-            return localVarFp
-                .callControllerJoinCall(id, joinCallDto, options)
-                .then(request => request(axios, basePath));
+        callControllerJoinCall(id: string, joinCallDto: JoinCallDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.callControllerJoinCall(id, joinCallDto, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Leave a call
          * @param {string} id Call ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         callControllerLeaveCall(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp
-                .callControllerLeaveCall(id, options)
-                .then(request => request(axios, basePath));
+            return localVarFp.callControllerLeaveCall(id, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Schedule a call
-         * @param {ScheduleCallDto} scheduleCallDto
+         * @param {ScheduleCallDto} scheduleCallDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        callControllerScheduleCall(
-            scheduleCallDto: ScheduleCallDto,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<CallResponseDto> {
-            return localVarFp
-                .callControllerScheduleCall(scheduleCallDto, options)
-                .then(request => request(axios, basePath));
+        callControllerScheduleCall(scheduleCallDto: ScheduleCallDto, options?: RawAxiosRequestConfig): AxiosPromise<CallResponseDto> {
+            return localVarFp.callControllerScheduleCall(scheduleCallDto, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Start a new call
-         * @param {StartCallDto} startCallDto
+         * @param {StartCallDto} startCallDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        callControllerStartCall(
-            startCallDto: StartCallDto,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<CallResponseDto> {
-            return localVarFp
-                .callControllerStartCall(startCallDto, options)
-                .then(request => request(axios, basePath));
+        callControllerStartCall(startCallDto: StartCallDto, options?: RawAxiosRequestConfig): AxiosPromise<CallResponseDto> {
+            return localVarFp.callControllerStartCall(startCallDto, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Update participant settings (mute/unmute)
          * @param {string} id Call ID (UUID)
-         * @param {UpdateCallParticipantDto} updateCallParticipantDto
+         * @param {UpdateCallParticipantDto} updateCallParticipantDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        callControllerUpdateParticipant(
-            id: string,
-            updateCallParticipantDto: UpdateCallParticipantDto,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<void> {
-            return localVarFp
-                .callControllerUpdateParticipant(id, updateCallParticipantDto, options)
-                .then(request => request(axios, basePath));
-        }
+        callControllerUpdateParticipant(id: string, updateCallParticipantDto: UpdateCallParticipantDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.callControllerUpdateParticipant(id, updateCallParticipantDto, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -895,7 +607,7 @@ export const CallsApiFactory = function (
  */
 export class CallsApi extends BaseAPI {
     /**
-     *
+     * 
      * @summary Generate media session credentials for LiveKit
      * @param {string} id Call ID (UUID)
      * @param {*} [options] Override http request option.
@@ -903,13 +615,11 @@ export class CallsApi extends BaseAPI {
      * @memberof CallsApi
      */
     public callControllerCreateSession(id: string, options?: RawAxiosRequestConfig) {
-        return CallsApiFp(this.configuration)
-            .callControllerCreateSession(id, options)
-            .then(request => request(this.axios, this.basePath));
+        return CallsApiFp(this.configuration).callControllerCreateSession(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary End a call (initiator only)
      * @param {string} id Call ID (UUID)
      * @param {*} [options] Override http request option.
@@ -917,27 +627,23 @@ export class CallsApi extends BaseAPI {
      * @memberof CallsApi
      */
     public callControllerEndCall(id: string, options?: RawAxiosRequestConfig) {
-        return CallsApiFp(this.configuration)
-            .callControllerEndCall(id, options)
-            .then(request => request(this.axios, this.basePath));
+        return CallsApiFp(this.configuration).callControllerEndCall(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary List calls visible to the current user
-     * @param {string} status
+     * @param {string} status 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CallsApi
      */
     public callControllerFindAll(status: string, options?: RawAxiosRequestConfig) {
-        return CallsApiFp(this.configuration)
-            .callControllerFindAll(status, options)
-            .then(request => request(this.axios, this.basePath));
+        return CallsApiFp(this.configuration).callControllerFindAll(status, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Get call by ID
      * @param {string} id Call ID (UUID)
      * @param {*} [options] Override http request option.
@@ -945,32 +651,24 @@ export class CallsApi extends BaseAPI {
      * @memberof CallsApi
      */
     public callControllerFindOne(id: string, options?: RawAxiosRequestConfig) {
-        return CallsApiFp(this.configuration)
-            .callControllerFindOne(id, options)
-            .then(request => request(this.axios, this.basePath));
+        return CallsApiFp(this.configuration).callControllerFindOne(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Join a call
      * @param {string} id Call ID (UUID)
-     * @param {JoinCallDto} joinCallDto
+     * @param {JoinCallDto} joinCallDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CallsApi
      */
-    public callControllerJoinCall(
-        id: string,
-        joinCallDto: JoinCallDto,
-        options?: RawAxiosRequestConfig
-    ) {
-        return CallsApiFp(this.configuration)
-            .callControllerJoinCall(id, joinCallDto, options)
-            .then(request => request(this.axios, this.basePath));
+    public callControllerJoinCall(id: string, joinCallDto: JoinCallDto, options?: RawAxiosRequestConfig) {
+        return CallsApiFp(this.configuration).callControllerJoinCall(id, joinCallDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Leave a call
      * @param {string} id Call ID (UUID)
      * @param {*} [options] Override http request option.
@@ -978,58 +676,44 @@ export class CallsApi extends BaseAPI {
      * @memberof CallsApi
      */
     public callControllerLeaveCall(id: string, options?: RawAxiosRequestConfig) {
-        return CallsApiFp(this.configuration)
-            .callControllerLeaveCall(id, options)
-            .then(request => request(this.axios, this.basePath));
+        return CallsApiFp(this.configuration).callControllerLeaveCall(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Schedule a call
-     * @param {ScheduleCallDto} scheduleCallDto
+     * @param {ScheduleCallDto} scheduleCallDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CallsApi
      */
-    public callControllerScheduleCall(
-        scheduleCallDto: ScheduleCallDto,
-        options?: RawAxiosRequestConfig
-    ) {
-        return CallsApiFp(this.configuration)
-            .callControllerScheduleCall(scheduleCallDto, options)
-            .then(request => request(this.axios, this.basePath));
+    public callControllerScheduleCall(scheduleCallDto: ScheduleCallDto, options?: RawAxiosRequestConfig) {
+        return CallsApiFp(this.configuration).callControllerScheduleCall(scheduleCallDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Start a new call
-     * @param {StartCallDto} startCallDto
+     * @param {StartCallDto} startCallDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CallsApi
      */
     public callControllerStartCall(startCallDto: StartCallDto, options?: RawAxiosRequestConfig) {
-        return CallsApiFp(this.configuration)
-            .callControllerStartCall(startCallDto, options)
-            .then(request => request(this.axios, this.basePath));
+        return CallsApiFp(this.configuration).callControllerStartCall(startCallDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Update participant settings (mute/unmute)
      * @param {string} id Call ID (UUID)
-     * @param {UpdateCallParticipantDto} updateCallParticipantDto
+     * @param {UpdateCallParticipantDto} updateCallParticipantDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CallsApi
      */
-    public callControllerUpdateParticipant(
-        id: string,
-        updateCallParticipantDto: UpdateCallParticipantDto,
-        options?: RawAxiosRequestConfig
-    ) {
-        return CallsApiFp(this.configuration)
-            .callControllerUpdateParticipant(id, updateCallParticipantDto, options)
-            .then(request => request(this.axios, this.basePath));
+    public callControllerUpdateParticipant(id: string, updateCallParticipantDto: UpdateCallParticipantDto, options?: RawAxiosRequestConfig) {
+        return CallsApiFp(this.configuration).callControllerUpdateParticipant(id, updateCallParticipantDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
+

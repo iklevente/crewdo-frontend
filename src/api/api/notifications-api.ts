@@ -13,32 +13,15 @@
  * Do not edit the class manually.
  */
 
+
 import type { Configuration } from '../configuration';
 import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import {
-    DUMMY_BASE_URL,
-    assertParamExists,
-    setApiKeyToObject,
-    setBasicAuthToObject,
-    setBearerAuthToObject,
-    setOAuthToObject,
-    setSearchParams,
-    serializeDataIfNeeded,
-    toPathString,
-    createRequestFunction
-} from '../common';
+import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from '../common';
 // @ts-ignore
-import {
-    BASE_PATH,
-    COLLECTION_FORMATS,
-    type RequestArgs,
-    BaseAPI,
-    RequiredError,
-    operationServerMap
-} from '../base';
+import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 // @ts-ignore
 import type { CreateNotificationDto } from '../models';
 // @ts-ignore
@@ -52,22 +35,15 @@ import type { UpdateNotificationDto } from '../models';
 export const NotificationsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         *
+         * 
          * @summary Create a new notification
-         * @param {CreateNotificationDto} createNotificationDto
+         * @param {CreateNotificationDto} createNotificationDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerCreate: async (
-            createNotificationDto: CreateNotificationDto,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        notificationControllerCreate: async (createNotificationDto: CreateNotificationDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'createNotificationDto' is not null or undefined
-            assertParamExists(
-                'notificationControllerCreate',
-                'createNotificationDto',
-                createNotificationDto
-            );
+            assertParamExists('notificationControllerCreate', 'createNotificationDto', createNotificationDto)
             const localVarPath = `/notifications`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -76,48 +52,36 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
-            localVarRequestOptions.data = serializeDataIfNeeded(
-                createNotificationDto,
-                localVarRequestOptions,
-                configuration
-            );
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createNotificationDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Delete a notification
          * @param {string} id Notification ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerDeleteNotification: async (
-            id: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        notificationControllerDeleteNotification: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('notificationControllerDeleteNotification', 'id', id);
-            const localVarPath = `/notifications/{id}`.replace(
-                `{${'id'}}`,
-                encodeURIComponent(String(id))
-            );
+            assertParamExists('notificationControllerDeleteNotification', 'id', id)
+            const localVarPath = `/notifications/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -125,41 +89,33 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Get notification by ID
          * @param {string} id Notification ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerFindById: async (
-            id: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        notificationControllerFindById: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('notificationControllerFindById', 'id', id);
-            const localVarPath = `/notifications/{id}`.replace(
-                `{${'id'}}`,
-                encodeURIComponent(String(id))
-            );
+            assertParamExists('notificationControllerFindById', 'id', id)
+            const localVarPath = `/notifications/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -167,26 +123,23 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Get notifications for a user (own notifications or admin access)
          * @param {string} userId User ID (UUID)
          * @param {NotificationControllerFindByUserTypeEnum} [type] Filter by notification type
@@ -196,20 +149,11 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerFindByUser: async (
-            userId: string,
-            type?: NotificationControllerFindByUserTypeEnum,
-            isRead?: boolean,
-            limit?: number,
-            offset?: number,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        notificationControllerFindByUser: async (userId: string, type?: NotificationControllerFindByUserTypeEnum, isRead?: boolean, limit?: number, offset?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userId' is not null or undefined
-            assertParamExists('notificationControllerFindByUser', 'userId', userId);
-            const localVarPath = `/notifications/user/{userId}`.replace(
-                `{${'userId'}}`,
-                encodeURIComponent(String(userId))
-            );
+            assertParamExists('notificationControllerFindByUser', 'userId', userId)
+            const localVarPath = `/notifications/user/{userId}`
+                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -217,7 +161,7 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -237,22 +181,19 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
                 localVarQueryParameter['offset'] = offset;
             }
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Get notifications for the current user
          * @param {NotificationControllerGetMyNotificationsTypeEnum} [type] Filter by notification type
          * @param {boolean} [isRead] Filter by read status
@@ -261,13 +202,7 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerGetMyNotifications: async (
-            type?: NotificationControllerGetMyNotificationsTypeEnum,
-            isRead?: boolean,
-            limit?: number,
-            offset?: number,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        notificationControllerGetMyNotifications: async (type?: NotificationControllerGetMyNotificationsTypeEnum, isRead?: boolean, limit?: number, offset?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/notifications/my-notifications`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -276,7 +211,7 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -296,29 +231,24 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
                 localVarQueryParameter['offset'] = offset;
             }
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Get unread notification count for current user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerGetMyUnreadCount: async (
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        notificationControllerGetMyUnreadCount: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/notifications/my-unread-count`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -327,41 +257,33 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Get unread notification count for a user (own count or admin access)
          * @param {string} userId User ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerGetUnreadCount: async (
-            userId: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        notificationControllerGetUnreadCount: async (userId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userId' is not null or undefined
-            assertParamExists('notificationControllerGetUnreadCount', 'userId', userId);
-            const localVarPath = `/notifications/user/{userId}/unread-count`.replace(
-                `{${'userId'}}`,
-                encodeURIComponent(String(userId))
-            );
+            assertParamExists('notificationControllerGetUnreadCount', 'userId', userId)
+            const localVarPath = `/notifications/user/{userId}/unread-count`
+                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -369,41 +291,33 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Mark all notifications as read for a user (own notifications or admin access)
          * @param {string} userId User ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerMarkAllAsRead: async (
-            userId: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        notificationControllerMarkAllAsRead: async (userId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userId' is not null or undefined
-            assertParamExists('notificationControllerMarkAllAsRead', 'userId', userId);
-            const localVarPath = `/notifications/user/{userId}/mark-all-read`.replace(
-                `{${'userId'}}`,
-                encodeURIComponent(String(userId))
-            );
+            assertParamExists('notificationControllerMarkAllAsRead', 'userId', userId)
+            const localVarPath = `/notifications/user/{userId}/mark-all-read`
+                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -411,33 +325,28 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Mark all notifications as read for the current user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerMarkMyNotificationsAsRead: async (
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        notificationControllerMarkMyNotificationsAsRead: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/notifications/mark-all-read`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -446,49 +355,36 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Update notification (mark as read/unread)
          * @param {string} id Notification ID (UUID)
-         * @param {UpdateNotificationDto} updateNotificationDto
+         * @param {UpdateNotificationDto} updateNotificationDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerUpdate: async (
-            id: string,
-            updateNotificationDto: UpdateNotificationDto,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        notificationControllerUpdate: async (id: string, updateNotificationDto: UpdateNotificationDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('notificationControllerUpdate', 'id', id);
+            assertParamExists('notificationControllerUpdate', 'id', id)
             // verify required parameter 'updateNotificationDto' is not null or undefined
-            assertParamExists(
-                'notificationControllerUpdate',
-                'updateNotificationDto',
-                updateNotificationDto
-            );
-            const localVarPath = `/notifications/{id}`.replace(
-                `{${'id'}}`,
-                encodeURIComponent(String(id))
-            );
+            assertParamExists('notificationControllerUpdate', 'updateNotificationDto', updateNotificationDto)
+            const localVarPath = `/notifications/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -496,130 +392,75 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
-            localVarRequestOptions.data = serializeDataIfNeeded(
-                updateNotificationDto,
-                localVarRequestOptions,
-                configuration
-            );
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateNotificationDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
-        }
-    };
+        },
+    }
 };
 
 /**
  * NotificationsApi - functional programming interface
  * @export
  */
-export const NotificationsApiFp = function (configuration?: Configuration) {
-    const localVarAxiosParamCreator = NotificationsApiAxiosParamCreator(configuration);
+export const NotificationsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = NotificationsApiAxiosParamCreator(configuration)
     return {
         /**
-         *
+         * 
          * @summary Create a new notification
-         * @param {CreateNotificationDto} createNotificationDto
+         * @param {CreateNotificationDto} createNotificationDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async notificationControllerCreate(
-            createNotificationDto: CreateNotificationDto,
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<NotificationResponseDto>
-        > {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.notificationControllerCreate(
-                createNotificationDto,
-                options
-            );
+        async notificationControllerCreate(createNotificationDto: CreateNotificationDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<NotificationResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.notificationControllerCreate(createNotificationDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['NotificationsApi.notificationControllerCreate']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['NotificationsApi.notificationControllerCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Delete a notification
          * @param {string} id Notification ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async notificationControllerDeleteNotification(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.notificationControllerDeleteNotification(
-                    id,
-                    options
-                );
+        async notificationControllerDeleteNotification(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.notificationControllerDeleteNotification(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['NotificationsApi.notificationControllerDeleteNotification']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['NotificationsApi.notificationControllerDeleteNotification']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Get notification by ID
          * @param {string} id Notification ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async notificationControllerFindById(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<NotificationResponseDto>
-        > {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.notificationControllerFindById(id, options);
+        async notificationControllerFindById(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<NotificationResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.notificationControllerFindById(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['NotificationsApi.notificationControllerFindById']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['NotificationsApi.notificationControllerFindById']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Get notifications for a user (own notifications or admin access)
          * @param {string} userId User ID (UUID)
          * @param {NotificationControllerFindByUserTypeEnum} [type] Filter by notification type
@@ -629,38 +470,14 @@ export const NotificationsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async notificationControllerFindByUser(
-            userId: string,
-            type?: NotificationControllerFindByUserTypeEnum,
-            isRead?: boolean,
-            limit?: number,
-            offset?: number,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.notificationControllerFindByUser(
-                    userId,
-                    type,
-                    isRead,
-                    limit,
-                    offset,
-                    options
-                );
+        async notificationControllerFindByUser(userId: string, type?: NotificationControllerFindByUserTypeEnum, isRead?: boolean, limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.notificationControllerFindByUser(userId, type, isRead, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['NotificationsApi.notificationControllerFindByUser']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['NotificationsApi.notificationControllerFindByUser']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Get notifications for the current user
          * @param {NotificationControllerGetMyNotificationsTypeEnum} [type] Filter by notification type
          * @param {boolean} [isRead] Filter by read status
@@ -669,236 +486,118 @@ export const NotificationsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async notificationControllerGetMyNotifications(
-            type?: NotificationControllerGetMyNotificationsTypeEnum,
-            isRead?: boolean,
-            limit?: number,
-            offset?: number,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.notificationControllerGetMyNotifications(
-                    type,
-                    isRead,
-                    limit,
-                    offset,
-                    options
-                );
+        async notificationControllerGetMyNotifications(type?: NotificationControllerGetMyNotificationsTypeEnum, isRead?: boolean, limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.notificationControllerGetMyNotifications(type, isRead, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['NotificationsApi.notificationControllerGetMyNotifications']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['NotificationsApi.notificationControllerGetMyNotifications']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Get unread notification count for current user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async notificationControllerGetMyUnreadCount(
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.notificationControllerGetMyUnreadCount(options);
+        async notificationControllerGetMyUnreadCount(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.notificationControllerGetMyUnreadCount(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['NotificationsApi.notificationControllerGetMyUnreadCount']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['NotificationsApi.notificationControllerGetMyUnreadCount']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Get unread notification count for a user (own count or admin access)
          * @param {string} userId User ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async notificationControllerGetUnreadCount(
-            userId: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.notificationControllerGetUnreadCount(
-                    userId,
-                    options
-                );
+        async notificationControllerGetUnreadCount(userId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.notificationControllerGetUnreadCount(userId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['NotificationsApi.notificationControllerGetUnreadCount']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['NotificationsApi.notificationControllerGetUnreadCount']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Mark all notifications as read for a user (own notifications or admin access)
          * @param {string} userId User ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async notificationControllerMarkAllAsRead(
-            userId: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.notificationControllerMarkAllAsRead(
-                    userId,
-                    options
-                );
+        async notificationControllerMarkAllAsRead(userId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.notificationControllerMarkAllAsRead(userId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['NotificationsApi.notificationControllerMarkAllAsRead']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['NotificationsApi.notificationControllerMarkAllAsRead']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Mark all notifications as read for the current user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async notificationControllerMarkMyNotificationsAsRead(
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.notificationControllerMarkMyNotificationsAsRead(
-                    options
-                );
+        async notificationControllerMarkMyNotificationsAsRead(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.notificationControllerMarkMyNotificationsAsRead(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap[
-                    'NotificationsApi.notificationControllerMarkMyNotificationsAsRead'
-                ]?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['NotificationsApi.notificationControllerMarkMyNotificationsAsRead']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Update notification (mark as read/unread)
          * @param {string} id Notification ID (UUID)
-         * @param {UpdateNotificationDto} updateNotificationDto
+         * @param {UpdateNotificationDto} updateNotificationDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async notificationControllerUpdate(
-            id: string,
-            updateNotificationDto: UpdateNotificationDto,
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<NotificationResponseDto>
-        > {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.notificationControllerUpdate(
-                id,
-                updateNotificationDto,
-                options
-            );
+        async notificationControllerUpdate(id: string, updateNotificationDto: UpdateNotificationDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<NotificationResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.notificationControllerUpdate(id, updateNotificationDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['NotificationsApi.notificationControllerUpdate']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
-        }
-    };
+            const localVarOperationServerBasePath = operationServerMap['NotificationsApi.notificationControllerUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
 };
 
 /**
  * NotificationsApi - factory interface
  * @export
  */
-export const NotificationsApiFactory = function (
-    configuration?: Configuration,
-    basePath?: string,
-    axios?: AxiosInstance
-) {
-    const localVarFp = NotificationsApiFp(configuration);
+export const NotificationsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = NotificationsApiFp(configuration)
     return {
         /**
-         *
+         * 
          * @summary Create a new notification
-         * @param {CreateNotificationDto} createNotificationDto
+         * @param {CreateNotificationDto} createNotificationDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerCreate(
-            createNotificationDto: CreateNotificationDto,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<NotificationResponseDto> {
-            return localVarFp
-                .notificationControllerCreate(createNotificationDto, options)
-                .then(request => request(axios, basePath));
+        notificationControllerCreate(createNotificationDto: CreateNotificationDto, options?: RawAxiosRequestConfig): AxiosPromise<NotificationResponseDto> {
+            return localVarFp.notificationControllerCreate(createNotificationDto, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Delete a notification
          * @param {string} id Notification ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerDeleteNotification(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<void> {
-            return localVarFp
-                .notificationControllerDeleteNotification(id, options)
-                .then(request => request(axios, basePath));
+        notificationControllerDeleteNotification(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.notificationControllerDeleteNotification(id, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Get notification by ID
          * @param {string} id Notification ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerFindById(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<NotificationResponseDto> {
-            return localVarFp
-                .notificationControllerFindById(id, options)
-                .then(request => request(axios, basePath));
+        notificationControllerFindById(id: string, options?: RawAxiosRequestConfig): AxiosPromise<NotificationResponseDto> {
+            return localVarFp.notificationControllerFindById(id, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Get notifications for a user (own notifications or admin access)
          * @param {string} userId User ID (UUID)
          * @param {NotificationControllerFindByUserTypeEnum} [type] Filter by notification type
@@ -908,20 +607,11 @@ export const NotificationsApiFactory = function (
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerFindByUser(
-            userId: string,
-            type?: NotificationControllerFindByUserTypeEnum,
-            isRead?: boolean,
-            limit?: number,
-            offset?: number,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<void> {
-            return localVarFp
-                .notificationControllerFindByUser(userId, type, isRead, limit, offset, options)
-                .then(request => request(axios, basePath));
+        notificationControllerFindByUser(userId: string, type?: NotificationControllerFindByUserTypeEnum, isRead?: boolean, limit?: number, offset?: number, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.notificationControllerFindByUser(userId, type, isRead, limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Get notifications for the current user
          * @param {NotificationControllerGetMyNotificationsTypeEnum} [type] Filter by notification type
          * @param {boolean} [isRead] Filter by read status
@@ -930,90 +620,58 @@ export const NotificationsApiFactory = function (
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerGetMyNotifications(
-            type?: NotificationControllerGetMyNotificationsTypeEnum,
-            isRead?: boolean,
-            limit?: number,
-            offset?: number,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<void> {
-            return localVarFp
-                .notificationControllerGetMyNotifications(type, isRead, limit, offset, options)
-                .then(request => request(axios, basePath));
+        notificationControllerGetMyNotifications(type?: NotificationControllerGetMyNotificationsTypeEnum, isRead?: boolean, limit?: number, offset?: number, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.notificationControllerGetMyNotifications(type, isRead, limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Get unread notification count for current user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerGetMyUnreadCount(
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<void> {
-            return localVarFp
-                .notificationControllerGetMyUnreadCount(options)
-                .then(request => request(axios, basePath));
+        notificationControllerGetMyUnreadCount(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.notificationControllerGetMyUnreadCount(options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Get unread notification count for a user (own count or admin access)
          * @param {string} userId User ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerGetUnreadCount(
-            userId: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<void> {
-            return localVarFp
-                .notificationControllerGetUnreadCount(userId, options)
-                .then(request => request(axios, basePath));
+        notificationControllerGetUnreadCount(userId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.notificationControllerGetUnreadCount(userId, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Mark all notifications as read for a user (own notifications or admin access)
          * @param {string} userId User ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerMarkAllAsRead(
-            userId: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<void> {
-            return localVarFp
-                .notificationControllerMarkAllAsRead(userId, options)
-                .then(request => request(axios, basePath));
+        notificationControllerMarkAllAsRead(userId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.notificationControllerMarkAllAsRead(userId, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Mark all notifications as read for the current user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerMarkMyNotificationsAsRead(
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<void> {
-            return localVarFp
-                .notificationControllerMarkMyNotificationsAsRead(options)
-                .then(request => request(axios, basePath));
+        notificationControllerMarkMyNotificationsAsRead(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.notificationControllerMarkMyNotificationsAsRead(options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Update notification (mark as read/unread)
          * @param {string} id Notification ID (UUID)
-         * @param {UpdateNotificationDto} updateNotificationDto
+         * @param {UpdateNotificationDto} updateNotificationDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        notificationControllerUpdate(
-            id: string,
-            updateNotificationDto: UpdateNotificationDto,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<NotificationResponseDto> {
-            return localVarFp
-                .notificationControllerUpdate(id, updateNotificationDto, options)
-                .then(request => request(axios, basePath));
-        }
+        notificationControllerUpdate(id: string, updateNotificationDto: UpdateNotificationDto, options?: RawAxiosRequestConfig): AxiosPromise<NotificationResponseDto> {
+            return localVarFp.notificationControllerUpdate(id, updateNotificationDto, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -1025,24 +683,19 @@ export const NotificationsApiFactory = function (
  */
 export class NotificationsApi extends BaseAPI {
     /**
-     *
+     * 
      * @summary Create a new notification
-     * @param {CreateNotificationDto} createNotificationDto
+     * @param {CreateNotificationDto} createNotificationDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof NotificationsApi
      */
-    public notificationControllerCreate(
-        createNotificationDto: CreateNotificationDto,
-        options?: RawAxiosRequestConfig
-    ) {
-        return NotificationsApiFp(this.configuration)
-            .notificationControllerCreate(createNotificationDto, options)
-            .then(request => request(this.axios, this.basePath));
+    public notificationControllerCreate(createNotificationDto: CreateNotificationDto, options?: RawAxiosRequestConfig) {
+        return NotificationsApiFp(this.configuration).notificationControllerCreate(createNotificationDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Delete a notification
      * @param {string} id Notification ID (UUID)
      * @param {*} [options] Override http request option.
@@ -1050,13 +703,11 @@ export class NotificationsApi extends BaseAPI {
      * @memberof NotificationsApi
      */
     public notificationControllerDeleteNotification(id: string, options?: RawAxiosRequestConfig) {
-        return NotificationsApiFp(this.configuration)
-            .notificationControllerDeleteNotification(id, options)
-            .then(request => request(this.axios, this.basePath));
+        return NotificationsApiFp(this.configuration).notificationControllerDeleteNotification(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Get notification by ID
      * @param {string} id Notification ID (UUID)
      * @param {*} [options] Override http request option.
@@ -1064,13 +715,11 @@ export class NotificationsApi extends BaseAPI {
      * @memberof NotificationsApi
      */
     public notificationControllerFindById(id: string, options?: RawAxiosRequestConfig) {
-        return NotificationsApiFp(this.configuration)
-            .notificationControllerFindById(id, options)
-            .then(request => request(this.axios, this.basePath));
+        return NotificationsApiFp(this.configuration).notificationControllerFindById(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Get notifications for a user (own notifications or admin access)
      * @param {string} userId User ID (UUID)
      * @param {NotificationControllerFindByUserTypeEnum} [type] Filter by notification type
@@ -1081,21 +730,12 @@ export class NotificationsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof NotificationsApi
      */
-    public notificationControllerFindByUser(
-        userId: string,
-        type?: NotificationControllerFindByUserTypeEnum,
-        isRead?: boolean,
-        limit?: number,
-        offset?: number,
-        options?: RawAxiosRequestConfig
-    ) {
-        return NotificationsApiFp(this.configuration)
-            .notificationControllerFindByUser(userId, type, isRead, limit, offset, options)
-            .then(request => request(this.axios, this.basePath));
+    public notificationControllerFindByUser(userId: string, type?: NotificationControllerFindByUserTypeEnum, isRead?: boolean, limit?: number, offset?: number, options?: RawAxiosRequestConfig) {
+        return NotificationsApiFp(this.configuration).notificationControllerFindByUser(userId, type, isRead, limit, offset, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Get notifications for the current user
      * @param {NotificationControllerGetMyNotificationsTypeEnum} [type] Filter by notification type
      * @param {boolean} [isRead] Filter by read status
@@ -1105,33 +745,23 @@ export class NotificationsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof NotificationsApi
      */
-    public notificationControllerGetMyNotifications(
-        type?: NotificationControllerGetMyNotificationsTypeEnum,
-        isRead?: boolean,
-        limit?: number,
-        offset?: number,
-        options?: RawAxiosRequestConfig
-    ) {
-        return NotificationsApiFp(this.configuration)
-            .notificationControllerGetMyNotifications(type, isRead, limit, offset, options)
-            .then(request => request(this.axios, this.basePath));
+    public notificationControllerGetMyNotifications(type?: NotificationControllerGetMyNotificationsTypeEnum, isRead?: boolean, limit?: number, offset?: number, options?: RawAxiosRequestConfig) {
+        return NotificationsApiFp(this.configuration).notificationControllerGetMyNotifications(type, isRead, limit, offset, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Get unread notification count for current user
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof NotificationsApi
      */
     public notificationControllerGetMyUnreadCount(options?: RawAxiosRequestConfig) {
-        return NotificationsApiFp(this.configuration)
-            .notificationControllerGetMyUnreadCount(options)
-            .then(request => request(this.axios, this.basePath));
+        return NotificationsApiFp(this.configuration).notificationControllerGetMyUnreadCount(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Get unread notification count for a user (own count or admin access)
      * @param {string} userId User ID (UUID)
      * @param {*} [options] Override http request option.
@@ -1139,13 +769,11 @@ export class NotificationsApi extends BaseAPI {
      * @memberof NotificationsApi
      */
     public notificationControllerGetUnreadCount(userId: string, options?: RawAxiosRequestConfig) {
-        return NotificationsApiFp(this.configuration)
-            .notificationControllerGetUnreadCount(userId, options)
-            .then(request => request(this.axios, this.basePath));
+        return NotificationsApiFp(this.configuration).notificationControllerGetUnreadCount(userId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Mark all notifications as read for a user (own notifications or admin access)
      * @param {string} userId User ID (UUID)
      * @param {*} [options] Override http request option.
@@ -1153,41 +781,31 @@ export class NotificationsApi extends BaseAPI {
      * @memberof NotificationsApi
      */
     public notificationControllerMarkAllAsRead(userId: string, options?: RawAxiosRequestConfig) {
-        return NotificationsApiFp(this.configuration)
-            .notificationControllerMarkAllAsRead(userId, options)
-            .then(request => request(this.axios, this.basePath));
+        return NotificationsApiFp(this.configuration).notificationControllerMarkAllAsRead(userId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Mark all notifications as read for the current user
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof NotificationsApi
      */
     public notificationControllerMarkMyNotificationsAsRead(options?: RawAxiosRequestConfig) {
-        return NotificationsApiFp(this.configuration)
-            .notificationControllerMarkMyNotificationsAsRead(options)
-            .then(request => request(this.axios, this.basePath));
+        return NotificationsApiFp(this.configuration).notificationControllerMarkMyNotificationsAsRead(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Update notification (mark as read/unread)
      * @param {string} id Notification ID (UUID)
-     * @param {UpdateNotificationDto} updateNotificationDto
+     * @param {UpdateNotificationDto} updateNotificationDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof NotificationsApi
      */
-    public notificationControllerUpdate(
-        id: string,
-        updateNotificationDto: UpdateNotificationDto,
-        options?: RawAxiosRequestConfig
-    ) {
-        return NotificationsApiFp(this.configuration)
-            .notificationControllerUpdate(id, updateNotificationDto, options)
-            .then(request => request(this.axios, this.basePath));
+    public notificationControllerUpdate(id: string, updateNotificationDto: UpdateNotificationDto, options?: RawAxiosRequestConfig) {
+        return NotificationsApiFp(this.configuration).notificationControllerUpdate(id, updateNotificationDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -1204,8 +822,7 @@ export const NotificationControllerFindByUserTypeEnum = {
     CallScheduled: 'call_scheduled',
     IncomingCall: 'incoming_call'
 } as const;
-export type NotificationControllerFindByUserTypeEnum =
-    (typeof NotificationControllerFindByUserTypeEnum)[keyof typeof NotificationControllerFindByUserTypeEnum];
+export type NotificationControllerFindByUserTypeEnum = typeof NotificationControllerFindByUserTypeEnum[keyof typeof NotificationControllerFindByUserTypeEnum];
 /**
  * @export
  */
@@ -1219,5 +836,4 @@ export const NotificationControllerGetMyNotificationsTypeEnum = {
     CallScheduled: 'call_scheduled',
     IncomingCall: 'incoming_call'
 } as const;
-export type NotificationControllerGetMyNotificationsTypeEnum =
-    (typeof NotificationControllerGetMyNotificationsTypeEnum)[keyof typeof NotificationControllerGetMyNotificationsTypeEnum];
+export type NotificationControllerGetMyNotificationsTypeEnum = typeof NotificationControllerGetMyNotificationsTypeEnum[keyof typeof NotificationControllerGetMyNotificationsTypeEnum];

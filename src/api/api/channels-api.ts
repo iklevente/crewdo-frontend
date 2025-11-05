@@ -13,32 +13,15 @@
  * Do not edit the class manually.
  */
 
+
 import type { Configuration } from '../configuration';
 import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import {
-    DUMMY_BASE_URL,
-    assertParamExists,
-    setApiKeyToObject,
-    setBasicAuthToObject,
-    setBearerAuthToObject,
-    setOAuthToObject,
-    setSearchParams,
-    serializeDataIfNeeded,
-    toPathString,
-    createRequestFunction
-} from '../common';
+import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from '../common';
 // @ts-ignore
-import {
-    BASE_PATH,
-    COLLECTION_FORMATS,
-    type RequestArgs,
-    BaseAPI,
-    RequiredError,
-    operationServerMap
-} from '../base';
+import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 // @ts-ignore
 import type { ChannelResponseDto } from '../models';
 // @ts-ignore
@@ -54,25 +37,21 @@ import type { UpdateChannelDto } from '../models';
 export const ChannelsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         *
+         * 
          * @summary Add member to channel (creator, workspace owner, or admin)
          * @param {string} id Channel ID
          * @param {string} userId User ID to add
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelControllerAddMember: async (
-            id: string,
-            userId: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        channelControllerAddMember: async (id: string, userId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('channelControllerAddMember', 'id', id);
+            assertParamExists('channelControllerAddMember', 'id', id)
             // verify required parameter 'userId' is not null or undefined
-            assertParamExists('channelControllerAddMember', 'userId', userId);
+            assertParamExists('channelControllerAddMember', 'userId', userId)
             const localVarPath = `/channels/{id}/members/{userId}`
-                .replace(`{${'id'}}`, encodeURIComponent(String(id)))
-                .replace(`{${'userId'}}`, encodeURIComponent(String(userId)));
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -80,37 +59,31 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Create a new channel
-         * @param {CreateChannelDto} createChannelDto
+         * @param {CreateChannelDto} createChannelDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelControllerCreate: async (
-            createChannelDto: CreateChannelDto,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        channelControllerCreate: async (createChannelDto: CreateChannelDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'createChannelDto' is not null or undefined
-            assertParamExists('channelControllerCreate', 'createChannelDto', createChannelDto);
+            assertParamExists('channelControllerCreate', 'createChannelDto', createChannelDto)
             const localVarPath = `/channels`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -119,48 +92,34 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
-            localVarRequestOptions.data = serializeDataIfNeeded(
-                createChannelDto,
-                localVarRequestOptions,
-                configuration
-            );
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createChannelDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Create a direct message channel
-         * @param {CreateDirectMessageDto} createDirectMessageDto
+         * @param {CreateDirectMessageDto} createDirectMessageDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelControllerCreateDirectMessage: async (
-            createDirectMessageDto: CreateDirectMessageDto,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        channelControllerCreateDirectMessage: async (createDirectMessageDto: CreateDirectMessageDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'createDirectMessageDto' is not null or undefined
-            assertParamExists(
-                'channelControllerCreateDirectMessage',
-                'createDirectMessageDto',
-                createDirectMessageDto
-            );
+            assertParamExists('channelControllerCreateDirectMessage', 'createDirectMessageDto', createDirectMessageDto)
             const localVarPath = `/channels/dm`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -169,48 +128,36 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
-            localVarRequestOptions.data = serializeDataIfNeeded(
-                createDirectMessageDto,
-                localVarRequestOptions,
-                configuration
-            );
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createDirectMessageDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Get channels by workspace
          * @param {string} workspaceId Workspace ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelControllerFindByWorkspace: async (
-            workspaceId: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        channelControllerFindByWorkspace: async (workspaceId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'workspaceId' is not null or undefined
-            assertParamExists('channelControllerFindByWorkspace', 'workspaceId', workspaceId);
-            const localVarPath = `/channels/workspace/{workspaceId}`.replace(
-                `{${'workspaceId'}}`,
-                encodeURIComponent(String(workspaceId))
-            );
+            assertParamExists('channelControllerFindByWorkspace', 'workspaceId', workspaceId)
+            const localVarPath = `/channels/workspace/{workspaceId}`
+                .replace(`{${"workspaceId"}}`, encodeURIComponent(String(workspaceId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -218,33 +165,28 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Get direct message channels for current user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelControllerFindDirectMessages: async (
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        channelControllerFindDirectMessages: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/channels/dm`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -253,41 +195,33 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Get channel by ID
          * @param {string} id Channel ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelControllerFindOne: async (
-            id: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        channelControllerFindOne: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('channelControllerFindOne', 'id', id);
-            const localVarPath = `/channels/{id}`.replace(
-                `{${'id'}}`,
-                encodeURIComponent(String(id))
-            );
+            assertParamExists('channelControllerFindOne', 'id', id)
+            const localVarPath = `/channels/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -295,41 +229,33 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Delete channel
          * @param {string} id Channel ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelControllerRemove: async (
-            id: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        channelControllerRemove: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('channelControllerRemove', 'id', id);
-            const localVarPath = `/channels/{id}`.replace(
-                `{${'id'}}`,
-                encodeURIComponent(String(id))
-            );
+            assertParamExists('channelControllerRemove', 'id', id)
+            const localVarPath = `/channels/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -337,44 +263,37 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Remove member from channel (creator, workspace owner, or admin)
          * @param {string} id Channel ID
          * @param {string} userId User ID to remove
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelControllerRemoveMember: async (
-            id: string,
-            userId: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        channelControllerRemoveMember: async (id: string, userId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('channelControllerRemoveMember', 'id', id);
+            assertParamExists('channelControllerRemoveMember', 'id', id)
             // verify required parameter 'userId' is not null or undefined
-            assertParamExists('channelControllerRemoveMember', 'userId', userId);
+            assertParamExists('channelControllerRemoveMember', 'userId', userId)
             const localVarPath = `/channels/{id}/members/{userId}`
-                .replace(`{${'id'}}`, encodeURIComponent(String(id)))
-                .replace(`{${'userId'}}`, encodeURIComponent(String(userId)));
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -382,45 +301,36 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Update channel
          * @param {string} id Channel ID
-         * @param {UpdateChannelDto} updateChannelDto
+         * @param {UpdateChannelDto} updateChannelDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelControllerUpdate: async (
-            id: string,
-            updateChannelDto: UpdateChannelDto,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        channelControllerUpdate: async (id: string, updateChannelDto: UpdateChannelDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('channelControllerUpdate', 'id', id);
+            assertParamExists('channelControllerUpdate', 'id', id)
             // verify required parameter 'updateChannelDto' is not null or undefined
-            assertParamExists('channelControllerUpdate', 'updateChannelDto', updateChannelDto);
-            const localVarPath = `/channels/{id}`.replace(
-                `{${'id'}}`,
-                encodeURIComponent(String(id))
-            );
+            assertParamExists('channelControllerUpdate', 'updateChannelDto', updateChannelDto)
+            const localVarPath = `/channels/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -428,454 +338,255 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
-            localVarRequestOptions.data = serializeDataIfNeeded(
-                updateChannelDto,
-                localVarRequestOptions,
-                configuration
-            );
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateChannelDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
-        }
-    };
+        },
+    }
 };
 
 /**
  * ChannelsApi - functional programming interface
  * @export
  */
-export const ChannelsApiFp = function (configuration?: Configuration) {
-    const localVarAxiosParamCreator = ChannelsApiAxiosParamCreator(configuration);
+export const ChannelsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ChannelsApiAxiosParamCreator(configuration)
     return {
         /**
-         *
+         * 
          * @summary Add member to channel (creator, workspace owner, or admin)
          * @param {string} id Channel ID
          * @param {string} userId User ID to add
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async channelControllerAddMember(
-            id: string,
-            userId: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.channelControllerAddMember(
-                id,
-                userId,
-                options
-            );
+        async channelControllerAddMember(id: string, userId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.channelControllerAddMember(id, userId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['ChannelsApi.channelControllerAddMember']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['ChannelsApi.channelControllerAddMember']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Create a new channel
-         * @param {CreateChannelDto} createChannelDto
+         * @param {CreateChannelDto} createChannelDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async channelControllerCreate(
-            createChannelDto: CreateChannelDto,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.channelControllerCreate(
-                createChannelDto,
-                options
-            );
+        async channelControllerCreate(createChannelDto: CreateChannelDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.channelControllerCreate(createChannelDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['ChannelsApi.channelControllerCreate']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['ChannelsApi.channelControllerCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Create a direct message channel
-         * @param {CreateDirectMessageDto} createDirectMessageDto
+         * @param {CreateDirectMessageDto} createDirectMessageDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async channelControllerCreateDirectMessage(
-            createDirectMessageDto: CreateDirectMessageDto,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelResponseDto>> {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.channelControllerCreateDirectMessage(
-                    createDirectMessageDto,
-                    options
-                );
+        async channelControllerCreateDirectMessage(createDirectMessageDto: CreateDirectMessageDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.channelControllerCreateDirectMessage(createDirectMessageDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['ChannelsApi.channelControllerCreateDirectMessage']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['ChannelsApi.channelControllerCreateDirectMessage']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Get channels by workspace
          * @param {string} workspaceId Workspace ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async channelControllerFindByWorkspace(
-            workspaceId: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ChannelResponseDto>>
-        > {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.channelControllerFindByWorkspace(
-                    workspaceId,
-                    options
-                );
+        async channelControllerFindByWorkspace(workspaceId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ChannelResponseDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.channelControllerFindByWorkspace(workspaceId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['ChannelsApi.channelControllerFindByWorkspace']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['ChannelsApi.channelControllerFindByWorkspace']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Get direct message channels for current user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async channelControllerFindDirectMessages(
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ChannelResponseDto>>
-        > {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.channelControllerFindDirectMessages(options);
+        async channelControllerFindDirectMessages(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ChannelResponseDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.channelControllerFindDirectMessages(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['ChannelsApi.channelControllerFindDirectMessages']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['ChannelsApi.channelControllerFindDirectMessages']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Get channel by ID
          * @param {string} id Channel ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async channelControllerFindOne(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.channelControllerFindOne(
-                id,
-                options
-            );
+        async channelControllerFindOne(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.channelControllerFindOne(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['ChannelsApi.channelControllerFindOne']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['ChannelsApi.channelControllerFindOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Delete channel
          * @param {string} id Channel ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async channelControllerRemove(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.channelControllerRemove(
-                id,
-                options
-            );
+        async channelControllerRemove(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.channelControllerRemove(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['ChannelsApi.channelControllerRemove']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['ChannelsApi.channelControllerRemove']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Remove member from channel (creator, workspace owner, or admin)
          * @param {string} id Channel ID
          * @param {string} userId User ID to remove
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async channelControllerRemoveMember(
-            id: string,
-            userId: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.channelControllerRemoveMember(
-                id,
-                userId,
-                options
-            );
+        async channelControllerRemoveMember(id: string, userId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.channelControllerRemoveMember(id, userId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['ChannelsApi.channelControllerRemoveMember']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['ChannelsApi.channelControllerRemoveMember']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Update channel
          * @param {string} id Channel ID
-         * @param {UpdateChannelDto} updateChannelDto
+         * @param {UpdateChannelDto} updateChannelDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async channelControllerUpdate(
-            id: string,
-            updateChannelDto: UpdateChannelDto,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.channelControllerUpdate(
-                id,
-                updateChannelDto,
-                options
-            );
+        async channelControllerUpdate(id: string, updateChannelDto: UpdateChannelDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.channelControllerUpdate(id, updateChannelDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['ChannelsApi.channelControllerUpdate']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
-        }
-    };
+            const localVarOperationServerBasePath = operationServerMap['ChannelsApi.channelControllerUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
 };
 
 /**
  * ChannelsApi - factory interface
  * @export
  */
-export const ChannelsApiFactory = function (
-    configuration?: Configuration,
-    basePath?: string,
-    axios?: AxiosInstance
-) {
-    const localVarFp = ChannelsApiFp(configuration);
+export const ChannelsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ChannelsApiFp(configuration)
     return {
         /**
-         *
+         * 
          * @summary Add member to channel (creator, workspace owner, or admin)
          * @param {string} id Channel ID
          * @param {string} userId User ID to add
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelControllerAddMember(
-            id: string,
-            userId: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<void> {
-            return localVarFp
-                .channelControllerAddMember(id, userId, options)
-                .then(request => request(axios, basePath));
+        channelControllerAddMember(id: string, userId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.channelControllerAddMember(id, userId, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Create a new channel
-         * @param {CreateChannelDto} createChannelDto
+         * @param {CreateChannelDto} createChannelDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelControllerCreate(
-            createChannelDto: CreateChannelDto,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<ChannelResponseDto> {
-            return localVarFp
-                .channelControllerCreate(createChannelDto, options)
-                .then(request => request(axios, basePath));
+        channelControllerCreate(createChannelDto: CreateChannelDto, options?: RawAxiosRequestConfig): AxiosPromise<ChannelResponseDto> {
+            return localVarFp.channelControllerCreate(createChannelDto, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Create a direct message channel
-         * @param {CreateDirectMessageDto} createDirectMessageDto
+         * @param {CreateDirectMessageDto} createDirectMessageDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelControllerCreateDirectMessage(
-            createDirectMessageDto: CreateDirectMessageDto,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<ChannelResponseDto> {
-            return localVarFp
-                .channelControllerCreateDirectMessage(createDirectMessageDto, options)
-                .then(request => request(axios, basePath));
+        channelControllerCreateDirectMessage(createDirectMessageDto: CreateDirectMessageDto, options?: RawAxiosRequestConfig): AxiosPromise<ChannelResponseDto> {
+            return localVarFp.channelControllerCreateDirectMessage(createDirectMessageDto, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Get channels by workspace
          * @param {string} workspaceId Workspace ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelControllerFindByWorkspace(
-            workspaceId: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<Array<ChannelResponseDto>> {
-            return localVarFp
-                .channelControllerFindByWorkspace(workspaceId, options)
-                .then(request => request(axios, basePath));
+        channelControllerFindByWorkspace(workspaceId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<ChannelResponseDto>> {
+            return localVarFp.channelControllerFindByWorkspace(workspaceId, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Get direct message channels for current user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelControllerFindDirectMessages(
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<Array<ChannelResponseDto>> {
-            return localVarFp
-                .channelControllerFindDirectMessages(options)
-                .then(request => request(axios, basePath));
+        channelControllerFindDirectMessages(options?: RawAxiosRequestConfig): AxiosPromise<Array<ChannelResponseDto>> {
+            return localVarFp.channelControllerFindDirectMessages(options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Get channel by ID
          * @param {string} id Channel ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelControllerFindOne(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<ChannelResponseDto> {
-            return localVarFp
-                .channelControllerFindOne(id, options)
-                .then(request => request(axios, basePath));
+        channelControllerFindOne(id: string, options?: RawAxiosRequestConfig): AxiosPromise<ChannelResponseDto> {
+            return localVarFp.channelControllerFindOne(id, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Delete channel
          * @param {string} id Channel ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         channelControllerRemove(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp
-                .channelControllerRemove(id, options)
-                .then(request => request(axios, basePath));
+            return localVarFp.channelControllerRemove(id, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Remove member from channel (creator, workspace owner, or admin)
          * @param {string} id Channel ID
          * @param {string} userId User ID to remove
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelControllerRemoveMember(
-            id: string,
-            userId: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<void> {
-            return localVarFp
-                .channelControllerRemoveMember(id, userId, options)
-                .then(request => request(axios, basePath));
+        channelControllerRemoveMember(id: string, userId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.channelControllerRemoveMember(id, userId, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Update channel
          * @param {string} id Channel ID
-         * @param {UpdateChannelDto} updateChannelDto
+         * @param {UpdateChannelDto} updateChannelDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelControllerUpdate(
-            id: string,
-            updateChannelDto: UpdateChannelDto,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<ChannelResponseDto> {
-            return localVarFp
-                .channelControllerUpdate(id, updateChannelDto, options)
-                .then(request => request(axios, basePath));
-        }
+        channelControllerUpdate(id: string, updateChannelDto: UpdateChannelDto, options?: RawAxiosRequestConfig): AxiosPromise<ChannelResponseDto> {
+            return localVarFp.channelControllerUpdate(id, updateChannelDto, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -887,7 +598,7 @@ export const ChannelsApiFactory = function (
  */
 export class ChannelsApi extends BaseAPI {
     /**
-     *
+     * 
      * @summary Add member to channel (creator, workspace owner, or admin)
      * @param {string} id Channel ID
      * @param {string} userId User ID to add
@@ -896,47 +607,35 @@ export class ChannelsApi extends BaseAPI {
      * @memberof ChannelsApi
      */
     public channelControllerAddMember(id: string, userId: string, options?: RawAxiosRequestConfig) {
-        return ChannelsApiFp(this.configuration)
-            .channelControllerAddMember(id, userId, options)
-            .then(request => request(this.axios, this.basePath));
+        return ChannelsApiFp(this.configuration).channelControllerAddMember(id, userId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Create a new channel
-     * @param {CreateChannelDto} createChannelDto
+     * @param {CreateChannelDto} createChannelDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ChannelsApi
      */
-    public channelControllerCreate(
-        createChannelDto: CreateChannelDto,
-        options?: RawAxiosRequestConfig
-    ) {
-        return ChannelsApiFp(this.configuration)
-            .channelControllerCreate(createChannelDto, options)
-            .then(request => request(this.axios, this.basePath));
+    public channelControllerCreate(createChannelDto: CreateChannelDto, options?: RawAxiosRequestConfig) {
+        return ChannelsApiFp(this.configuration).channelControllerCreate(createChannelDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Create a direct message channel
-     * @param {CreateDirectMessageDto} createDirectMessageDto
+     * @param {CreateDirectMessageDto} createDirectMessageDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ChannelsApi
      */
-    public channelControllerCreateDirectMessage(
-        createDirectMessageDto: CreateDirectMessageDto,
-        options?: RawAxiosRequestConfig
-    ) {
-        return ChannelsApiFp(this.configuration)
-            .channelControllerCreateDirectMessage(createDirectMessageDto, options)
-            .then(request => request(this.axios, this.basePath));
+    public channelControllerCreateDirectMessage(createDirectMessageDto: CreateDirectMessageDto, options?: RawAxiosRequestConfig) {
+        return ChannelsApiFp(this.configuration).channelControllerCreateDirectMessage(createDirectMessageDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Get channels by workspace
      * @param {string} workspaceId Workspace ID
      * @param {*} [options] Override http request option.
@@ -944,26 +643,22 @@ export class ChannelsApi extends BaseAPI {
      * @memberof ChannelsApi
      */
     public channelControllerFindByWorkspace(workspaceId: string, options?: RawAxiosRequestConfig) {
-        return ChannelsApiFp(this.configuration)
-            .channelControllerFindByWorkspace(workspaceId, options)
-            .then(request => request(this.axios, this.basePath));
+        return ChannelsApiFp(this.configuration).channelControllerFindByWorkspace(workspaceId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Get direct message channels for current user
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ChannelsApi
      */
     public channelControllerFindDirectMessages(options?: RawAxiosRequestConfig) {
-        return ChannelsApiFp(this.configuration)
-            .channelControllerFindDirectMessages(options)
-            .then(request => request(this.axios, this.basePath));
+        return ChannelsApiFp(this.configuration).channelControllerFindDirectMessages(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Get channel by ID
      * @param {string} id Channel ID
      * @param {*} [options] Override http request option.
@@ -971,13 +666,11 @@ export class ChannelsApi extends BaseAPI {
      * @memberof ChannelsApi
      */
     public channelControllerFindOne(id: string, options?: RawAxiosRequestConfig) {
-        return ChannelsApiFp(this.configuration)
-            .channelControllerFindOne(id, options)
-            .then(request => request(this.axios, this.basePath));
+        return ChannelsApiFp(this.configuration).channelControllerFindOne(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Delete channel
      * @param {string} id Channel ID
      * @param {*} [options] Override http request option.
@@ -985,13 +678,11 @@ export class ChannelsApi extends BaseAPI {
      * @memberof ChannelsApi
      */
     public channelControllerRemove(id: string, options?: RawAxiosRequestConfig) {
-        return ChannelsApiFp(this.configuration)
-            .channelControllerRemove(id, options)
-            .then(request => request(this.axios, this.basePath));
+        return ChannelsApiFp(this.configuration).channelControllerRemove(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Remove member from channel (creator, workspace owner, or admin)
      * @param {string} id Channel ID
      * @param {string} userId User ID to remove
@@ -999,32 +690,21 @@ export class ChannelsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ChannelsApi
      */
-    public channelControllerRemoveMember(
-        id: string,
-        userId: string,
-        options?: RawAxiosRequestConfig
-    ) {
-        return ChannelsApiFp(this.configuration)
-            .channelControllerRemoveMember(id, userId, options)
-            .then(request => request(this.axios, this.basePath));
+    public channelControllerRemoveMember(id: string, userId: string, options?: RawAxiosRequestConfig) {
+        return ChannelsApiFp(this.configuration).channelControllerRemoveMember(id, userId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Update channel
      * @param {string} id Channel ID
-     * @param {UpdateChannelDto} updateChannelDto
+     * @param {UpdateChannelDto} updateChannelDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ChannelsApi
      */
-    public channelControllerUpdate(
-        id: string,
-        updateChannelDto: UpdateChannelDto,
-        options?: RawAxiosRequestConfig
-    ) {
-        return ChannelsApiFp(this.configuration)
-            .channelControllerUpdate(id, updateChannelDto, options)
-            .then(request => request(this.axios, this.basePath));
+    public channelControllerUpdate(id: string, updateChannelDto: UpdateChannelDto, options?: RawAxiosRequestConfig) {
+        return ChannelsApiFp(this.configuration).channelControllerUpdate(id, updateChannelDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
+

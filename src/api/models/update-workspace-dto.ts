@@ -13,36 +13,38 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface UpdateWorkspaceDto
  */
 export interface UpdateWorkspaceDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateWorkspaceDto
      */
-    name?: string;
+    'name'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateWorkspaceDto
      */
-    description?: string;
+    'description'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateWorkspaceDto
      */
-    type?: UpdateWorkspaceDtoTypeEnum;
+    'type'?: UpdateWorkspaceDtoTypeEnum;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof UpdateWorkspaceDto
      */
-    isPublic?: boolean;
+    'isPublic'?: boolean;
 }
 
 export const UpdateWorkspaceDtoTypeEnum = {
@@ -52,5 +54,6 @@ export const UpdateWorkspaceDtoTypeEnum = {
     Community: 'community'
 } as const;
 
-export type UpdateWorkspaceDtoTypeEnum =
-    (typeof UpdateWorkspaceDtoTypeEnum)[keyof typeof UpdateWorkspaceDtoTypeEnum];
+export type UpdateWorkspaceDtoTypeEnum = typeof UpdateWorkspaceDtoTypeEnum[keyof typeof UpdateWorkspaceDtoTypeEnum];
+
+

@@ -13,60 +13,62 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface CreateChannelDto
  */
 export interface CreateChannelDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateChannelDto
      */
-    name: string;
+    'name': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateChannelDto
      */
-    description?: string;
+    'description'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateChannelDto
      */
-    type?: CreateChannelDtoTypeEnum;
+    'type'?: CreateChannelDtoTypeEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateChannelDto
      */
-    visibility?: CreateChannelDtoVisibilityEnum;
+    'visibility'?: CreateChannelDtoVisibilityEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateChannelDto
      */
-    topic?: string;
+    'topic'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateChannelDto
      */
-    workspaceId: string;
+    'workspaceId': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateChannelDto
      */
-    projectId?: string;
+    'projectId'?: string;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof CreateChannelDto
      */
-    memberIds?: Array<string>;
+    'memberIds'?: Array<string>;
 }
 
 export const CreateChannelDtoTypeEnum = {
@@ -75,12 +77,12 @@ export const CreateChannelDtoTypeEnum = {
     GroupDm: 'group_dm'
 } as const;
 
-export type CreateChannelDtoTypeEnum =
-    (typeof CreateChannelDtoTypeEnum)[keyof typeof CreateChannelDtoTypeEnum];
+export type CreateChannelDtoTypeEnum = typeof CreateChannelDtoTypeEnum[keyof typeof CreateChannelDtoTypeEnum];
 export const CreateChannelDtoVisibilityEnum = {
     Public: 'public',
     Private: 'private'
 } as const;
 
-export type CreateChannelDtoVisibilityEnum =
-    (typeof CreateChannelDtoVisibilityEnum)[keyof typeof CreateChannelDtoVisibilityEnum];
+export type CreateChannelDtoVisibilityEnum = typeof CreateChannelDtoVisibilityEnum[keyof typeof CreateChannelDtoVisibilityEnum];
+
+

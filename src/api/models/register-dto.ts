@@ -13,34 +13,37 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface RegisterDto
  */
 export interface RegisterDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof RegisterDto
      */
-    email: string;
+    'email': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof RegisterDto
      */
-    firstName: string;
+    'firstName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof RegisterDto
      */
-    lastName: string;
+    'lastName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof RegisterDto
      */
-    password: string;
+    'password': string;
 }
+

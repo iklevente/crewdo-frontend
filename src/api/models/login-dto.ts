@@ -13,22 +13,25 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface LoginDto
  */
 export interface LoginDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof LoginDto
      */
-    email: string;
+    'email': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof LoginDto
      */
-    password: string;
+    'password': string;
 }
+

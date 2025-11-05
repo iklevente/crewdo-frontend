@@ -13,16 +13,19 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface AddProjectMembersDto
  */
 export interface AddProjectMembersDto {
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof AddProjectMembersDto
      */
-    memberIds: Array<string>;
+    'memberIds': Array<string>;
 }
+

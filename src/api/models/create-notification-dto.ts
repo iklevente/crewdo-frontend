@@ -13,8 +13,10 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface CreateNotificationDto
  */
@@ -24,37 +26,37 @@ export interface CreateNotificationDto {
      * @type {string}
      * @memberof CreateNotificationDto
      */
-    title: string;
+    'title': string;
     /**
      * Detailed message of the notification
      * @type {string}
      * @memberof CreateNotificationDto
      */
-    message: string;
+    'message': string;
     /**
      * Type of notification
      * @type {string}
      * @memberof CreateNotificationDto
      */
-    type: CreateNotificationDtoTypeEnum;
+    'type': CreateNotificationDtoTypeEnum;
     /**
      * ID of the user to receive the notification
      * @type {string}
      * @memberof CreateNotificationDto
      */
-    userId: string;
+    'userId': string;
     /**
      * ID of the related entity (task, project, etc.)
      * @type {string}
      * @memberof CreateNotificationDto
      */
-    relatedEntityId?: string;
+    'relatedEntityId'?: string;
     /**
      * Type of the related entity
      * @type {string}
      * @memberof CreateNotificationDto
      */
-    relatedEntityType?: string;
+    'relatedEntityType'?: string;
 }
 
 export const CreateNotificationDtoTypeEnum = {
@@ -68,5 +70,6 @@ export const CreateNotificationDtoTypeEnum = {
     IncomingCall: 'incoming_call'
 } as const;
 
-export type CreateNotificationDtoTypeEnum =
-    (typeof CreateNotificationDtoTypeEnum)[keyof typeof CreateNotificationDtoTypeEnum];
+export type CreateNotificationDtoTypeEnum = typeof CreateNotificationDtoTypeEnum[keyof typeof CreateNotificationDtoTypeEnum];
+
+

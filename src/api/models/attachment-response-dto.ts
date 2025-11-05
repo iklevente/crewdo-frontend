@@ -13,90 +13,92 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface AttachmentResponseDto
  */
 export interface AttachmentResponseDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof AttachmentResponseDto
      */
-    id: string;
+    'id': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AttachmentResponseDto
      */
-    originalName: string;
+    'originalName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AttachmentResponseDto
      */
-    fileName: string;
+    'fileName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AttachmentResponseDto
      */
-    filePath: string;
+    'filePath': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AttachmentResponseDto
      */
-    mimeType: string;
+    'mimeType': string;
     /**
-     *
+     * 
      * @type {number}
      * @memberof AttachmentResponseDto
      */
-    fileSize: number;
+    'fileSize': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AttachmentResponseDto
      */
-    type: AttachmentResponseDtoTypeEnum;
+    'type': AttachmentResponseDtoTypeEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AttachmentResponseDto
      */
-    uploadedAt: string;
+    'uploadedAt': string;
     /**
      * User who uploaded the file
      * @type {object}
      * @memberof AttachmentResponseDto
      */
-    uploadedBy: object;
+    'uploadedBy': object;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AttachmentResponseDto
      */
-    taskId?: string;
+    'taskId'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AttachmentResponseDto
      */
-    projectId?: string;
+    'projectId'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AttachmentResponseDto
      */
-    messageId?: string;
+    'messageId'?: string;
     /**
      * Public URL to access the file
      * @type {string}
      * @memberof AttachmentResponseDto
      */
-    url?: string;
+    'url'?: string;
 }
 
 export const AttachmentResponseDtoTypeEnum = {
@@ -107,5 +109,6 @@ export const AttachmentResponseDtoTypeEnum = {
     Other: 'other'
 } as const;
 
-export type AttachmentResponseDtoTypeEnum =
-    (typeof AttachmentResponseDtoTypeEnum)[keyof typeof AttachmentResponseDtoTypeEnum];
+export type AttachmentResponseDtoTypeEnum = typeof AttachmentResponseDtoTypeEnum[keyof typeof AttachmentResponseDtoTypeEnum];
+
+

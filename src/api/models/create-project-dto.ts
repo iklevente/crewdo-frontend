@@ -13,78 +13,80 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface CreateProjectDto
  */
 export interface CreateProjectDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateProjectDto
      */
-    name: string;
+    'name': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateProjectDto
      */
-    workspaceId: string;
+    'workspaceId': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateProjectDto
      */
-    description?: string;
+    'description'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateProjectDto
      */
-    status?: CreateProjectDtoStatusEnum;
+    'status'?: CreateProjectDtoStatusEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateProjectDto
      */
-    priority?: CreateProjectDtoPriorityEnum;
+    'priority'?: CreateProjectDtoPriorityEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateProjectDto
      */
-    startDate?: string;
+    'startDate'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateProjectDto
      */
-    endDate?: string;
+    'endDate'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateProjectDto
      */
-    deadline?: string;
+    'deadline'?: string;
     /**
-     *
+     * 
      * @type {number}
      * @memberof CreateProjectDto
      */
-    budget?: number;
+    'budget'?: number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateProjectDto
      */
-    color?: string;
+    'color'?: string;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof CreateProjectDto
      */
-    memberIds?: Array<string>;
+    'memberIds'?: Array<string>;
 }
 
 export const CreateProjectDtoStatusEnum = {
@@ -95,8 +97,7 @@ export const CreateProjectDtoStatusEnum = {
     Cancelled: 'cancelled'
 } as const;
 
-export type CreateProjectDtoStatusEnum =
-    (typeof CreateProjectDtoStatusEnum)[keyof typeof CreateProjectDtoStatusEnum];
+export type CreateProjectDtoStatusEnum = typeof CreateProjectDtoStatusEnum[keyof typeof CreateProjectDtoStatusEnum];
 export const CreateProjectDtoPriorityEnum = {
     Low: 'low',
     Medium: 'medium',
@@ -104,5 +105,6 @@ export const CreateProjectDtoPriorityEnum = {
     Urgent: 'urgent'
 } as const;
 
-export type CreateProjectDtoPriorityEnum =
-    (typeof CreateProjectDtoPriorityEnum)[keyof typeof CreateProjectDtoPriorityEnum];
+export type CreateProjectDtoPriorityEnum = typeof CreateProjectDtoPriorityEnum[keyof typeof CreateProjectDtoPriorityEnum];
+
+

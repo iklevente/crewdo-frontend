@@ -13,28 +13,31 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface JoinCallDto
  */
 export interface JoinCallDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof JoinCallDto
      */
-    callId: string;
+    'callId': string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof JoinCallDto
      */
-    withVideo?: boolean;
+    'withVideo'?: boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof JoinCallDto
      */
-    withAudio?: boolean;
+    'withAudio'?: boolean;
 }
+

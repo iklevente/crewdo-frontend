@@ -13,32 +13,15 @@
  * Do not edit the class manually.
  */
 
+
 import type { Configuration } from '../configuration';
 import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import {
-    DUMMY_BASE_URL,
-    assertParamExists,
-    setApiKeyToObject,
-    setBasicAuthToObject,
-    setBearerAuthToObject,
-    setOAuthToObject,
-    setSearchParams,
-    serializeDataIfNeeded,
-    toPathString,
-    createRequestFunction
-} from '../common';
+import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from '../common';
 // @ts-ignore
-import {
-    BASE_PATH,
-    COLLECTION_FORMATS,
-    type RequestArgs,
-    BaseAPI,
-    RequiredError,
-    operationServerMap
-} from '../base';
+import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 // @ts-ignore
 import type { AttachmentResponseDto } from '../models';
 /**
@@ -48,22 +31,17 @@ import type { AttachmentResponseDto } from '../models';
 export const AttachmentsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         *
+         * 
          * @summary Delete an attachment
          * @param {string} id Attachment ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        attachmentControllerDeleteAttachment: async (
-            id: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        attachmentControllerDeleteAttachment: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('attachmentControllerDeleteAttachment', 'id', id);
-            const localVarPath = `/attachments/{id}`.replace(
-                `{${'id'}}`,
-                encodeURIComponent(String(id))
-            );
+            assertParamExists('attachmentControllerDeleteAttachment', 'id', id)
+            const localVarPath = `/attachments/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -71,41 +49,33 @@ export const AttachmentsApiAxiosParamCreator = function (configuration?: Configu
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Download attachment file
          * @param {string} id Attachment ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        attachmentControllerDownloadFile: async (
-            id: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        attachmentControllerDownloadFile: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('attachmentControllerDownloadFile', 'id', id);
-            const localVarPath = `/attachments/{id}/download`.replace(
-                `{${'id'}}`,
-                encodeURIComponent(String(id))
-            );
+            assertParamExists('attachmentControllerDownloadFile', 'id', id)
+            const localVarPath = `/attachments/{id}/download`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -113,41 +83,33 @@ export const AttachmentsApiAxiosParamCreator = function (configuration?: Configu
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Get attachment details by ID
          * @param {string} id Attachment ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        attachmentControllerFindById: async (
-            id: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        attachmentControllerFindById: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('attachmentControllerFindById', 'id', id);
-            const localVarPath = `/attachments/{id}`.replace(
-                `{${'id'}}`,
-                encodeURIComponent(String(id))
-            );
+            assertParamExists('attachmentControllerFindById', 'id', id)
+            const localVarPath = `/attachments/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -155,41 +117,33 @@ export const AttachmentsApiAxiosParamCreator = function (configuration?: Configu
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Get attachments for a message
          * @param {string} messageId Message ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        attachmentControllerFindByMessage: async (
-            messageId: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        attachmentControllerFindByMessage: async (messageId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'messageId' is not null or undefined
-            assertParamExists('attachmentControllerFindByMessage', 'messageId', messageId);
-            const localVarPath = `/attachments/message/{messageId}`.replace(
-                `{${'messageId'}}`,
-                encodeURIComponent(String(messageId))
-            );
+            assertParamExists('attachmentControllerFindByMessage', 'messageId', messageId)
+            const localVarPath = `/attachments/message/{messageId}`
+                .replace(`{${"messageId"}}`, encodeURIComponent(String(messageId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -197,41 +151,33 @@ export const AttachmentsApiAxiosParamCreator = function (configuration?: Configu
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Get attachments for a project
          * @param {string} projectId Project ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        attachmentControllerFindByProject: async (
-            projectId: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        attachmentControllerFindByProject: async (projectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectId' is not null or undefined
-            assertParamExists('attachmentControllerFindByProject', 'projectId', projectId);
-            const localVarPath = `/attachments/project/{projectId}`.replace(
-                `{${'projectId'}}`,
-                encodeURIComponent(String(projectId))
-            );
+            assertParamExists('attachmentControllerFindByProject', 'projectId', projectId)
+            const localVarPath = `/attachments/project/{projectId}`
+                .replace(`{${"projectId"}}`, encodeURIComponent(String(projectId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -239,41 +185,33 @@ export const AttachmentsApiAxiosParamCreator = function (configuration?: Configu
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Get attachments for a task
          * @param {string} taskId Task ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        attachmentControllerFindByTask: async (
-            taskId: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        attachmentControllerFindByTask: async (taskId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'taskId' is not null or undefined
-            assertParamExists('attachmentControllerFindByTask', 'taskId', taskId);
-            const localVarPath = `/attachments/task/{taskId}`.replace(
-                `{${'taskId'}}`,
-                encodeURIComponent(String(taskId))
-            );
+            assertParamExists('attachmentControllerFindByTask', 'taskId', taskId)
+            const localVarPath = `/attachments/task/{taskId}`
+                .replace(`{${"taskId"}}`, encodeURIComponent(String(taskId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -281,26 +219,23 @@ export const AttachmentsApiAxiosParamCreator = function (configuration?: Configu
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Upload an attachment
          * @param {File} file File to upload
          * @param {string} [taskId] ID of the task this attachment belongs to
@@ -309,15 +244,9 @@ export const AttachmentsApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        attachmentControllerUploadFile: async (
-            file: File,
-            taskId?: string,
-            projectId?: string,
-            messageId?: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        attachmentControllerUploadFile: async (file: File, taskId?: string, projectId?: string, messageId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'file' is not null or undefined
-            assertParamExists('attachmentControllerUploadFile', 'file', file);
+            assertParamExists('attachmentControllerUploadFile', 'file', file)
             const localVarPath = `/attachments/upload`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -326,7 +255,7 @@ export const AttachmentsApiAxiosParamCreator = function (configuration?: Configu
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -346,204 +275,107 @@ export const AttachmentsApiAxiosParamCreator = function (configuration?: Configu
                 localVarQueryParameter['messageId'] = messageId;
             }
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
-        }
-    };
+        },
+    }
 };
 
 /**
  * AttachmentsApi - functional programming interface
  * @export
  */
-export const AttachmentsApiFp = function (configuration?: Configuration) {
-    const localVarAxiosParamCreator = AttachmentsApiAxiosParamCreator(configuration);
+export const AttachmentsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = AttachmentsApiAxiosParamCreator(configuration)
     return {
         /**
-         *
+         * 
          * @summary Delete an attachment
          * @param {string} id Attachment ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async attachmentControllerDeleteAttachment(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.attachmentControllerDeleteAttachment(id, options);
+        async attachmentControllerDeleteAttachment(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.attachmentControllerDeleteAttachment(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['AttachmentsApi.attachmentControllerDeleteAttachment']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['AttachmentsApi.attachmentControllerDeleteAttachment']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Download attachment file
          * @param {string} id Attachment ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async attachmentControllerDownloadFile(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.attachmentControllerDownloadFile(id, options);
+        async attachmentControllerDownloadFile(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.attachmentControllerDownloadFile(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['AttachmentsApi.attachmentControllerDownloadFile']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['AttachmentsApi.attachmentControllerDownloadFile']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Get attachment details by ID
          * @param {string} id Attachment ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async attachmentControllerFindById(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<AttachmentResponseDto>
-        > {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.attachmentControllerFindById(
-                id,
-                options
-            );
+        async attachmentControllerFindById(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AttachmentResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.attachmentControllerFindById(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['AttachmentsApi.attachmentControllerFindById']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['AttachmentsApi.attachmentControllerFindById']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Get attachments for a message
          * @param {string} messageId Message ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async attachmentControllerFindByMessage(
-            messageId: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<AttachmentResponseDto>>
-        > {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.attachmentControllerFindByMessage(
-                    messageId,
-                    options
-                );
+        async attachmentControllerFindByMessage(messageId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<AttachmentResponseDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.attachmentControllerFindByMessage(messageId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['AttachmentsApi.attachmentControllerFindByMessage']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['AttachmentsApi.attachmentControllerFindByMessage']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Get attachments for a project
          * @param {string} projectId Project ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async attachmentControllerFindByProject(
-            projectId: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<AttachmentResponseDto>>
-        > {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.attachmentControllerFindByProject(
-                    projectId,
-                    options
-                );
+        async attachmentControllerFindByProject(projectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<AttachmentResponseDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.attachmentControllerFindByProject(projectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['AttachmentsApi.attachmentControllerFindByProject']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['AttachmentsApi.attachmentControllerFindByProject']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Get attachments for a task
          * @param {string} taskId Task ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async attachmentControllerFindByTask(
-            taskId: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<AttachmentResponseDto>>
-        > {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.attachmentControllerFindByTask(taskId, options);
+        async attachmentControllerFindByTask(taskId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<AttachmentResponseDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.attachmentControllerFindByTask(taskId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['AttachmentsApi.attachmentControllerFindByTask']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['AttachmentsApi.attachmentControllerFindByTask']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Upload an attachment
          * @param {File} file File to upload
          * @param {string} [taskId] ID of the task this attachment belongs to
@@ -552,142 +384,84 @@ export const AttachmentsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async attachmentControllerUploadFile(
-            file: File,
-            taskId?: string,
-            projectId?: string,
-            messageId?: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<AttachmentResponseDto>
-        > {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.attachmentControllerUploadFile(
-                    file,
-                    taskId,
-                    projectId,
-                    messageId,
-                    options
-                );
+        async attachmentControllerUploadFile(file: File, taskId?: string, projectId?: string, messageId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AttachmentResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.attachmentControllerUploadFile(file, taskId, projectId, messageId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['AttachmentsApi.attachmentControllerUploadFile']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
-        }
-    };
+            const localVarOperationServerBasePath = operationServerMap['AttachmentsApi.attachmentControllerUploadFile']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
 };
 
 /**
  * AttachmentsApi - factory interface
  * @export
  */
-export const AttachmentsApiFactory = function (
-    configuration?: Configuration,
-    basePath?: string,
-    axios?: AxiosInstance
-) {
-    const localVarFp = AttachmentsApiFp(configuration);
+export const AttachmentsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = AttachmentsApiFp(configuration)
     return {
         /**
-         *
+         * 
          * @summary Delete an attachment
          * @param {string} id Attachment ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        attachmentControllerDeleteAttachment(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<void> {
-            return localVarFp
-                .attachmentControllerDeleteAttachment(id, options)
-                .then(request => request(axios, basePath));
+        attachmentControllerDeleteAttachment(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.attachmentControllerDeleteAttachment(id, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Download attachment file
          * @param {string} id Attachment ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        attachmentControllerDownloadFile(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<void> {
-            return localVarFp
-                .attachmentControllerDownloadFile(id, options)
-                .then(request => request(axios, basePath));
+        attachmentControllerDownloadFile(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.attachmentControllerDownloadFile(id, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Get attachment details by ID
          * @param {string} id Attachment ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        attachmentControllerFindById(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<AttachmentResponseDto> {
-            return localVarFp
-                .attachmentControllerFindById(id, options)
-                .then(request => request(axios, basePath));
+        attachmentControllerFindById(id: string, options?: RawAxiosRequestConfig): AxiosPromise<AttachmentResponseDto> {
+            return localVarFp.attachmentControllerFindById(id, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Get attachments for a message
          * @param {string} messageId Message ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        attachmentControllerFindByMessage(
-            messageId: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<Array<AttachmentResponseDto>> {
-            return localVarFp
-                .attachmentControllerFindByMessage(messageId, options)
-                .then(request => request(axios, basePath));
+        attachmentControllerFindByMessage(messageId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<AttachmentResponseDto>> {
+            return localVarFp.attachmentControllerFindByMessage(messageId, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Get attachments for a project
          * @param {string} projectId Project ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        attachmentControllerFindByProject(
-            projectId: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<Array<AttachmentResponseDto>> {
-            return localVarFp
-                .attachmentControllerFindByProject(projectId, options)
-                .then(request => request(axios, basePath));
+        attachmentControllerFindByProject(projectId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<AttachmentResponseDto>> {
+            return localVarFp.attachmentControllerFindByProject(projectId, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Get attachments for a task
          * @param {string} taskId Task ID (UUID)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        attachmentControllerFindByTask(
-            taskId: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<Array<AttachmentResponseDto>> {
-            return localVarFp
-                .attachmentControllerFindByTask(taskId, options)
-                .then(request => request(axios, basePath));
+        attachmentControllerFindByTask(taskId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<AttachmentResponseDto>> {
+            return localVarFp.attachmentControllerFindByTask(taskId, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Upload an attachment
          * @param {File} file File to upload
          * @param {string} [taskId] ID of the task this attachment belongs to
@@ -696,17 +470,9 @@ export const AttachmentsApiFactory = function (
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        attachmentControllerUploadFile(
-            file: File,
-            taskId?: string,
-            projectId?: string,
-            messageId?: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<AttachmentResponseDto> {
-            return localVarFp
-                .attachmentControllerUploadFile(file, taskId, projectId, messageId, options)
-                .then(request => request(axios, basePath));
-        }
+        attachmentControllerUploadFile(file: File, taskId?: string, projectId?: string, messageId?: string, options?: RawAxiosRequestConfig): AxiosPromise<AttachmentResponseDto> {
+            return localVarFp.attachmentControllerUploadFile(file, taskId, projectId, messageId, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -718,7 +484,7 @@ export const AttachmentsApiFactory = function (
  */
 export class AttachmentsApi extends BaseAPI {
     /**
-     *
+     * 
      * @summary Delete an attachment
      * @param {string} id Attachment ID (UUID)
      * @param {*} [options] Override http request option.
@@ -726,13 +492,11 @@ export class AttachmentsApi extends BaseAPI {
      * @memberof AttachmentsApi
      */
     public attachmentControllerDeleteAttachment(id: string, options?: RawAxiosRequestConfig) {
-        return AttachmentsApiFp(this.configuration)
-            .attachmentControllerDeleteAttachment(id, options)
-            .then(request => request(this.axios, this.basePath));
+        return AttachmentsApiFp(this.configuration).attachmentControllerDeleteAttachment(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Download attachment file
      * @param {string} id Attachment ID (UUID)
      * @param {*} [options] Override http request option.
@@ -740,13 +504,11 @@ export class AttachmentsApi extends BaseAPI {
      * @memberof AttachmentsApi
      */
     public attachmentControllerDownloadFile(id: string, options?: RawAxiosRequestConfig) {
-        return AttachmentsApiFp(this.configuration)
-            .attachmentControllerDownloadFile(id, options)
-            .then(request => request(this.axios, this.basePath));
+        return AttachmentsApiFp(this.configuration).attachmentControllerDownloadFile(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Get attachment details by ID
      * @param {string} id Attachment ID (UUID)
      * @param {*} [options] Override http request option.
@@ -754,13 +516,11 @@ export class AttachmentsApi extends BaseAPI {
      * @memberof AttachmentsApi
      */
     public attachmentControllerFindById(id: string, options?: RawAxiosRequestConfig) {
-        return AttachmentsApiFp(this.configuration)
-            .attachmentControllerFindById(id, options)
-            .then(request => request(this.axios, this.basePath));
+        return AttachmentsApiFp(this.configuration).attachmentControllerFindById(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Get attachments for a message
      * @param {string} messageId Message ID (UUID)
      * @param {*} [options] Override http request option.
@@ -768,13 +528,11 @@ export class AttachmentsApi extends BaseAPI {
      * @memberof AttachmentsApi
      */
     public attachmentControllerFindByMessage(messageId: string, options?: RawAxiosRequestConfig) {
-        return AttachmentsApiFp(this.configuration)
-            .attachmentControllerFindByMessage(messageId, options)
-            .then(request => request(this.axios, this.basePath));
+        return AttachmentsApiFp(this.configuration).attachmentControllerFindByMessage(messageId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Get attachments for a project
      * @param {string} projectId Project ID (UUID)
      * @param {*} [options] Override http request option.
@@ -782,13 +540,11 @@ export class AttachmentsApi extends BaseAPI {
      * @memberof AttachmentsApi
      */
     public attachmentControllerFindByProject(projectId: string, options?: RawAxiosRequestConfig) {
-        return AttachmentsApiFp(this.configuration)
-            .attachmentControllerFindByProject(projectId, options)
-            .then(request => request(this.axios, this.basePath));
+        return AttachmentsApiFp(this.configuration).attachmentControllerFindByProject(projectId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Get attachments for a task
      * @param {string} taskId Task ID (UUID)
      * @param {*} [options] Override http request option.
@@ -796,13 +552,11 @@ export class AttachmentsApi extends BaseAPI {
      * @memberof AttachmentsApi
      */
     public attachmentControllerFindByTask(taskId: string, options?: RawAxiosRequestConfig) {
-        return AttachmentsApiFp(this.configuration)
-            .attachmentControllerFindByTask(taskId, options)
-            .then(request => request(this.axios, this.basePath));
+        return AttachmentsApiFp(this.configuration).attachmentControllerFindByTask(taskId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Upload an attachment
      * @param {File} file File to upload
      * @param {string} [taskId] ID of the task this attachment belongs to
@@ -812,15 +566,8 @@ export class AttachmentsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AttachmentsApi
      */
-    public attachmentControllerUploadFile(
-        file: File,
-        taskId?: string,
-        projectId?: string,
-        messageId?: string,
-        options?: RawAxiosRequestConfig
-    ) {
-        return AttachmentsApiFp(this.configuration)
-            .attachmentControllerUploadFile(file, taskId, projectId, messageId, options)
-            .then(request => request(this.axios, this.basePath));
+    public attachmentControllerUploadFile(file: File, taskId?: string, projectId?: string, messageId?: string, options?: RawAxiosRequestConfig) {
+        return AttachmentsApiFp(this.configuration).attachmentControllerUploadFile(file, taskId, projectId, messageId, options).then((request) => request(this.axios, this.basePath));
     }
 }
+

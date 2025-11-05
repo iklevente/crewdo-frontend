@@ -13,28 +13,31 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface AuthResponseDto
  */
 export interface AuthResponseDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof AuthResponseDto
      */
-    access_token: string;
+    'access_token': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AuthResponseDto
      */
-    refresh_token: string;
+    'refresh_token': string;
     /**
-     *
+     * 
      * @type {object}
      * @memberof AuthResponseDto
      */
-    user: object;
+    'user': object;
 }
+

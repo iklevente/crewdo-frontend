@@ -36,6 +36,7 @@ export const PresenceBadge: React.FC<PresenceBadgeProps> = ({ status, customStat
     return (
         <Stack direction="row" alignItems="center" spacing={1} sx={{ minHeight: 24 }}>
             <Box
+                data-testid="presence-indicator"
                 sx={{
                     width: 10,
                     height: 10,

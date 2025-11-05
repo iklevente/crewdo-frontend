@@ -13,34 +13,37 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface UpdateCallParticipantDto
  */
 export interface UpdateCallParticipantDto {
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof UpdateCallParticipantDto
      */
-    isMuted?: boolean;
+    'isMuted'?: boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof UpdateCallParticipantDto
      */
-    isVideoEnabled?: boolean;
+    'isVideoEnabled'?: boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof UpdateCallParticipantDto
      */
-    isScreenSharing?: boolean;
+    'isScreenSharing'?: boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof UpdateCallParticipantDto
      */
-    isHandRaised?: boolean;
+    'isHandRaised'?: boolean;
 }
+

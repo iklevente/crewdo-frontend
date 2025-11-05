@@ -13,42 +13,44 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface CreateWorkspaceDto
  */
 export interface CreateWorkspaceDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateWorkspaceDto
      */
-    name: string;
+    'name': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateWorkspaceDto
      */
-    description?: string;
+    'description'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateWorkspaceDto
      */
-    type?: CreateWorkspaceDtoTypeEnum;
+    'type'?: CreateWorkspaceDtoTypeEnum;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof CreateWorkspaceDto
      */
-    isPublic?: boolean;
+    'isPublic'?: boolean;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof CreateWorkspaceDto
      */
-    memberIds?: Array<string>;
+    'memberIds'?: Array<string>;
 }
 
 export const CreateWorkspaceDtoTypeEnum = {
@@ -58,5 +60,6 @@ export const CreateWorkspaceDtoTypeEnum = {
     Community: 'community'
 } as const;
 
-export type CreateWorkspaceDtoTypeEnum =
-    (typeof CreateWorkspaceDtoTypeEnum)[keyof typeof CreateWorkspaceDtoTypeEnum];
+export type CreateWorkspaceDtoTypeEnum = typeof CreateWorkspaceDtoTypeEnum[keyof typeof CreateWorkspaceDtoTypeEnum];
+
+

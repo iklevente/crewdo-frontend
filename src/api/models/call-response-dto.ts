@@ -13,108 +13,110 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface CallResponseDto
  */
 export interface CallResponseDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof CallResponseDto
      */
-    id: string;
+    'id': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CallResponseDto
      */
-    title?: string;
+    'title'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CallResponseDto
      */
-    description?: string;
+    'description'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CallResponseDto
      */
-    type: CallResponseDtoTypeEnum;
+    'type': CallResponseDtoTypeEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CallResponseDto
      */
-    status: CallResponseDtoStatusEnum;
+    'status': CallResponseDtoStatusEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CallResponseDto
      */
-    createdAt: string;
+    'createdAt': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CallResponseDto
      */
-    updatedAt: string;
+    'updatedAt': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CallResponseDto
      */
-    startedAt?: string;
+    'startedAt'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CallResponseDto
      */
-    endedAt?: string;
+    'endedAt'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CallResponseDto
      */
-    scheduledStartTime?: string;
+    'scheduledStartTime'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CallResponseDto
      */
-    scheduledEndTime?: string;
+    'scheduledEndTime'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CallResponseDto
      */
-    roomName?: string;
+    'roomName'?: string;
     /**
-     *
+     * 
      * @type {object}
      * @memberof CallResponseDto
      */
-    initiator: object;
+    'initiator': object;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof CallResponseDto
      */
-    participants: Array<string>;
+    'participants': Array<string>;
     /**
-     *
+     * 
      * @type {number}
      * @memberof CallResponseDto
      */
-    duration?: number;
+    'duration'?: number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof CallResponseDto
      */
-    maxParticipants?: number;
+    'maxParticipants'?: number;
 }
 
 export const CallResponseDtoTypeEnum = {
@@ -123,8 +125,7 @@ export const CallResponseDtoTypeEnum = {
     ScreenShare: 'screen_share'
 } as const;
 
-export type CallResponseDtoTypeEnum =
-    (typeof CallResponseDtoTypeEnum)[keyof typeof CallResponseDtoTypeEnum];
+export type CallResponseDtoTypeEnum = typeof CallResponseDtoTypeEnum[keyof typeof CallResponseDtoTypeEnum];
 export const CallResponseDtoStatusEnum = {
     Scheduled: 'scheduled',
     Active: 'active',
@@ -132,5 +133,6 @@ export const CallResponseDtoStatusEnum = {
     Cancelled: 'cancelled'
 } as const;
 
-export type CallResponseDtoStatusEnum =
-    (typeof CallResponseDtoStatusEnum)[keyof typeof CallResponseDtoStatusEnum];
+export type CallResponseDtoStatusEnum = typeof CallResponseDtoStatusEnum[keyof typeof CallResponseDtoStatusEnum];
+
+

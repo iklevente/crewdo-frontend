@@ -13,90 +13,92 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface WorkspaceResponseDto
  */
 export interface WorkspaceResponseDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof WorkspaceResponseDto
      */
-    id: string;
+    'id': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WorkspaceResponseDto
      */
-    name: string;
+    'name': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WorkspaceResponseDto
      */
-    description?: string;
+    'description'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WorkspaceResponseDto
      */
-    type: WorkspaceResponseDtoTypeEnum;
+    'type': WorkspaceResponseDtoTypeEnum;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof WorkspaceResponseDto
      */
-    isPublic: boolean;
+    'isPublic': boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WorkspaceResponseDto
      */
-    createdAt: string;
+    'createdAt': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WorkspaceResponseDto
      */
-    updatedAt: string;
+    'updatedAt': string;
     /**
-     *
+     * 
      * @type {object}
      * @memberof WorkspaceResponseDto
      */
-    owner: object;
+    'owner': object;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof WorkspaceResponseDto
      */
-    members?: Array<string>;
+    'members'?: Array<string>;
     /**
-     *
+     * 
      * @type {number}
      * @memberof WorkspaceResponseDto
      */
-    memberCount?: number;
+    'memberCount'?: number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof WorkspaceResponseDto
      */
-    channelCount?: number;
+    'channelCount'?: number;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof WorkspaceResponseDto
      */
-    channels?: Array<string>;
+    'channels'?: Array<string>;
     /**
-     *
+     * 
      * @type {number}
      * @memberof WorkspaceResponseDto
      */
-    projectCount?: number;
+    'projectCount'?: number;
 }
 
 export const WorkspaceResponseDtoTypeEnum = {
@@ -106,5 +108,6 @@ export const WorkspaceResponseDtoTypeEnum = {
     Community: 'community'
 } as const;
 
-export type WorkspaceResponseDtoTypeEnum =
-    (typeof WorkspaceResponseDtoTypeEnum)[keyof typeof WorkspaceResponseDtoTypeEnum];
+export type WorkspaceResponseDtoTypeEnum = typeof WorkspaceResponseDtoTypeEnum[keyof typeof WorkspaceResponseDtoTypeEnum];
+
+

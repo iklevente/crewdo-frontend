@@ -13,52 +13,55 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface CommentResponseDto
  */
 export interface CommentResponseDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof CommentResponseDto
      */
-    id: string;
+    'id': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CommentResponseDto
      */
-    content: string;
+    'content': string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof CommentResponseDto
      */
-    isEdited: boolean;
+    'isEdited': boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CommentResponseDto
      */
-    createdAt: string;
+    'createdAt': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CommentResponseDto
      */
-    updatedAt: string;
+    'updatedAt': string;
     /**
-     *
+     * 
      * @type {object}
      * @memberof CommentResponseDto
      */
-    author: object;
+    'author': object;
     /**
-     *
+     * 
      * @type {object}
      * @memberof CommentResponseDto
      */
-    task: object;
+    'task': object;
 }
+

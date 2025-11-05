@@ -13,42 +13,44 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface UpdateChannelDto
  */
 export interface UpdateChannelDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateChannelDto
      */
-    name?: string;
+    'name'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateChannelDto
      */
-    description?: string;
+    'description'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateChannelDto
      */
-    topic?: string;
+    'topic'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateChannelDto
      */
-    visibility?: UpdateChannelDtoVisibilityEnum;
+    'visibility'?: UpdateChannelDtoVisibilityEnum;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof UpdateChannelDto
      */
-    isArchived?: boolean;
+    'isArchived'?: boolean;
 }
 
 export const UpdateChannelDtoVisibilityEnum = {
@@ -56,5 +58,6 @@ export const UpdateChannelDtoVisibilityEnum = {
     Private: 'private'
 } as const;
 
-export type UpdateChannelDtoVisibilityEnum =
-    (typeof UpdateChannelDtoVisibilityEnum)[keyof typeof UpdateChannelDtoVisibilityEnum];
+export type UpdateChannelDtoVisibilityEnum = typeof UpdateChannelDtoVisibilityEnum[keyof typeof UpdateChannelDtoVisibilityEnum];
+
+

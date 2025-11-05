@@ -13,16 +13,19 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface UpdateMessageDto
  */
 export interface UpdateMessageDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateMessageDto
      */
-    content?: string;
+    'content'?: string;
 }
+

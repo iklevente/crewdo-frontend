@@ -16,6 +16,7 @@
     "rootDir": "src",
     "baseUrl": "src",
     "typeRoots": ["src/typeDefs", "./node_modules/@types"],
+    "types": ["node", "jest"],
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "isolatedModules": true

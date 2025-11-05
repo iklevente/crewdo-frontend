@@ -13,22 +13,25 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface ChangePasswordDto
  */
 export interface ChangePasswordDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof ChangePasswordDto
      */
-    currentPassword: string;
+    'currentPassword': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ChangePasswordDto
      */
-    newPassword: string;
+    'newPassword': string;
 }
+

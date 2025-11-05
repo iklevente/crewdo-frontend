@@ -19,6 +19,9 @@ const compat = new FlatCompat({
 });
 
 export default defineConfig([
+    {
+        ignores: ['src/**/*.test.{ts,tsx}', 'src/**/*.spec.{ts,tsx}', 'src/**/__tests__/**']
+    },
     // Base JS recommended
     ...compat.extends('eslint:recommended'),
     // TypeScript ESLint recommended (flat config style)
@@ -104,20 +107,6 @@ export default defineConfig([
             'import/order': [
                 'error',
                 { groups: [['external', 'builtin'], 'internal', ['parent', 'sibling', 'index']] }
-            ]
-        }
-    },
-    {
-        files: ['src/**/*.test.{ts,tsx}'],
-        ignores: ['src/testsUtils/commonUtils.ts'],
-        rules: {
-            'no-restricted-properties': [
-                2,
-                {
-                    object: 'window',
-                    property: 'postMessage',
-                    message: "Use 'sendPostMessageAndWait' helper for postMessage testing."
-                }
             ]
         }
     }

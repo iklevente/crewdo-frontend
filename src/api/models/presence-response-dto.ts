@@ -13,48 +13,50 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface PresenceResponseDto
  */
 export interface PresenceResponseDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof PresenceResponseDto
      */
-    userId: string;
+    'userId': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof PresenceResponseDto
      */
-    status: PresenceResponseDtoStatusEnum;
+    'status': PresenceResponseDtoStatusEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof PresenceResponseDto
      */
-    statusSource: PresenceResponseDtoStatusSourceEnum;
+    'statusSource': PresenceResponseDtoStatusSourceEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof PresenceResponseDto
      */
-    manualStatus?: PresenceResponseDtoManualStatusEnum;
+    'manualStatus'?: PresenceResponseDtoManualStatusEnum;
     /**
-     *
+     * 
      * @type {object}
      * @memberof PresenceResponseDto
      */
-    lastSeenAt?: object;
+    'lastSeenAt'?: object;
     /**
-     *
+     * 
      * @type {string}
      * @memberof PresenceResponseDto
      */
-    timestamp: string;
+    'timestamp': string;
 }
 
 export const PresenceResponseDtoStatusEnum = {
@@ -64,15 +66,13 @@ export const PresenceResponseDtoStatusEnum = {
     Busy: 'busy'
 } as const;
 
-export type PresenceResponseDtoStatusEnum =
-    (typeof PresenceResponseDtoStatusEnum)[keyof typeof PresenceResponseDtoStatusEnum];
+export type PresenceResponseDtoStatusEnum = typeof PresenceResponseDtoStatusEnum[keyof typeof PresenceResponseDtoStatusEnum];
 export const PresenceResponseDtoStatusSourceEnum = {
     Auto: 'auto',
     Manual: 'manual'
 } as const;
 
-export type PresenceResponseDtoStatusSourceEnum =
-    (typeof PresenceResponseDtoStatusSourceEnum)[keyof typeof PresenceResponseDtoStatusSourceEnum];
+export type PresenceResponseDtoStatusSourceEnum = typeof PresenceResponseDtoStatusSourceEnum[keyof typeof PresenceResponseDtoStatusSourceEnum];
 export const PresenceResponseDtoManualStatusEnum = {
     Online: 'online',
     Offline: 'offline',
@@ -80,5 +80,6 @@ export const PresenceResponseDtoManualStatusEnum = {
     Busy: 'busy'
 } as const;
 
-export type PresenceResponseDtoManualStatusEnum =
-    (typeof PresenceResponseDtoManualStatusEnum)[keyof typeof PresenceResponseDtoManualStatusEnum];
+export type PresenceResponseDtoManualStatusEnum = typeof PresenceResponseDtoManualStatusEnum[keyof typeof PresenceResponseDtoManualStatusEnum];
+
+

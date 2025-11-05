@@ -13,72 +13,74 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface CreateTaskDto
  */
 export interface CreateTaskDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateTaskDto
      */
-    title: string;
+    'title': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateTaskDto
      */
-    description?: string;
+    'description'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateTaskDto
      */
-    projectId: string;
+    'projectId': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateTaskDto
      */
-    status?: CreateTaskDtoStatusEnum;
+    'status'?: CreateTaskDtoStatusEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateTaskDto
      */
-    priority?: CreateTaskDtoPriorityEnum;
+    'priority'?: CreateTaskDtoPriorityEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateTaskDto
      */
-    dueDate?: string;
+    'dueDate'?: string;
     /**
-     *
+     * 
      * @type {number}
      * @memberof CreateTaskDto
      */
-    estimatedHours?: number;
+    'estimatedHours'?: number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateTaskDto
      */
-    assigneeId?: string;
+    'assigneeId'?: string;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof CreateTaskDto
      */
-    tags?: Array<string>;
+    'tags'?: Array<string>;
     /**
-     *
+     * 
      * @type {number}
      * @memberof CreateTaskDto
      */
-    position?: number;
+    'position'?: number;
 }
 
 export const CreateTaskDtoStatusEnum = {
@@ -89,8 +91,7 @@ export const CreateTaskDtoStatusEnum = {
     Cancelled: 'cancelled'
 } as const;
 
-export type CreateTaskDtoStatusEnum =
-    (typeof CreateTaskDtoStatusEnum)[keyof typeof CreateTaskDtoStatusEnum];
+export type CreateTaskDtoStatusEnum = typeof CreateTaskDtoStatusEnum[keyof typeof CreateTaskDtoStatusEnum];
 export const CreateTaskDtoPriorityEnum = {
     Low: 'low',
     Medium: 'medium',
@@ -98,5 +99,6 @@ export const CreateTaskDtoPriorityEnum = {
     Urgent: 'urgent'
 } as const;
 
-export type CreateTaskDtoPriorityEnum =
-    (typeof CreateTaskDtoPriorityEnum)[keyof typeof CreateTaskDtoPriorityEnum];
+export type CreateTaskDtoPriorityEnum = typeof CreateTaskDtoPriorityEnum[keyof typeof CreateTaskDtoPriorityEnum];
+
+

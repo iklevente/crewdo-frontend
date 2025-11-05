@@ -13,46 +13,49 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface CreateMessageDto
  */
 export interface CreateMessageDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateMessageDto
      */
-    content: string;
+    'content': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateMessageDto
      */
-    channelId: string;
+    'channelId': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateMessageDto
      */
-    parentMessageId?: string;
+    'parentMessageId'?: string;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof CreateMessageDto
      */
-    attachmentIds?: Array<string>;
+    'attachmentIds'?: Array<string>;
     /**
      * Structured payload for embeds
      * @type {object}
      * @memberof CreateMessageDto
      */
-    embedData?: object;
+    'embedData'?: object;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof CreateMessageDto
      */
-    isSystemMessage?: boolean;
+    'isSystemMessage'?: boolean;
 }
+

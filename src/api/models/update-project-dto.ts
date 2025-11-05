@@ -13,72 +13,74 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface UpdateProjectDto
  */
 export interface UpdateProjectDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateProjectDto
      */
-    name?: string;
+    'name'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateProjectDto
      */
-    description?: string;
+    'description'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateProjectDto
      */
-    status?: UpdateProjectDtoStatusEnum;
+    'status'?: UpdateProjectDtoStatusEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateProjectDto
      */
-    priority?: UpdateProjectDtoPriorityEnum;
+    'priority'?: UpdateProjectDtoPriorityEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateProjectDto
      */
-    startDate?: string;
+    'startDate'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateProjectDto
      */
-    endDate?: string;
+    'endDate'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateProjectDto
      */
-    deadline?: string;
+    'deadline'?: string;
     /**
-     *
+     * 
      * @type {number}
      * @memberof UpdateProjectDto
      */
-    budget?: number;
+    'budget'?: number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateProjectDto
      */
-    color?: string;
+    'color'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateProjectDto
      */
-    workspaceId?: string;
+    'workspaceId'?: string;
 }
 
 export const UpdateProjectDtoStatusEnum = {
@@ -89,8 +91,7 @@ export const UpdateProjectDtoStatusEnum = {
     Cancelled: 'cancelled'
 } as const;
 
-export type UpdateProjectDtoStatusEnum =
-    (typeof UpdateProjectDtoStatusEnum)[keyof typeof UpdateProjectDtoStatusEnum];
+export type UpdateProjectDtoStatusEnum = typeof UpdateProjectDtoStatusEnum[keyof typeof UpdateProjectDtoStatusEnum];
 export const UpdateProjectDtoPriorityEnum = {
     Low: 'low',
     Medium: 'medium',
@@ -98,5 +99,6 @@ export const UpdateProjectDtoPriorityEnum = {
     Urgent: 'urgent'
 } as const;
 
-export type UpdateProjectDtoPriorityEnum =
-    (typeof UpdateProjectDtoPriorityEnum)[keyof typeof UpdateProjectDtoPriorityEnum];
+export type UpdateProjectDtoPriorityEnum = typeof UpdateProjectDtoPriorityEnum[keyof typeof UpdateProjectDtoPriorityEnum];
+
+

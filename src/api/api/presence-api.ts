@@ -13,32 +13,15 @@
  * Do not edit the class manually.
  */
 
+
 import type { Configuration } from '../configuration';
 import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import {
-    DUMMY_BASE_URL,
-    assertParamExists,
-    setApiKeyToObject,
-    setBasicAuthToObject,
-    setBearerAuthToObject,
-    setOAuthToObject,
-    setSearchParams,
-    serializeDataIfNeeded,
-    toPathString,
-    createRequestFunction
-} from '../common';
+import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from '../common';
 // @ts-ignore
-import {
-    BASE_PATH,
-    COLLECTION_FORMATS,
-    type RequestArgs,
-    BaseAPI,
-    RequiredError,
-    operationServerMap
-} from '../base';
+import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 // @ts-ignore
 import type { ManualPresenceUpdateDto } from '../models';
 // @ts-ignore
@@ -50,14 +33,12 @@ import type { PresenceResponseDto } from '../models';
 export const PresenceApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         *
+         * 
          * @summary Clear manual presence status and revert to automatic updates
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        presenceControllerClearManualPresence: async (
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        presenceControllerClearManualPresence: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/presence/me/manual`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -66,33 +47,28 @@ export const PresenceApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Get presence information for all users
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        presenceControllerFindAll: async (
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        presenceControllerFindAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/presence`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -101,33 +77,28 @@ export const PresenceApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Get presence for current user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        presenceControllerFindMine: async (
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        presenceControllerFindMine: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/presence/me`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -136,41 +107,31 @@ export const PresenceApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Set a manual presence status for current user
-         * @param {ManualPresenceUpdateDto} manualPresenceUpdateDto
+         * @param {ManualPresenceUpdateDto} manualPresenceUpdateDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        presenceControllerSetManualPresence: async (
-            manualPresenceUpdateDto: ManualPresenceUpdateDto,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        presenceControllerSetManualPresence: async (manualPresenceUpdateDto: ManualPresenceUpdateDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'manualPresenceUpdateDto' is not null or undefined
-            assertParamExists(
-                'presenceControllerSetManualPresence',
-                'manualPresenceUpdateDto',
-                manualPresenceUpdateDto
-            );
+            assertParamExists('presenceControllerSetManualPresence', 'manualPresenceUpdateDto', manualPresenceUpdateDto)
             const localVarPath = `/presence/me/manual`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -179,218 +140,130 @@ export const PresenceApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
-            localVarRequestOptions.data = serializeDataIfNeeded(
-                manualPresenceUpdateDto,
-                localVarRequestOptions,
-                configuration
-            );
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(manualPresenceUpdateDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
-        }
-    };
+        },
+    }
 };
 
 /**
  * PresenceApi - functional programming interface
  * @export
  */
-export const PresenceApiFp = function (configuration?: Configuration) {
-    const localVarAxiosParamCreator = PresenceApiAxiosParamCreator(configuration);
+export const PresenceApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = PresenceApiAxiosParamCreator(configuration)
     return {
         /**
-         *
+         * 
          * @summary Clear manual presence status and revert to automatic updates
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async presenceControllerClearManualPresence(
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<PresenceResponseDto>
-        > {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.presenceControllerClearManualPresence(options);
+        async presenceControllerClearManualPresence(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PresenceResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.presenceControllerClearManualPresence(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['PresenceApi.presenceControllerClearManualPresence']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['PresenceApi.presenceControllerClearManualPresence']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Get presence information for all users
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async presenceControllerFindAll(
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PresenceResponseDto>>
-        > {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.presenceControllerFindAll(options);
+        async presenceControllerFindAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PresenceResponseDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.presenceControllerFindAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['PresenceApi.presenceControllerFindAll']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['PresenceApi.presenceControllerFindAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Get presence for current user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async presenceControllerFindMine(
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<PresenceResponseDto>
-        > {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.presenceControllerFindMine(options);
+        async presenceControllerFindMine(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PresenceResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.presenceControllerFindMine(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['PresenceApi.presenceControllerFindMine']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['PresenceApi.presenceControllerFindMine']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Set a manual presence status for current user
-         * @param {ManualPresenceUpdateDto} manualPresenceUpdateDto
+         * @param {ManualPresenceUpdateDto} manualPresenceUpdateDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async presenceControllerSetManualPresence(
-            manualPresenceUpdateDto: ManualPresenceUpdateDto,
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<PresenceResponseDto>
-        > {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.presenceControllerSetManualPresence(
-                    manualPresenceUpdateDto,
-                    options
-                );
+        async presenceControllerSetManualPresence(manualPresenceUpdateDto: ManualPresenceUpdateDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PresenceResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.presenceControllerSetManualPresence(manualPresenceUpdateDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['PresenceApi.presenceControllerSetManualPresence']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
-        }
-    };
+            const localVarOperationServerBasePath = operationServerMap['PresenceApi.presenceControllerSetManualPresence']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
 };
 
 /**
  * PresenceApi - factory interface
  * @export
  */
-export const PresenceApiFactory = function (
-    configuration?: Configuration,
-    basePath?: string,
-    axios?: AxiosInstance
-) {
-    const localVarFp = PresenceApiFp(configuration);
+export const PresenceApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = PresenceApiFp(configuration)
     return {
         /**
-         *
+         * 
          * @summary Clear manual presence status and revert to automatic updates
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        presenceControllerClearManualPresence(
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<PresenceResponseDto> {
-            return localVarFp
-                .presenceControllerClearManualPresence(options)
-                .then(request => request(axios, basePath));
+        presenceControllerClearManualPresence(options?: RawAxiosRequestConfig): AxiosPromise<PresenceResponseDto> {
+            return localVarFp.presenceControllerClearManualPresence(options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Get presence information for all users
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        presenceControllerFindAll(
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<Array<PresenceResponseDto>> {
-            return localVarFp
-                .presenceControllerFindAll(options)
-                .then(request => request(axios, basePath));
+        presenceControllerFindAll(options?: RawAxiosRequestConfig): AxiosPromise<Array<PresenceResponseDto>> {
+            return localVarFp.presenceControllerFindAll(options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Get presence for current user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        presenceControllerFindMine(
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<PresenceResponseDto> {
-            return localVarFp
-                .presenceControllerFindMine(options)
-                .then(request => request(axios, basePath));
+        presenceControllerFindMine(options?: RawAxiosRequestConfig): AxiosPromise<PresenceResponseDto> {
+            return localVarFp.presenceControllerFindMine(options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Set a manual presence status for current user
-         * @param {ManualPresenceUpdateDto} manualPresenceUpdateDto
+         * @param {ManualPresenceUpdateDto} manualPresenceUpdateDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        presenceControllerSetManualPresence(
-            manualPresenceUpdateDto: ManualPresenceUpdateDto,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<PresenceResponseDto> {
-            return localVarFp
-                .presenceControllerSetManualPresence(manualPresenceUpdateDto, options)
-                .then(request => request(axios, basePath));
-        }
+        presenceControllerSetManualPresence(manualPresenceUpdateDto: ManualPresenceUpdateDto, options?: RawAxiosRequestConfig): AxiosPromise<PresenceResponseDto> {
+            return localVarFp.presenceControllerSetManualPresence(manualPresenceUpdateDto, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -402,58 +275,48 @@ export const PresenceApiFactory = function (
  */
 export class PresenceApi extends BaseAPI {
     /**
-     *
+     * 
      * @summary Clear manual presence status and revert to automatic updates
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PresenceApi
      */
     public presenceControllerClearManualPresence(options?: RawAxiosRequestConfig) {
-        return PresenceApiFp(this.configuration)
-            .presenceControllerClearManualPresence(options)
-            .then(request => request(this.axios, this.basePath));
+        return PresenceApiFp(this.configuration).presenceControllerClearManualPresence(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Get presence information for all users
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PresenceApi
      */
     public presenceControllerFindAll(options?: RawAxiosRequestConfig) {
-        return PresenceApiFp(this.configuration)
-            .presenceControllerFindAll(options)
-            .then(request => request(this.axios, this.basePath));
+        return PresenceApiFp(this.configuration).presenceControllerFindAll(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Get presence for current user
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PresenceApi
      */
     public presenceControllerFindMine(options?: RawAxiosRequestConfig) {
-        return PresenceApiFp(this.configuration)
-            .presenceControllerFindMine(options)
-            .then(request => request(this.axios, this.basePath));
+        return PresenceApiFp(this.configuration).presenceControllerFindMine(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Set a manual presence status for current user
-     * @param {ManualPresenceUpdateDto} manualPresenceUpdateDto
+     * @param {ManualPresenceUpdateDto} manualPresenceUpdateDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PresenceApi
      */
-    public presenceControllerSetManualPresence(
-        manualPresenceUpdateDto: ManualPresenceUpdateDto,
-        options?: RawAxiosRequestConfig
-    ) {
-        return PresenceApiFp(this.configuration)
-            .presenceControllerSetManualPresence(manualPresenceUpdateDto, options)
-            .then(request => request(this.axios, this.basePath));
+    public presenceControllerSetManualPresence(manualPresenceUpdateDto: ManualPresenceUpdateDto, options?: RawAxiosRequestConfig) {
+        return PresenceApiFp(this.configuration).presenceControllerSetManualPresence(manualPresenceUpdateDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
+

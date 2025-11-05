@@ -13,114 +13,116 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface ProjectResponseDto
  */
 export interface ProjectResponseDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectResponseDto
      */
-    id: string;
+    'id': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectResponseDto
      */
-    name: string;
+    'name': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectResponseDto
      */
-    description?: string;
+    'description'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectResponseDto
      */
-    status: ProjectResponseDtoStatusEnum;
+    'status': ProjectResponseDtoStatusEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectResponseDto
      */
-    priority: ProjectResponseDtoPriorityEnum;
+    'priority': ProjectResponseDtoPriorityEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectResponseDto
      */
-    startDate?: string;
+    'startDate'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectResponseDto
      */
-    endDate?: string;
+    'endDate'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectResponseDto
      */
-    deadline?: string;
+    'deadline'?: string;
     /**
-     *
+     * 
      * @type {number}
      * @memberof ProjectResponseDto
      */
-    budget?: number;
+    'budget'?: number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectResponseDto
      */
-    color?: string;
+    'color'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectResponseDto
      */
-    workspaceId?: string;
+    'workspaceId'?: string;
     /**
-     *
+     * 
      * @type {object}
      * @memberof ProjectResponseDto
      */
-    workspace?: object;
+    'workspace'?: object;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectResponseDto
      */
-    createdAt: string;
+    'createdAt': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectResponseDto
      */
-    updatedAt: string;
+    'updatedAt': string;
     /**
-     *
+     * 
      * @type {object}
      * @memberof ProjectResponseDto
      */
-    owner: object;
+    'owner': object;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof ProjectResponseDto
      */
-    members: Array<string>;
+    'members': Array<string>;
     /**
-     *
+     * 
      * @type {number}
      * @memberof ProjectResponseDto
      */
-    taskCount?: number;
+    'taskCount'?: number;
 }
 
 export const ProjectResponseDtoStatusEnum = {
@@ -131,8 +133,7 @@ export const ProjectResponseDtoStatusEnum = {
     Cancelled: 'cancelled'
 } as const;
 
-export type ProjectResponseDtoStatusEnum =
-    (typeof ProjectResponseDtoStatusEnum)[keyof typeof ProjectResponseDtoStatusEnum];
+export type ProjectResponseDtoStatusEnum = typeof ProjectResponseDtoStatusEnum[keyof typeof ProjectResponseDtoStatusEnum];
 export const ProjectResponseDtoPriorityEnum = {
     Low: 'low',
     Medium: 'medium',
@@ -140,5 +141,6 @@ export const ProjectResponseDtoPriorityEnum = {
     Urgent: 'urgent'
 } as const;
 
-export type ProjectResponseDtoPriorityEnum =
-    (typeof ProjectResponseDtoPriorityEnum)[keyof typeof ProjectResponseDtoPriorityEnum];
+export type ProjectResponseDtoPriorityEnum = typeof ProjectResponseDtoPriorityEnum[keyof typeof ProjectResponseDtoPriorityEnum];
+
+

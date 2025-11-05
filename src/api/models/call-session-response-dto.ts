@@ -13,46 +13,49 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface CallSessionResponseDto
  */
 export interface CallSessionResponseDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof CallSessionResponseDto
      */
-    token: string;
+    'token': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CallSessionResponseDto
      */
-    url: string;
+    'url': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CallSessionResponseDto
      */
-    roomName: string;
+    'roomName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CallSessionResponseDto
      */
-    identity: string;
+    'identity': string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof CallSessionResponseDto
      */
-    isHost: boolean;
+    'isHost': boolean;
     /**
-     *
+     * 
      * @type {object}
      * @memberof CallSessionResponseDto
      */
-    participantId?: object;
+    'participantId'?: object;
 }
+

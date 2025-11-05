@@ -13,66 +13,68 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface NotificationResponseDto
  */
 export interface NotificationResponseDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof NotificationResponseDto
      */
-    id: string;
+    'id': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof NotificationResponseDto
      */
-    title: string;
+    'title': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof NotificationResponseDto
      */
-    message: string;
+    'message': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof NotificationResponseDto
      */
-    type: NotificationResponseDtoTypeEnum;
+    'type': NotificationResponseDtoTypeEnum;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof NotificationResponseDto
      */
-    isRead: boolean;
+    'isRead': boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof NotificationResponseDto
      */
-    relatedEntityId?: string;
+    'relatedEntityId'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof NotificationResponseDto
      */
-    relatedEntityType?: string;
+    'relatedEntityType'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof NotificationResponseDto
      */
-    createdAt: string;
+    'createdAt': string;
     /**
      * User who owns this notification
      * @type {object}
      * @memberof NotificationResponseDto
      */
-    user: object;
+    'user': object;
 }
 
 export const NotificationResponseDtoTypeEnum = {
@@ -86,5 +88,6 @@ export const NotificationResponseDtoTypeEnum = {
     IncomingCall: 'incoming_call'
 } as const;
 
-export type NotificationResponseDtoTypeEnum =
-    (typeof NotificationResponseDtoTypeEnum)[keyof typeof NotificationResponseDtoTypeEnum];
+export type NotificationResponseDtoTypeEnum = typeof NotificationResponseDtoTypeEnum[keyof typeof NotificationResponseDtoTypeEnum];
+
+

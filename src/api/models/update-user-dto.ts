@@ -13,40 +13,43 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface UpdateUserDto
  */
 export interface UpdateUserDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateUserDto
      */
-    firstName?: string;
+    'firstName'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateUserDto
      */
-    lastName?: string;
+    'lastName'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateUserDto
      */
-    phoneNumber?: string;
+    'phoneNumber'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateUserDto
      */
-    department?: string;
+    'department'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UpdateUserDto
      */
-    position?: string;
+    'position'?: string;
 }
+

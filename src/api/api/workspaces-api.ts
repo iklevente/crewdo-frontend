@@ -13,32 +13,15 @@
  * Do not edit the class manually.
  */
 
+
 import type { Configuration } from '../configuration';
 import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import {
-    DUMMY_BASE_URL,
-    assertParamExists,
-    setApiKeyToObject,
-    setBasicAuthToObject,
-    setBearerAuthToObject,
-    setOAuthToObject,
-    setSearchParams,
-    serializeDataIfNeeded,
-    toPathString,
-    createRequestFunction
-} from '../common';
+import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from '../common';
 // @ts-ignore
-import {
-    BASE_PATH,
-    COLLECTION_FORMATS,
-    type RequestArgs,
-    BaseAPI,
-    RequiredError,
-    operationServerMap
-} from '../base';
+import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 // @ts-ignore
 import type { CreateWorkspaceDto } from '../models';
 // @ts-ignore
@@ -52,25 +35,21 @@ import type { WorkspaceResponseDto } from '../models';
 export const WorkspacesApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         *
+         * 
          * @summary Add member to workspace (Admin/Project Manager only)
          * @param {string} id Workspace ID
          * @param {string} email User email to add
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workspaceControllerAddMember: async (
-            id: string,
-            email: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        workspaceControllerAddMember: async (id: string, email: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('workspaceControllerAddMember', 'id', id);
+            assertParamExists('workspaceControllerAddMember', 'id', id)
             // verify required parameter 'email' is not null or undefined
-            assertParamExists('workspaceControllerAddMember', 'email', email);
+            assertParamExists('workspaceControllerAddMember', 'email', email)
             const localVarPath = `/workspaces/{id}/members/{email}`
-                .replace(`{${'id'}}`, encodeURIComponent(String(id)))
-                .replace(`{${'email'}}`, encodeURIComponent(String(email)));
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"email"}}`, encodeURIComponent(String(email)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -78,41 +57,31 @@ export const WorkspacesApiAxiosParamCreator = function (configuration?: Configur
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Create a new workspace (Admin only)
-         * @param {CreateWorkspaceDto} createWorkspaceDto
+         * @param {CreateWorkspaceDto} createWorkspaceDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workspaceControllerCreate: async (
-            createWorkspaceDto: CreateWorkspaceDto,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        workspaceControllerCreate: async (createWorkspaceDto: CreateWorkspaceDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'createWorkspaceDto' is not null or undefined
-            assertParamExists(
-                'workspaceControllerCreate',
-                'createWorkspaceDto',
-                createWorkspaceDto
-            );
+            assertParamExists('workspaceControllerCreate', 'createWorkspaceDto', createWorkspaceDto)
             const localVarPath = `/workspaces`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -121,40 +90,31 @@ export const WorkspacesApiAxiosParamCreator = function (configuration?: Configur
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
-            localVarRequestOptions.data = serializeDataIfNeeded(
-                createWorkspaceDto,
-                localVarRequestOptions,
-                configuration
-            );
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createWorkspaceDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Get all workspaces for the current user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workspaceControllerFindAll: async (
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        workspaceControllerFindAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/workspaces`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -163,41 +123,33 @@ export const WorkspacesApiAxiosParamCreator = function (configuration?: Configur
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Get workspace by ID
          * @param {string} id Workspace ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workspaceControllerFindOne: async (
-            id: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        workspaceControllerFindOne: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('workspaceControllerFindOne', 'id', id);
-            const localVarPath = `/workspaces/{id}`.replace(
-                `{${'id'}}`,
-                encodeURIComponent(String(id))
-            );
+            assertParamExists('workspaceControllerFindOne', 'id', id)
+            const localVarPath = `/workspaces/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -205,41 +157,33 @@ export const WorkspacesApiAxiosParamCreator = function (configuration?: Configur
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Get workspace members
          * @param {string} id Workspace ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workspaceControllerGetMembers: async (
-            id: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        workspaceControllerGetMembers: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('workspaceControllerGetMembers', 'id', id);
-            const localVarPath = `/workspaces/{id}/members`.replace(
-                `{${'id'}}`,
-                encodeURIComponent(String(id))
-            );
+            assertParamExists('workspaceControllerGetMembers', 'id', id)
+            const localVarPath = `/workspaces/{id}/members`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -247,41 +191,33 @@ export const WorkspacesApiAxiosParamCreator = function (configuration?: Configur
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Delete workspace
          * @param {string} id Workspace ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workspaceControllerRemove: async (
-            id: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        workspaceControllerRemove: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('workspaceControllerRemove', 'id', id);
-            const localVarPath = `/workspaces/{id}`.replace(
-                `{${'id'}}`,
-                encodeURIComponent(String(id))
-            );
+            assertParamExists('workspaceControllerRemove', 'id', id)
+            const localVarPath = `/workspaces/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -289,44 +225,37 @@ export const WorkspacesApiAxiosParamCreator = function (configuration?: Configur
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Remove member from workspace (Admin/Project Manager only)
          * @param {string} id Workspace ID
          * @param {string} userId User ID to remove
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workspaceControllerRemoveMember: async (
-            id: string,
-            userId: string,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        workspaceControllerRemoveMember: async (id: string, userId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('workspaceControllerRemoveMember', 'id', id);
+            assertParamExists('workspaceControllerRemoveMember', 'id', id)
             // verify required parameter 'userId' is not null or undefined
-            assertParamExists('workspaceControllerRemoveMember', 'userId', userId);
+            assertParamExists('workspaceControllerRemoveMember', 'userId', userId)
             const localVarPath = `/workspaces/{id}/members/{userId}`
-                .replace(`{${'id'}}`, encodeURIComponent(String(id)))
-                .replace(`{${'userId'}}`, encodeURIComponent(String(userId)));
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -334,49 +263,36 @@ export const WorkspacesApiAxiosParamCreator = function (configuration?: Configur
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
         },
         /**
-         *
+         * 
          * @summary Update workspace
          * @param {string} id Workspace ID
-         * @param {UpdateWorkspaceDto} updateWorkspaceDto
+         * @param {UpdateWorkspaceDto} updateWorkspaceDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workspaceControllerUpdate: async (
-            id: string,
-            updateWorkspaceDto: UpdateWorkspaceDto,
-            options: RawAxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        workspaceControllerUpdate: async (id: string, updateWorkspaceDto: UpdateWorkspaceDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('workspaceControllerUpdate', 'id', id);
+            assertParamExists('workspaceControllerUpdate', 'id', id)
             // verify required parameter 'updateWorkspaceDto' is not null or undefined
-            assertParamExists(
-                'workspaceControllerUpdate',
-                'updateWorkspaceDto',
-                updateWorkspaceDto
-            );
-            const localVarPath = `/workspaces/{id}`.replace(
-                `{${'id'}}`,
-                encodeURIComponent(String(id))
-            );
+            assertParamExists('workspaceControllerUpdate', 'updateWorkspaceDto', updateWorkspaceDto)
+            const localVarPath = `/workspaces/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -384,414 +300,232 @@ export const WorkspacesApiAxiosParamCreator = function (configuration?: Configur
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers
-            };
-            localVarRequestOptions.data = serializeDataIfNeeded(
-                updateWorkspaceDto,
-                localVarRequestOptions,
-                configuration
-            );
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateWorkspaceDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions
+                options: localVarRequestOptions,
             };
-        }
-    };
+        },
+    }
 };
 
 /**
  * WorkspacesApi - functional programming interface
  * @export
  */
-export const WorkspacesApiFp = function (configuration?: Configuration) {
-    const localVarAxiosParamCreator = WorkspacesApiAxiosParamCreator(configuration);
+export const WorkspacesApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = WorkspacesApiAxiosParamCreator(configuration)
     return {
         /**
-         *
+         * 
          * @summary Add member to workspace (Admin/Project Manager only)
          * @param {string} id Workspace ID
          * @param {string} email User email to add
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workspaceControllerAddMember(
-            id: string,
-            email: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workspaceControllerAddMember(
-                id,
-                email,
-                options
-            );
+        async workspaceControllerAddMember(id: string, email: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.workspaceControllerAddMember(id, email, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['WorkspacesApi.workspaceControllerAddMember']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['WorkspacesApi.workspaceControllerAddMember']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Create a new workspace (Admin only)
-         * @param {CreateWorkspaceDto} createWorkspaceDto
+         * @param {CreateWorkspaceDto} createWorkspaceDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workspaceControllerCreate(
-            createWorkspaceDto: CreateWorkspaceDto,
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<WorkspaceResponseDto>
-        > {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workspaceControllerCreate(
-                createWorkspaceDto,
-                options
-            );
+        async workspaceControllerCreate(createWorkspaceDto: CreateWorkspaceDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WorkspaceResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.workspaceControllerCreate(createWorkspaceDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['WorkspacesApi.workspaceControllerCreate']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['WorkspacesApi.workspaceControllerCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Get all workspaces for the current user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workspaceControllerFindAll(
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<WorkspaceResponseDto>>
-        > {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.workspaceControllerFindAll(options);
+        async workspaceControllerFindAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<WorkspaceResponseDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.workspaceControllerFindAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['WorkspacesApi.workspaceControllerFindAll']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['WorkspacesApi.workspaceControllerFindAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Get workspace by ID
          * @param {string} id Workspace ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workspaceControllerFindOne(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<WorkspaceResponseDto>
-        > {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workspaceControllerFindOne(
-                id,
-                options
-            );
+        async workspaceControllerFindOne(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WorkspaceResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.workspaceControllerFindOne(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['WorkspacesApi.workspaceControllerFindOne']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['WorkspacesApi.workspaceControllerFindOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Get workspace members
          * @param {string} id Workspace ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workspaceControllerGetMembers(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workspaceControllerGetMembers(
-                id,
-                options
-            );
+        async workspaceControllerGetMembers(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.workspaceControllerGetMembers(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['WorkspacesApi.workspaceControllerGetMembers']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['WorkspacesApi.workspaceControllerGetMembers']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Delete workspace
          * @param {string} id Workspace ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workspaceControllerRemove(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workspaceControllerRemove(
-                id,
-                options
-            );
+        async workspaceControllerRemove(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.workspaceControllerRemove(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['WorkspacesApi.workspaceControllerRemove']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['WorkspacesApi.workspaceControllerRemove']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Remove member from workspace (Admin/Project Manager only)
          * @param {string} id Workspace ID
          * @param {string} userId User ID to remove
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workspaceControllerRemoveMember(
-            id: string,
-            userId: string,
-            options?: RawAxiosRequestConfig
-        ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs =
-                await localVarAxiosParamCreator.workspaceControllerRemoveMember(
-                    id,
-                    userId,
-                    options
-                );
+        async workspaceControllerRemoveMember(id: string, userId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.workspaceControllerRemoveMember(id, userId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['WorkspacesApi.workspaceControllerRemoveMember']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
+            const localVarOperationServerBasePath = operationServerMap['WorkspacesApi.workspaceControllerRemoveMember']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary Update workspace
          * @param {string} id Workspace ID
-         * @param {UpdateWorkspaceDto} updateWorkspaceDto
+         * @param {UpdateWorkspaceDto} updateWorkspaceDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workspaceControllerUpdate(
-            id: string,
-            updateWorkspaceDto: UpdateWorkspaceDto,
-            options?: RawAxiosRequestConfig
-        ): Promise<
-            (axios?: AxiosInstance, basePath?: string) => AxiosPromise<WorkspaceResponseDto>
-        > {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workspaceControllerUpdate(
-                id,
-                updateWorkspaceDto,
-                options
-            );
+        async workspaceControllerUpdate(id: string, updateWorkspaceDto: UpdateWorkspaceDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WorkspaceResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.workspaceControllerUpdate(id, updateWorkspaceDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath =
-                operationServerMap['WorkspacesApi.workspaceControllerUpdate']?.[
-                    localVarOperationServerIndex
-                ]?.url;
-            return (axios, basePath) =>
-                createRequestFunction(
-                    localVarAxiosArgs,
-                    globalAxios,
-                    BASE_PATH,
-                    configuration
-                )(axios, localVarOperationServerBasePath || basePath);
-        }
-    };
+            const localVarOperationServerBasePath = operationServerMap['WorkspacesApi.workspaceControllerUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
 };
 
 /**
  * WorkspacesApi - factory interface
  * @export
  */
-export const WorkspacesApiFactory = function (
-    configuration?: Configuration,
-    basePath?: string,
-    axios?: AxiosInstance
-) {
-    const localVarFp = WorkspacesApiFp(configuration);
+export const WorkspacesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = WorkspacesApiFp(configuration)
     return {
         /**
-         *
+         * 
          * @summary Add member to workspace (Admin/Project Manager only)
          * @param {string} id Workspace ID
          * @param {string} email User email to add
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workspaceControllerAddMember(
-            id: string,
-            email: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<void> {
-            return localVarFp
-                .workspaceControllerAddMember(id, email, options)
-                .then(request => request(axios, basePath));
+        workspaceControllerAddMember(id: string, email: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.workspaceControllerAddMember(id, email, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Create a new workspace (Admin only)
-         * @param {CreateWorkspaceDto} createWorkspaceDto
+         * @param {CreateWorkspaceDto} createWorkspaceDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workspaceControllerCreate(
-            createWorkspaceDto: CreateWorkspaceDto,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<WorkspaceResponseDto> {
-            return localVarFp
-                .workspaceControllerCreate(createWorkspaceDto, options)
-                .then(request => request(axios, basePath));
+        workspaceControllerCreate(createWorkspaceDto: CreateWorkspaceDto, options?: RawAxiosRequestConfig): AxiosPromise<WorkspaceResponseDto> {
+            return localVarFp.workspaceControllerCreate(createWorkspaceDto, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Get all workspaces for the current user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workspaceControllerFindAll(
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<Array<WorkspaceResponseDto>> {
-            return localVarFp
-                .workspaceControllerFindAll(options)
-                .then(request => request(axios, basePath));
+        workspaceControllerFindAll(options?: RawAxiosRequestConfig): AxiosPromise<Array<WorkspaceResponseDto>> {
+            return localVarFp.workspaceControllerFindAll(options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Get workspace by ID
          * @param {string} id Workspace ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workspaceControllerFindOne(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<WorkspaceResponseDto> {
-            return localVarFp
-                .workspaceControllerFindOne(id, options)
-                .then(request => request(axios, basePath));
+        workspaceControllerFindOne(id: string, options?: RawAxiosRequestConfig): AxiosPromise<WorkspaceResponseDto> {
+            return localVarFp.workspaceControllerFindOne(id, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Get workspace members
          * @param {string} id Workspace ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workspaceControllerGetMembers(
-            id: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<void> {
-            return localVarFp
-                .workspaceControllerGetMembers(id, options)
-                .then(request => request(axios, basePath));
+        workspaceControllerGetMembers(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.workspaceControllerGetMembers(id, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Delete workspace
          * @param {string} id Workspace ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         workspaceControllerRemove(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp
-                .workspaceControllerRemove(id, options)
-                .then(request => request(axios, basePath));
+            return localVarFp.workspaceControllerRemove(id, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Remove member from workspace (Admin/Project Manager only)
          * @param {string} id Workspace ID
          * @param {string} userId User ID to remove
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workspaceControllerRemoveMember(
-            id: string,
-            userId: string,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<void> {
-            return localVarFp
-                .workspaceControllerRemoveMember(id, userId, options)
-                .then(request => request(axios, basePath));
+        workspaceControllerRemoveMember(id: string, userId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.workspaceControllerRemoveMember(id, userId, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary Update workspace
          * @param {string} id Workspace ID
-         * @param {UpdateWorkspaceDto} updateWorkspaceDto
+         * @param {UpdateWorkspaceDto} updateWorkspaceDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workspaceControllerUpdate(
-            id: string,
-            updateWorkspaceDto: UpdateWorkspaceDto,
-            options?: RawAxiosRequestConfig
-        ): AxiosPromise<WorkspaceResponseDto> {
-            return localVarFp
-                .workspaceControllerUpdate(id, updateWorkspaceDto, options)
-                .then(request => request(axios, basePath));
-        }
+        workspaceControllerUpdate(id: string, updateWorkspaceDto: UpdateWorkspaceDto, options?: RawAxiosRequestConfig): AxiosPromise<WorkspaceResponseDto> {
+            return localVarFp.workspaceControllerUpdate(id, updateWorkspaceDto, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -803,7 +537,7 @@ export const WorkspacesApiFactory = function (
  */
 export class WorkspacesApi extends BaseAPI {
     /**
-     *
+     * 
      * @summary Add member to workspace (Admin/Project Manager only)
      * @param {string} id Workspace ID
      * @param {string} email User email to add
@@ -811,48 +545,35 @@ export class WorkspacesApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspacesApi
      */
-    public workspaceControllerAddMember(
-        id: string,
-        email: string,
-        options?: RawAxiosRequestConfig
-    ) {
-        return WorkspacesApiFp(this.configuration)
-            .workspaceControllerAddMember(id, email, options)
-            .then(request => request(this.axios, this.basePath));
+    public workspaceControllerAddMember(id: string, email: string, options?: RawAxiosRequestConfig) {
+        return WorkspacesApiFp(this.configuration).workspaceControllerAddMember(id, email, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Create a new workspace (Admin only)
-     * @param {CreateWorkspaceDto} createWorkspaceDto
+     * @param {CreateWorkspaceDto} createWorkspaceDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof WorkspacesApi
      */
-    public workspaceControllerCreate(
-        createWorkspaceDto: CreateWorkspaceDto,
-        options?: RawAxiosRequestConfig
-    ) {
-        return WorkspacesApiFp(this.configuration)
-            .workspaceControllerCreate(createWorkspaceDto, options)
-            .then(request => request(this.axios, this.basePath));
+    public workspaceControllerCreate(createWorkspaceDto: CreateWorkspaceDto, options?: RawAxiosRequestConfig) {
+        return WorkspacesApiFp(this.configuration).workspaceControllerCreate(createWorkspaceDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Get all workspaces for the current user
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof WorkspacesApi
      */
     public workspaceControllerFindAll(options?: RawAxiosRequestConfig) {
-        return WorkspacesApiFp(this.configuration)
-            .workspaceControllerFindAll(options)
-            .then(request => request(this.axios, this.basePath));
+        return WorkspacesApiFp(this.configuration).workspaceControllerFindAll(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Get workspace by ID
      * @param {string} id Workspace ID
      * @param {*} [options] Override http request option.
@@ -860,13 +581,11 @@ export class WorkspacesApi extends BaseAPI {
      * @memberof WorkspacesApi
      */
     public workspaceControllerFindOne(id: string, options?: RawAxiosRequestConfig) {
-        return WorkspacesApiFp(this.configuration)
-            .workspaceControllerFindOne(id, options)
-            .then(request => request(this.axios, this.basePath));
+        return WorkspacesApiFp(this.configuration).workspaceControllerFindOne(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Get workspace members
      * @param {string} id Workspace ID
      * @param {*} [options] Override http request option.
@@ -874,13 +593,11 @@ export class WorkspacesApi extends BaseAPI {
      * @memberof WorkspacesApi
      */
     public workspaceControllerGetMembers(id: string, options?: RawAxiosRequestConfig) {
-        return WorkspacesApiFp(this.configuration)
-            .workspaceControllerGetMembers(id, options)
-            .then(request => request(this.axios, this.basePath));
+        return WorkspacesApiFp(this.configuration).workspaceControllerGetMembers(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Delete workspace
      * @param {string} id Workspace ID
      * @param {*} [options] Override http request option.
@@ -888,13 +605,11 @@ export class WorkspacesApi extends BaseAPI {
      * @memberof WorkspacesApi
      */
     public workspaceControllerRemove(id: string, options?: RawAxiosRequestConfig) {
-        return WorkspacesApiFp(this.configuration)
-            .workspaceControllerRemove(id, options)
-            .then(request => request(this.axios, this.basePath));
+        return WorkspacesApiFp(this.configuration).workspaceControllerRemove(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Remove member from workspace (Admin/Project Manager only)
      * @param {string} id Workspace ID
      * @param {string} userId User ID to remove
@@ -902,32 +617,21 @@ export class WorkspacesApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspacesApi
      */
-    public workspaceControllerRemoveMember(
-        id: string,
-        userId: string,
-        options?: RawAxiosRequestConfig
-    ) {
-        return WorkspacesApiFp(this.configuration)
-            .workspaceControllerRemoveMember(id, userId, options)
-            .then(request => request(this.axios, this.basePath));
+    public workspaceControllerRemoveMember(id: string, userId: string, options?: RawAxiosRequestConfig) {
+        return WorkspacesApiFp(this.configuration).workspaceControllerRemoveMember(id, userId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     *
+     * 
      * @summary Update workspace
      * @param {string} id Workspace ID
-     * @param {UpdateWorkspaceDto} updateWorkspaceDto
+     * @param {UpdateWorkspaceDto} updateWorkspaceDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof WorkspacesApi
      */
-    public workspaceControllerUpdate(
-        id: string,
-        updateWorkspaceDto: UpdateWorkspaceDto,
-        options?: RawAxiosRequestConfig
-    ) {
-        return WorkspacesApiFp(this.configuration)
-            .workspaceControllerUpdate(id, updateWorkspaceDto, options)
-            .then(request => request(this.axios, this.basePath));
+    public workspaceControllerUpdate(id: string, updateWorkspaceDto: UpdateWorkspaceDto, options?: RawAxiosRequestConfig) {
+        return WorkspacesApiFp(this.configuration).workspaceControllerUpdate(id, updateWorkspaceDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
+

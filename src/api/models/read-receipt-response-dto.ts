@@ -13,8 +13,10 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface ReadReceiptResponseDto
  */
@@ -24,11 +26,12 @@ export interface ReadReceiptResponseDto {
      * @type {string}
      * @memberof ReadReceiptResponseDto
      */
-    message?: string;
+    'message'?: string;
     /**
      * Number of messages marked as read
      * @type {number}
      * @memberof ReadReceiptResponseDto
      */
-    markedAsRead?: number;
+    'markedAsRead'?: number;
 }
+

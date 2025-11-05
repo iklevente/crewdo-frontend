@@ -13,60 +13,62 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface CreateUserDto
  */
 export interface CreateUserDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateUserDto
      */
-    email: string;
+    'email': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateUserDto
      */
-    firstName: string;
+    'firstName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateUserDto
      */
-    lastName: string;
+    'lastName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateUserDto
      */
-    password: string;
+    'password': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateUserDto
      */
-    role?: CreateUserDtoRoleEnum;
+    'role'?: CreateUserDtoRoleEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateUserDto
      */
-    phoneNumber?: string;
+    'phoneNumber'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateUserDto
      */
-    department?: string;
+    'department'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateUserDto
      */
-    position?: string;
+    'position'?: string;
 }
 
 export const CreateUserDtoRoleEnum = {
@@ -76,5 +78,6 @@ export const CreateUserDtoRoleEnum = {
     Client: 'client'
 } as const;
 
-export type CreateUserDtoRoleEnum =
-    (typeof CreateUserDtoRoleEnum)[keyof typeof CreateUserDtoRoleEnum];
+export type CreateUserDtoRoleEnum = typeof CreateUserDtoRoleEnum[keyof typeof CreateUserDtoRoleEnum];
+
+

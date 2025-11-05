@@ -13,88 +13,91 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface MessageResponseDto
  */
 export interface MessageResponseDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof MessageResponseDto
      */
-    id: string;
+    'id': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof MessageResponseDto
      */
-    content: string;
+    'content': string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof MessageResponseDto
      */
-    isEdited: boolean;
+    'isEdited': boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof MessageResponseDto
      */
-    isDeleted: boolean;
+    'isDeleted': boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof MessageResponseDto
      */
-    isSystemMessage: boolean;
+    'isSystemMessage': boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof MessageResponseDto
      */
-    createdAt: string;
+    'createdAt': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof MessageResponseDto
      */
-    updatedAt: string;
+    'updatedAt': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof MessageResponseDto
      */
-    editedAt?: string;
+    'editedAt'?: string;
     /**
-     *
+     * 
      * @type {object}
      * @memberof MessageResponseDto
      */
-    author: object;
+    'author': object;
     /**
-     *
+     * 
      * @type {object}
      * @memberof MessageResponseDto
      */
-    channel: object;
+    'channel': object;
     /**
-     *
+     * 
      * @type {object}
      * @memberof MessageResponseDto
      */
-    parentMessage?: object;
+    'parentMessage'?: object;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof MessageResponseDto
      */
-    attachments: Array<string>;
+    'attachments': Array<string>;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof MessageResponseDto
      */
-    reactions: Array<string>;
+    'reactions': Array<string>;
 }
+

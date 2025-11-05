@@ -13,108 +13,110 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface ChannelResponseDto
  */
 export interface ChannelResponseDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof ChannelResponseDto
      */
-    id: string;
+    'id': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ChannelResponseDto
      */
-    name: string;
+    'name': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ChannelResponseDto
      */
-    description?: string;
+    'description'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ChannelResponseDto
      */
-    type: ChannelResponseDtoTypeEnum;
+    'type': ChannelResponseDtoTypeEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ChannelResponseDto
      */
-    visibility: ChannelResponseDtoVisibilityEnum;
+    'visibility': ChannelResponseDtoVisibilityEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ChannelResponseDto
      */
-    topic?: string;
+    'topic'?: string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ChannelResponseDto
      */
-    isArchived: boolean;
+    'isArchived': boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ChannelResponseDto
      */
-    createdAt: string;
+    'createdAt': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ChannelResponseDto
      */
-    updatedAt: string;
+    'updatedAt': string;
     /**
-     *
+     * 
      * @type {object}
      * @memberof ChannelResponseDto
      */
-    creator?: object;
+    'creator'?: object;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof ChannelResponseDto
      */
-    members: Array<string>;
+    'members': Array<string>;
     /**
-     *
+     * 
      * @type {object}
      * @memberof ChannelResponseDto
      */
-    workspace?: object;
+    'workspace'?: object;
     /**
-     *
+     * 
      * @type {object}
      * @memberof ChannelResponseDto
      */
-    project?: object;
+    'project'?: object;
     /**
-     *
+     * 
      * @type {number}
      * @memberof ChannelResponseDto
      */
-    messageCount?: number;
+    'messageCount'?: number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof ChannelResponseDto
      */
-    unreadCount?: number;
+    'unreadCount'?: number;
     /**
-     *
+     * 
      * @type {object}
      * @memberof ChannelResponseDto
      */
-    lastMessage?: object;
+    'lastMessage'?: object;
 }
 
 export const ChannelResponseDtoTypeEnum = {
@@ -123,12 +125,12 @@ export const ChannelResponseDtoTypeEnum = {
     GroupDm: 'group_dm'
 } as const;
 
-export type ChannelResponseDtoTypeEnum =
-    (typeof ChannelResponseDtoTypeEnum)[keyof typeof ChannelResponseDtoTypeEnum];
+export type ChannelResponseDtoTypeEnum = typeof ChannelResponseDtoTypeEnum[keyof typeof ChannelResponseDtoTypeEnum];
 export const ChannelResponseDtoVisibilityEnum = {
     Public: 'public',
     Private: 'private'
 } as const;
 
-export type ChannelResponseDtoVisibilityEnum =
-    (typeof ChannelResponseDtoVisibilityEnum)[keyof typeof ChannelResponseDtoVisibilityEnum];
+export type ChannelResponseDtoVisibilityEnum = typeof ChannelResponseDtoVisibilityEnum[keyof typeof ChannelResponseDtoVisibilityEnum];
+
+

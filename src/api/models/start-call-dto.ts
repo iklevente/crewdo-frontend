@@ -13,42 +13,44 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface StartCallDto
  */
 export interface StartCallDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof StartCallDto
      */
-    type: StartCallDtoTypeEnum;
+    'type': StartCallDtoTypeEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof StartCallDto
      */
-    title?: string;
+    'title'?: string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof StartCallDto
      */
-    withVideo?: boolean;
+    'withVideo'?: boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof StartCallDto
      */
-    withAudio?: boolean;
+    'withAudio'?: boolean;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof StartCallDto
      */
-    invitedUserIds?: Array<string>;
+    'invitedUserIds'?: Array<string>;
 }
 
 export const StartCallDtoTypeEnum = {
@@ -57,4 +59,6 @@ export const StartCallDtoTypeEnum = {
     ScreenShare: 'screen_share'
 } as const;
 
-export type StartCallDtoTypeEnum = (typeof StartCallDtoTypeEnum)[keyof typeof StartCallDtoTypeEnum];
+export type StartCallDtoTypeEnum = typeof StartCallDtoTypeEnum[keyof typeof StartCallDtoTypeEnum];
+
+

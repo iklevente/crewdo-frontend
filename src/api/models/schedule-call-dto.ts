@@ -13,48 +13,50 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface ScheduleCallDto
  */
 export interface ScheduleCallDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof ScheduleCallDto
      */
-    type: ScheduleCallDtoTypeEnum;
+    'type': ScheduleCallDtoTypeEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ScheduleCallDto
      */
-    title: string;
+    'title': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ScheduleCallDto
      */
-    description?: string;
+    'description'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ScheduleCallDto
      */
-    scheduledStartTime: string;
+    'scheduledStartTime': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ScheduleCallDto
      */
-    scheduledEndTime?: string;
+    'scheduledEndTime'?: string;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof ScheduleCallDto
      */
-    invitedUserIds?: Array<string>;
+    'invitedUserIds'?: Array<string>;
 }
 
 export const ScheduleCallDtoTypeEnum = {
@@ -63,5 +65,6 @@ export const ScheduleCallDtoTypeEnum = {
     ScreenShare: 'screen_share'
 } as const;
 
-export type ScheduleCallDtoTypeEnum =
-    (typeof ScheduleCallDtoTypeEnum)[keyof typeof ScheduleCallDtoTypeEnum];
+export type ScheduleCallDtoTypeEnum = typeof ScheduleCallDtoTypeEnum[keyof typeof ScheduleCallDtoTypeEnum];
+
+

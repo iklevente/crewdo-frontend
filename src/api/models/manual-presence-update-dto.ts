@@ -13,18 +13,20 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface ManualPresenceUpdateDto
  */
 export interface ManualPresenceUpdateDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof ManualPresenceUpdateDto
      */
-    status: ManualPresenceUpdateDtoStatusEnum;
+    'status': ManualPresenceUpdateDtoStatusEnum;
 }
 
 export const ManualPresenceUpdateDtoStatusEnum = {
@@ -34,5 +36,6 @@ export const ManualPresenceUpdateDtoStatusEnum = {
     Busy: 'busy'
 } as const;
 
-export type ManualPresenceUpdateDtoStatusEnum =
-    (typeof ManualPresenceUpdateDtoStatusEnum)[keyof typeof ManualPresenceUpdateDtoStatusEnum];
+export type ManualPresenceUpdateDtoStatusEnum = typeof ManualPresenceUpdateDtoStatusEnum[keyof typeof ManualPresenceUpdateDtoStatusEnum];
+
+

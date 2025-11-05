@@ -13,22 +13,25 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface CreateCommentDto
  */
 export interface CreateCommentDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateCommentDto
      */
-    content: string;
+    'content': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateCommentDto
      */
-    taskId: string;
+    'taskId': string;
 }
+

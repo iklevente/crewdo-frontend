@@ -13,8 +13,10 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface UpdateNotificationDto
  */
@@ -24,5 +26,6 @@ export interface UpdateNotificationDto {
      * @type {boolean}
      * @memberof UpdateNotificationDto
      */
-    isRead?: boolean;
+    'isRead'?: boolean;
 }
+

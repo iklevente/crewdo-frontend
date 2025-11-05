@@ -13,8 +13,10 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface MarkAsReadDto
  */
@@ -24,5 +26,6 @@ export interface MarkAsReadDto {
      * @type {string}
      * @memberof MarkAsReadDto
      */
-    upToMessageId?: string;
+    'upToMessageId'?: string;
 }
+

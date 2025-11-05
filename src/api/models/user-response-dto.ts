@@ -13,96 +13,98 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface UserResponseDto
  */
 export interface UserResponseDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserResponseDto
      */
-    id: string;
+    'id': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserResponseDto
      */
-    email: string;
+    'email': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserResponseDto
      */
-    firstName: string;
+    'firstName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserResponseDto
      */
-    lastName: string;
+    'lastName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserResponseDto
      */
-    role: UserResponseDtoRoleEnum;
+    'role': UserResponseDtoRoleEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserResponseDto
      */
-    status: UserResponseDtoStatusEnum;
+    'status': UserResponseDtoStatusEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserResponseDto
      */
-    phoneNumber?: string;
+    'phoneNumber'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserResponseDto
      */
-    department?: string;
+    'department'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserResponseDto
      */
-    position?: string;
+    'position'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserResponseDto
      */
-    profilePicture?: string;
+    'profilePicture'?: string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof UserResponseDto
      */
-    isEmailVerified: boolean;
+    'isEmailVerified': boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserResponseDto
      */
-    createdAt: string;
+    'createdAt': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserResponseDto
      */
-    updatedAt: string;
+    'updatedAt': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserResponseDto
      */
-    lastLoginAt?: string;
+    'lastLoginAt'?: string;
 }
 
 export const UserResponseDtoRoleEnum = {
@@ -112,12 +114,12 @@ export const UserResponseDtoRoleEnum = {
     Client: 'client'
 } as const;
 
-export type UserResponseDtoRoleEnum =
-    (typeof UserResponseDtoRoleEnum)[keyof typeof UserResponseDtoRoleEnum];
+export type UserResponseDtoRoleEnum = typeof UserResponseDtoRoleEnum[keyof typeof UserResponseDtoRoleEnum];
 export const UserResponseDtoStatusEnum = {
     Active: 'active',
     Inactive: 'inactive'
 } as const;
 
-export type UserResponseDtoStatusEnum =
-    (typeof UserResponseDtoStatusEnum)[keyof typeof UserResponseDtoStatusEnum];
+export type UserResponseDtoStatusEnum = typeof UserResponseDtoStatusEnum[keyof typeof UserResponseDtoStatusEnum];
+
+

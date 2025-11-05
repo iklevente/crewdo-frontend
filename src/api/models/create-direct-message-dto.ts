@@ -13,22 +13,25 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface CreateDirectMessageDto
  */
 export interface CreateDirectMessageDto {
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof CreateDirectMessageDto
      */
-    userIds: Array<string>;
+    'userIds': Array<string>;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CreateDirectMessageDto
      */
-    name?: string;
+    'name'?: string;
 }
+

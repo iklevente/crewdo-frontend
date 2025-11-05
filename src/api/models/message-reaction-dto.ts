@@ -13,22 +13,25 @@
  * Do not edit the class manually.
  */
 
+
+
 /**
- *
+ * 
  * @export
  * @interface MessageReactionDto
  */
 export interface MessageReactionDto {
     /**
-     *
+     * 
      * @type {string}
      * @memberof MessageReactionDto
      */
-    emoji: string;
+    'emoji': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof MessageReactionDto
      */
-    messageId: string;
+    'messageId': string;
 }
+
