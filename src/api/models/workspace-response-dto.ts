@@ -47,12 +47,6 @@ export interface WorkspaceResponseDto {
     'type': WorkspaceResponseDtoTypeEnum;
     /**
      * 
-     * @type {boolean}
-     * @memberof WorkspaceResponseDto
-     */
-    'isPublic': boolean;
-    /**
-     * 
      * @type {string}
      * @memberof WorkspaceResponseDto
      */

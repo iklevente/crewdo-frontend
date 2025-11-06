@@ -121,16 +121,14 @@ export interface CallResponseDto {
 
 export const CallResponseDtoTypeEnum = {
     Voice: 'voice',
-    Video: 'video',
-    ScreenShare: 'screen_share'
+    Video: 'video'
 } as const;
 
 export type CallResponseDtoTypeEnum = typeof CallResponseDtoTypeEnum[keyof typeof CallResponseDtoTypeEnum];
 export const CallResponseDtoStatusEnum = {
     Scheduled: 'scheduled',
     Active: 'active',
-    Ended: 'ended',
-    Cancelled: 'cancelled'
+    Ended: 'ended'
 } as const;
 
 export type CallResponseDtoStatusEnum = typeof CallResponseDtoStatusEnum[keyof typeof CallResponseDtoStatusEnum];

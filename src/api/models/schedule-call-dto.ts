@@ -61,8 +61,7 @@ export interface ScheduleCallDto {
 
 export const ScheduleCallDtoTypeEnum = {
     Voice: 'voice',
-    Video: 'video',
-    ScreenShare: 'screen_share'
+    Video: 'video'
 } as const;
 
 export type ScheduleCallDtoTypeEnum = typeof ScheduleCallDtoTypeEnum[keyof typeof ScheduleCallDtoTypeEnum];

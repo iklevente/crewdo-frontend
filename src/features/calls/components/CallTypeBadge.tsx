@@ -16,7 +16,6 @@ const resolveType = (type: CallType): { label: string; icon: React.ReactElement 
             return { label: 'Voice', icon: <CallIcon fontSize="small" /> };
         case 'video':
             return { label: 'Video', icon: <VideocamIcon fontSize="small" /> };
-        case 'screen_share':
         default:
             return { label: 'Screen share', icon: <ScreenShareIcon fontSize="small" /> };
     }

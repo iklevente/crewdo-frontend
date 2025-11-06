@@ -8,7 +8,7 @@ import type { UpdateCallParticipantDto } from 'api/models/update-call-participan
 import { CALLS_QUERY_KEY } from './useCalls';
 
 interface StartCallVariables {
-    readonly type: 'voice' | 'video' | 'screen_share';
+    readonly type: 'voice' | 'video';
     readonly title?: string;
     readonly invitedUserIds: string[];
     readonly withVideo: boolean;
@@ -16,7 +16,7 @@ interface StartCallVariables {
 }
 
 interface ScheduleCallVariables {
-    readonly type: 'voice' | 'video' | 'screen_share';
+    readonly type: 'voice' | 'video';
     readonly title: string;
     readonly description?: string;
     readonly scheduledStartTime: string;

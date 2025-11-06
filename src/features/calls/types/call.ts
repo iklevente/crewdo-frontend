@@ -1,4 +1,4 @@
-export type CallType = 'voice' | 'video' | 'screen_share';
+export type CallType = 'voice' | 'video';
 
 export type CallStatus = 'scheduled' | 'active' | 'ended' | 'cancelled';
 

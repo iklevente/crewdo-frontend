@@ -55,8 +55,7 @@ export interface StartCallDto {
 
 export const StartCallDtoTypeEnum = {
     Voice: 'voice',
-    Video: 'video',
-    ScreenShare: 'screen_share'
+    Video: 'video'
 } as const;
 
 export type StartCallDtoTypeEnum = typeof StartCallDtoTypeEnum[keyof typeof StartCallDtoTypeEnum];
