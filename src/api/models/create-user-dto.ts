@@ -74,8 +74,7 @@ export interface CreateUserDto {
 export const CreateUserDtoRoleEnum = {
     Admin: 'admin',
     ProjectManager: 'project_manager',
-    TeamMember: 'team_member',
-    Client: 'client'
+    TeamMember: 'team_member'
 } as const;
 
 export type CreateUserDtoRoleEnum = typeof CreateUserDtoRoleEnum[keyof typeof CreateUserDtoRoleEnum];
