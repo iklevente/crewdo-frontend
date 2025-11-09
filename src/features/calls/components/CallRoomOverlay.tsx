@@ -765,6 +765,26 @@ export const CallRoomOverlay: React.FC<CallRoomOverlayProps> = ({
             : call?.type === 'voice'
               ? false
               : true;
+
+    React.useEffect(() => {
+        if (typeof window === 'undefined') {
+            return;
+        }
+        if (!open || mode !== 'docked') {
+            return;
+        }
+        const { body } = window.document;
+        const previousOverflow = body.style.overflow;
+        const previousPaddingRight = body.style.paddingRight;
+
+        body.style.overflow = '';
+        body.style.paddingRight = '';
+
+        return () => {
+            body.style.overflow = previousOverflow;
+            body.style.paddingRight = previousPaddingRight;
+        };
+    }, [mode, open]);
     const handleDialogClose = React.useCallback(
         (_event: React.SyntheticEvent, reason: 'backdropClick' | 'escapeKeyDown') => {
             if (isDocked && reason === 'backdropClick') {
@@ -784,6 +804,7 @@ export const CallRoomOverlay: React.FC<CallRoomOverlayProps> = ({
             maxWidth={false}
             fullScreen={!isDocked}
             hideBackdrop={isDocked}
+            disableScrollLock={isDocked}
             disableEnforceFocus={isDocked}
             disableAutoFocus={isDocked}
             disableRestoreFocus={isDocked}
