@@ -9,7 +9,7 @@ import {
     Stack,
     TextField
 } from '@mui/material';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import type { ProjectMember } from '../types/project';
 import type { TaskPriority, TaskStatus } from '../types/task';
 import { TASK_PRIORITY_METADATA, TASK_STATUS_METADATA } from '../types/task';
@@ -32,6 +32,7 @@ interface TaskFormDialogProps {
     readonly submitLabel: string;
     readonly defaultStatus?: TaskStatus;
     readonly initialValues?: Partial<TaskFormData>;
+    readonly initialAssignee?: ProjectMember | null;
     readonly participants: ProjectMember[];
     readonly isSubmitting?: boolean;
     readonly onClose: () => void;
@@ -71,6 +72,7 @@ export const TaskFormDialog: React.FC<TaskFormDialogProps> = ({
     submitLabel,
     defaultStatus,
     initialValues,
+    initialAssignee,
     participants,
     isSubmitting,
     onClose,
@@ -78,6 +80,7 @@ export const TaskFormDialog: React.FC<TaskFormDialogProps> = ({
 }) => {
     const {
         register,
+        control,
         handleSubmit,
         reset,
         formState: { errors }
@@ -94,6 +97,16 @@ export const TaskFormDialog: React.FC<TaskFormDialogProps> = ({
             tags: initialValues?.tags?.join(', ') ?? ''
         }
     });
+
+    const assigneeOptions = React.useMemo(() => {
+        if (!initialAssignee?.id) {
+            return participants;
+        }
+        const alreadyIncluded = participants.some(
+            participant => participant.id === initialAssignee.id
+        );
+        return alreadyIncluded ? participants : [...participants, initialAssignee];
+    }, [initialAssignee, participants]);
 
     React.useEffect(() => {
         if (open) {
@@ -148,36 +161,56 @@ export const TaskFormDialog: React.FC<TaskFormDialogProps> = ({
                         {...register('description')}
                     />
                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                        <TextField
-                            label="Status"
-                            select
-                            fullWidth
-                            required
-                            {...register('status', { required: 'Status is required' })}
-                            error={Boolean(errors.status)}
-                            helperText={errors.status?.message}
-                        >
-                            {STATUS_OPTIONS.map(option => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                        <TextField
-                            label="Priority"
-                            select
-                            fullWidth
-                            required
-                            {...register('priority', { required: 'Priority is required' })}
-                            error={Boolean(errors.priority)}
-                            helperText={errors.priority?.message}
-                        >
-                            {PRIORITY_OPTIONS.map(option => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
+                        <Controller
+                            name="status"
+                            control={control}
+                            rules={{ required: 'Status is required' }}
+                            render={({ field }) => (
+                                <TextField
+                                    label="Status"
+                                    select
+                                    fullWidth
+                                    required
+                                    {...field}
+                                    value={field.value ?? defaultStatus ?? STATUS_OPTIONS[0]?.value}
+                                    error={Boolean(errors.status)}
+                                    helperText={errors.status?.message}
+                                >
+                                    {STATUS_OPTIONS.map(option => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            )}
+                        />
+                        <Controller
+                            name="priority"
+                            control={control}
+                            rules={{ required: 'Priority is required' }}
+                            render={({ field }) => (
+                                <TextField
+                                    label="Priority"
+                                    select
+                                    fullWidth
+                                    required
+                                    {...field}
+                                    value={
+                                        field.value ??
+                                        PRIORITY_OPTIONS[1]?.value ??
+                                        PRIORITY_OPTIONS[0]?.value
+                                    }
+                                    error={Boolean(errors.priority)}
+                                    helperText={errors.priority?.message}
+                                >
+                                    {PRIORITY_OPTIONS.map(option => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            )}
+                        />
                     </Stack>
                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                         <TextField
@@ -208,30 +241,37 @@ export const TaskFormDialog: React.FC<TaskFormDialogProps> = ({
                             })}
                         />
                     </Stack>
-                    <TextField
-                        label="Assignee"
-                        select
-                        fullWidth
-                        {...register('assigneeId')}
-                        SelectProps={{ displayEmpty: true }}
-                    >
-                        <MenuItem value="">
-                            <em>Unassigned</em>
-                        </MenuItem>
-                        {participants.map(participant => {
-                            const fullName =
-                                `${participant.firstName ?? ''} ${participant.lastName ?? ''}`.trim();
-                            const label =
-                                fullName.length > 0
-                                    ? fullName
-                                    : (participant.email ?? 'Unknown member');
-                            return (
-                                <MenuItem key={participant.id} value={participant.id}>
-                                    {label}
+                    <Controller
+                        name="assigneeId"
+                        control={control}
+                        render={({ field }) => (
+                            <TextField
+                                label="Assignee"
+                                select
+                                fullWidth
+                                {...field}
+                                value={field.value ?? ''}
+                                SelectProps={{ displayEmpty: true }}
+                            >
+                                <MenuItem value="">
+                                    <em>Unassigned</em>
                                 </MenuItem>
-                            );
-                        })}
-                    </TextField>
+                                {assigneeOptions.map(participant => {
+                                    const fullName =
+                                        `${participant.firstName ?? ''} ${participant.lastName ?? ''}`.trim();
+                                    const label =
+                                        fullName.length > 0
+                                            ? fullName
+                                            : (participant.email ?? 'Unknown member');
+                                    return (
+                                        <MenuItem key={participant.id} value={participant.id}>
+                                            {label}
+                                        </MenuItem>
+                                    );
+                                })}
+                            </TextField>
+                        )}
+                    />
                     <TextField
                         label="Tags"
                         placeholder="Design, Backend, Blocker"

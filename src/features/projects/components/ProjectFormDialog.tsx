@@ -146,36 +146,52 @@ export const ProjectFormDialog: React.FC<ProjectFormDialogProps> = ({
                         {...register('description')}
                     />
                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                        <TextField
-                            label="Status"
-                            select
-                            fullWidth
-                            required
-                            {...register('status', { required: 'Status is required' })}
-                            error={Boolean(errors.status)}
-                            helperText={errors.status?.message}
-                        >
-                            {STATUS_OPTIONS.map(option => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                        <TextField
-                            label="Priority"
-                            select
-                            fullWidth
-                            required
-                            {...register('priority', { required: 'Priority is required' })}
-                            error={Boolean(errors.priority)}
-                            helperText={errors.priority?.message}
-                        >
-                            {PRIORITY_OPTIONS.map(option => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
+                        <Controller
+                            name="status"
+                            control={control}
+                            rules={{ required: 'Status is required' }}
+                            render={({ field }) => (
+                                <TextField
+                                    label="Status"
+                                    select
+                                    fullWidth
+                                    required
+                                    {...field}
+                                    value={field.value ?? FALLBACK_STATUS}
+                                    error={Boolean(errors.status)}
+                                    helperText={errors.status?.message}
+                                >
+                                    {STATUS_OPTIONS.map(option => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            )}
+                        />
+                        <Controller
+                            name="priority"
+                            control={control}
+                            rules={{ required: 'Priority is required' }}
+                            render={({ field }) => (
+                                <TextField
+                                    label="Priority"
+                                    select
+                                    fullWidth
+                                    required
+                                    {...field}
+                                    value={field.value ?? FALLBACK_PRIORITY}
+                                    error={Boolean(errors.priority)}
+                                    helperText={errors.priority?.message}
+                                >
+                                    {PRIORITY_OPTIONS.map(option => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            )}
+                        />
                     </Stack>
                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                         <TextField

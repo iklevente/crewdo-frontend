@@ -46,15 +46,37 @@ const mapPerson = (payload: unknown): TaskAssignee | null => {
     return { id, firstName, lastName, email };
 };
 
+const parseTags = (value: unknown): string[] => {
+    if (Array.isArray(value)) {
+        return value.filter((tag): tag is string => typeof tag === 'string');
+    }
+    if (typeof value === 'string') {
+        try {
+            const parsed = JSON.parse(value) as unknown;
+            if (Array.isArray(parsed)) {
+                return parsed.filter((tag): tag is string => typeof tag === 'string');
+            }
+        } catch {
+            return [];
+        }
+    }
+    return [];
+};
+
+const isRecord = (value: unknown): value is Record<string, unknown> => {
+    return typeof value === 'object' && value !== null;
+};
+
 export const mapTaskResponse = (payload: TaskResponseDto): ProjectTask => {
     const project = payload.project as Record<string, unknown> | undefined;
-    const fallbackProjectSource = payload as unknown as Record<string, unknown>;
+    const fallbackProjectSource: Record<string, unknown> = isRecord(payload) ? payload : {};
     const fallbackProjectId =
         fallbackProjectSource && typeof fallbackProjectSource.projectId === 'string'
             ? fallbackProjectSource.projectId
             : '';
     const assignee = mapPerson(payload.assignee);
     const creator = mapPerson(payload.creator) ?? { id: '', email: undefined };
+    const tags = parseTags(fallbackProjectSource.tags);
 
     return {
         id: payload.id,
@@ -65,7 +87,7 @@ export const mapTaskResponse = (payload: TaskResponseDto): ProjectTask => {
         dueDate: payload.dueDate ?? null,
         estimatedHours: typeof payload.estimatedHours === 'number' ? payload.estimatedHours : null,
         actualHours: typeof payload.actualHours === 'number' ? payload.actualHours : null,
-        tags: Array.isArray(payload.tags) ? payload.tags : [],
+        tags,
         position: typeof payload.position === 'number' ? payload.position : 0,
         createdAt: payload.createdAt,
         updatedAt: payload.updatedAt,

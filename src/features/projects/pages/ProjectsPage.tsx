@@ -1046,6 +1046,16 @@ export const ProjectsPage: React.FC = () => {
                 submitLabel={taskBeingEdited ? 'Save changes' : 'Create task'}
                 defaultStatus={taskDialogDefaultStatus}
                 initialValues={taskBeingEdited ? taskDialogInitialValues : undefined}
+                initialAssignee={
+                    taskBeingEdited?.assignee
+                        ? {
+                              id: taskBeingEdited.assignee.id,
+                              firstName: taskBeingEdited.assignee.firstName,
+                              lastName: taskBeingEdited.assignee.lastName,
+                              email: taskBeingEdited.assignee.email
+                          }
+                        : null
+                }
                 participants={participants}
                 isSubmitting={isProcessingTask}
                 onSubmit={handleTaskSubmit}
